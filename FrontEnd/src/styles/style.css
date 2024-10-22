@@ -1,7 +1,663 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=SUSE:wght@100..800&display=swap');
 
+/* Proprietes generales */
+:root {
+    --color-text-primary: #fff;
+    --bg-principal: red;
+    --bg-secondaire: white;
+}
+
 * {
     margin: 0;
     padding: 0;
+}
+
+legend {
+    font-family: 'Roboto', 'Arial';
+}
+
+label {
+    font-family: 'Roboto', 'Arial';
+}
+
+button {
+    background-color: var(--bg-principal);
+}
+
+h3 {
+    font-family: "SUSE", "Arial";
+}
+
+p {
+    font-family: 'Poppins', 'Arial';
+}
+
+span {
     font-family: 'SUSE', 'Arial';
+}
+
+input::placeholder {
+    padding: 10px;
+}
+
+section {
+    margin: 0 400px;
+    background-color: var(--bg-secondaire);
+}
+
+input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 15px;
+    height: 15px;
+    background-color: #fff;
+    border: 2px solid #ccc;
+    border-radius: 5px; /* On enlève le bord arrondi pour faire un carré */
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+}
+
+/* Style pour l'état sélectionné */
+input[type="radio"]:checked {
+    background-color: brown; /* Couleur lorsque la case est cochée */
+    border-color: #ccc;
+}
+
+/* Composant header */
+.header {
+    background: url('../assets/images/afrijet-agence.jpg');
+    height: 100px;
+    margin: 0;
+    width: auto;
+    position: fixed;
+}
+
+.overlay {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 0, 0, 0.35);
+    /* Rouge avec opacité de 50% */
+}
+
+.content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+}
+
+.logo {
+    float: left;
+    width: 50%;
+    padding: 30px 2px;
+}
+
+.customer_survey {
+    float: right;
+    width: 50%;
+}
+
+.customer_survey h1 {
+    padding-top: 25px;
+    color: var(--color-text-primary);
+    font-family: 'SUSE', 'Arial';
+    font-size: 24px;
+}
+
+ /* Composant fil d'ariane */
+ .fil_ariane {
+    background-color: brown;
+    margin: 0;
+    position: fixed;
+    top: 100px;
+    width: 100vw;
+}
+
+.span-fil {
+    padding: -30px;
+}
+
+.fil_ariane p {
+    color: var(--color-text-primary);
+    font-family: 'Poppins', 'Arial';
+    padding: 10px;
+    font-size: 10px;
+}
+
+/* Page Bienvenue */
+.logo-afrijet {
+    width: 30%;
+    margin: 0 auto;
+}
+
+body {
+    background: white;
+}
+
+.welcome-section {
+    margin-top: -30px;
+}
+
+.welcome-section ul {
+    margin-left: 20%;
+}
+
+.options li {
+    background: brown;
+    border-radius: 5px;
+    width: 80%;
+}
+
+/* PopUP */
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.popup-content i {
+    color: brown;
+}
+
+.popup-content h4 {
+    font-family: 'SUSE', 'Arial';
+    font-size: 20px;
+}
+
+/* Responsive pour les ecrans de taille max = 1300px (tablette) */
+@media (max-width: 1300px) {
+
+    section {
+        margin: 0;
+    }
+
+     /* Composant header */
+     .header {
+        position: fixed;
+        background: url('../assets/images/afrijet-agence.jpg') no-repeat;
+        background-size: cover;
+        height: 200px;
+        width: 100%;
+        margin: 0;
+        top: 0;
+        left: 0;
+    }
+
+    .overlay {
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 0, 0, 0.20);
+    }
+
+    .content {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        padding-top: 3%;
+    }
+
+    .logo {
+        float: left;
+        width: 50%;
+        padding: 30px 2px;
+    }
+
+    .customer_survey {
+        float: right;
+        width: 50%;
+    }
+
+    .customer_survey h1 {
+        padding-top: 8%;
+        color: var(--color-text-primary);
+        font-family: 'SUSE', 'Arial';
+        font-size: 30px;
+    }
+
+     /* Composant fil d'ariane */
+     .fil_ariane {
+        background-color: brown;
+        margin: 0;
+        position: fixed;
+        top: 200px;
+        width: 100%;
+    }
+
+    .span-fil {
+        padding: -30px;
+    }
+
+    .fil_ariane p {
+        color: var(--color-text-primary);
+        font-family: 'Poppins', 'Arial';
+        padding: 10px;
+        font-size: 10px;
+    }
+
+    /* Page Bienvenue */
+    .logo-afrijet {
+        width: 60%;
+        margin: 0 auto;
+    }
+
+    .welcome-section {
+        margin-top: -50px;
+    }
+
+    .welcome-section ul {
+        margin-left: 20%;
+    }
+
+    .options li {
+        background: brown;
+        border-radius: 5px;
+        width: 80%;
+    }
+
+    /* PopUP */
+    .popup {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .popup-content {
+        background: white;
+        padding: 20px;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    .popup-content i {
+        color: brown;
+    }
+
+    .popup-content h4 {
+        font-family: 'SUSE', 'Arial';
+        font-size: 20px;
+    }
+
+    /* Debut de la page Enquete agence */
+    .info-generales {
+        margin: 0 auto;
+        width: 330px;
+        background-color: var(--bg-principal);
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    .info-generales-info {
+        margin: 0 auto;
+        margin-top: 180px;
+        width: 330px;
+        background-color: var(--bg-principal);
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    .info-generales-info h2 {
+        color: var(--color-text-primary);
+        font-family: 'Poppins', 'Arial';
+        font-size: 18px;
+        text-transform: uppercase;
+    }
+
+    .space {
+        background-color: white;
+    }
+
+    .info-generales h2 {
+        color: var(--color-text-primary);
+        font-family: 'Poppins', 'Arial';
+        font-size: 18px;
+        text-transform: uppercase;
+    }
+
+    .btn-valider {
+        font-family: 'Poppins', 'Arial';
+        font-size: 18px;
+        margin: 15px auto;
+    }
+}
+
+/* Responsive pour les ecrans de taille max = 850px (tablette) */
+@media (max-width: 850px) {
+
+    section {
+        margin: 0;
+    }
+
+     /* Composant header */
+     .header {
+        position: fixed;
+        background: url('../assets/images/afrijet-agence.jpg') no-repeat;
+        background-size: cover;
+        height: 180px;
+        width: 100%;
+        margin: 0;
+        top: 0;
+        left: 0;
+    }
+
+    .overlay {
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 0, 0, 0.20);
+    }
+
+    .content {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        padding-top: 5%;
+    }
+
+    .logo {
+        float: left;
+        width: 50%;
+        padding: 30px 2px;
+    }
+
+    .customer_survey {
+        float: right;
+        width: 50%;
+    }
+
+    .customer_survey h1 {
+        padding-top: 25px;
+        color: var(--color-text-primary);
+        font-family: 'SUSE', 'Arial';
+        font-size: 30px;
+    }
+
+     /* Composant fil d'ariane */
+     .fil_ariane {
+        background-color: brown;
+        margin: 0;
+        position: fixed;
+        top: 180px;
+        width: 100%;
+    }
+
+    .span-fil {
+        padding: -30px;
+    }
+
+    .fil_ariane p {
+        color: var(--color-text-primary);
+        font-family: 'Poppins', 'Arial';
+        padding: 10px;
+        font-size: 10px;
+    }
+
+    /* Page Bienvenue */
+    .logo-afrijet {
+        width: 60%;
+        margin: 0 auto;
+    }
+
+    .welcome-section {
+        margin-top: -50px;
+    }
+
+    .welcome-section ul {
+        margin-left: 20%;
+    }
+
+    .options li {
+        background: brown;
+        border-radius: 5px;
+        width: 80%;
+    }
+
+    /* PopUP */
+    .popup {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .popup-content {
+        background: white;
+        padding: 20px;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    .popup-content i {
+        color: brown;
+    }
+
+    .popup-content h4 {
+        font-family: 'SUSE', 'Arial';
+        font-size: 20px;
+    }
+
+    /* Debut de la page Enquete agence */
+    .info-generales {
+        margin: 0 auto;
+        width: 330px;
+        background-color: var(--bg-principal);
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    .info-generales-info {
+        margin: 0 auto;
+        margin-top: 210px;
+        width: 330px;
+        background-color: var(--bg-principal);
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    .info-generales-info h2 {
+        color: var(--color-text-primary);
+        font-family: 'Poppins', 'Arial';
+        font-size: 18px;
+        text-transform: uppercase;
+    }
+
+    .space {
+        background-color: white;
+    }
+
+    .info-generales h2 {
+        color: var(--color-text-primary);
+        font-family: 'Poppins', 'Arial';
+        font-size: 18px;
+        text-transform: uppercase;
+    }
+
+    .btn-valider {
+        font-family: 'Poppins', 'Arial';
+        font-size: 18px;
+        margin: 15px auto;
+    }
+}
+
+/* Responsive pour les telepones */
+@media (max-width: 500px) {
+
+    section {
+        margin: 0;
+    }
+
+    /* Composant header */
+    .header {
+        position: fixed;
+        background: url('../assets/images/afrijet-agence.jpg');
+        height: 150px;
+        width: 100%;
+        margin: 0;
+        top: 0;
+        left: 0;
+    }
+
+    .overlay {
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 0, 0, 0.20);
+    }
+
+    .content {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        padding-top: 8%;
+    }
+
+    .logo {
+        float: left;
+        width: 50%;
+        padding: 30px 2px;
+    }
+
+    .customer_survey {
+        float: right;
+        width: 50%;
+    }
+
+    .customer_survey h1 {
+        padding-top: 25px;
+        color: var(--color-text-primary);
+        font-family: 'SUSE', 'Arial';
+        font-size: 24px;
+    }
+
+     /* Composant fil d'ariane */
+     .fil_ariane {
+        background-color: brown;
+        margin: 0;
+        position: fixed;
+        top: 150px;
+        width: 100%;
+    }
+
+    .span-fil {
+        padding: -30px;
+    }
+
+    .fil_ariane p {
+        color: var(--color-text-primary);
+        font-family: 'Poppins', 'Arial';
+        padding: 10px;
+        font-size: 10px;
+    }
+
+    /* Page Bienvenue */
+    .logo-afrijet {
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .welcome-section {
+        margin-top: -60px;
+    }
+
+    .options li {
+        background: brown;
+        border-radius: 5px;
+    }
+
+    /* PopUP */
+    .popup {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .popup-content {
+        background: white;
+        padding: 20px;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    .popup-content i {
+        color: brown;
+        font-size: 20px;
+    }
+
+    .popup-content h4 {
+        font-family: 'SUSE', 'Arial';
+        font-size: 20px;
+    }
+
+    /* Debut de la page Enquete agence */
+    .info-generales {
+        margin: 0 auto;
+        width: 330px;
+        background-color: var(--bg-principal);
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    .info-generales-info {
+        margin: 0 auto;
+        margin-top: 180px;
+        width: 330px;
+        background-color: var(--bg-principal);
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    .info-generales-info h2 {
+        color: var(--color-text-primary);
+        font-family: 'Poppins', 'Arial';
+        font-size: 18px;
+        text-transform: uppercase;
+    }
+
+    .space {
+        background-color: white;
+    }
+
+    .info-generales h2 {
+        color: var(--color-text-primary);
+        font-family: 'Poppins', 'Arial';
+        font-size: 18px;
+        text-transform: uppercase;
+    }
+
+    .btn-valider {
+        font-family: 'Poppins', 'Arial';
+        font-size: 18px;
+        margin: 15px auto;
+    }
+
 }
