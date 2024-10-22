@@ -8,6 +8,7 @@ import destination from '../composants/destination.json'
 import agence from '../composants/agence.json'
 import { motion } from 'framer-motion'
 import { AnimatePresence } from 'framer-motion'
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const AgencySurvey = () => {
 
@@ -103,7 +104,7 @@ const AgencySurvey = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log('Données à envoyer:', data);
-        axios.post('http://localhost:5000/enqueteagence', data, {
+        axios.post(`${apiUrl}/enqueteagence`, data, {
             headers: {
                 'Content-Type': 'application/json'
             },

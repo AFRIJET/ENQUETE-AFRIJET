@@ -42,7 +42,6 @@ input::placeholder {
 
 section {
     margin: 0 400px;
-    background-color: var(--bg-secondaire);
 }
 
 input[type="radio"] {
@@ -67,11 +66,10 @@ input[type="radio"]:checked {
 
 /* Composant header */
 .header {
-    background: url('../assets/images/afrijet-agence.jpg');
+    background: url('../assets/images/afrijet-agence.jpg') no-repeat;
+    background-size: cover;
     height: 100px;
-    margin: 0;
-    width: auto;
-    position: fixed;
+    margin: 0 400px;
 }
 
 .overlay {
@@ -110,10 +108,11 @@ input[type="radio"]:checked {
  /* Composant fil d'ariane */
  .fil_ariane {
     background-color: brown;
-    margin: 0;
-    position: fixed;
-    top: 100px;
-    width: 100vw;
+    margin: 0 400px;
+}
+
+.fil_ariane ol {
+    padding: 0;
 }
 
 .span-fil {
@@ -178,6 +177,47 @@ body {
 .popup-content h4 {
     font-family: 'SUSE', 'Arial';
     font-size: 20px;
+}
+
+ /* Debut de la page Enquete agence */
+ .info-generales {
+    margin: 0 auto;
+    width: 330px;
+    background-color: var(--bg-principal);
+    border-radius: 5px;
+    text-align: center;
+}
+
+.info-generales-info {
+    margin: 0 auto;
+    width: 330px;
+    background-color: var(--bg-principal);
+    border-radius: 5px;
+    text-align: center;
+}
+
+.info-generales-info h2 {
+    color: var(--color-text-primary);
+    font-family: 'Poppins', 'Arial';
+    font-size: 18px;
+    text-transform: uppercase;
+}
+
+.space {
+    background-color: white;
+}
+
+.info-generales h2 {
+    color: var(--color-text-primary);
+    font-family: 'Poppins', 'Arial';
+    font-size: 18px;
+    text-transform: uppercase;
+}
+
+.btn-valider {
+    font-family: 'Poppins', 'Arial';
+    font-size: 18px;
+    margin: 15px auto;
 }
 
 /* Responsive pour les ecrans de taille max = 1300px (tablette) */
@@ -310,7 +350,7 @@ body {
 
     .info-generales-info {
         margin: 0 auto;
-        margin-top: 180px;
+        margin-top: 240px;
         width: 330px;
         background-color: var(--bg-principal);
         border-radius: 5px;
