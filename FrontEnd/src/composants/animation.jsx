@@ -20,6 +20,7 @@ const AnimatedItem = ({ children }) => {
       initial="hidden"
       animate="visible"
       variants={variants}
+      style={{ willChange: 'auto' }}
       className="mb-4"
     >
       {children}
