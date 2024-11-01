@@ -68,6 +68,8 @@ input[type="radio"] {
     background-size: cover;
     height: 100px;
     margin: 0 400px;
+    width: 50%;
+    position: fixed;
 }
 
 .customer_survey h1 {
@@ -78,6 +80,9 @@ input[type="radio"] {
 /* Composant fil d'ariane */
 .fil_ariane {
     margin: 0 400px;
+    position: fixed;
+    width: 50%;
+    top: 100px;
 }
 
 .span-fil {
@@ -91,6 +96,11 @@ input[type="radio"] {
 
 .welcome-section {
     margin-top: -30px;
+}
+
+ /* Debut de la page Enquete agence */
+ .info-generales-info {
+    margin-top: 130px;
 }
 
 /* PopUP */
@@ -111,15 +121,15 @@ input[type="radio"] {
 @media (max-width: 1300px) {
 
     section {
-        margin: 0;
+        margin: 0 200px;
     }
 
     /* Composant header */
     .header {
         position: fixed;
-        height: 200px;
-        width: 100%;
-        margin: 0;
+        height: 160px;
+        margin: 0 200px;
+        width: 70%;
         top: 0;
         left: 0;
     }
@@ -135,10 +145,11 @@ input[type="radio"] {
 
     /* Composant fil d'ariane */
     .fil_ariane {
-        margin: 0;
+        margin: 0 200px;
+        width: 70%;
         position: fixed;
-        top: 200px;
-        width: 100%;
+        top: 160px;
+
     }
 
     /* Page Bienvenue */
@@ -161,7 +172,7 @@ input[type="radio"] {
 
     /* Debut de la page Enquete agence */
     .info-generales-info {
-        margin-top: 240px;
+        margin-top: 200px;
     }
 }
 

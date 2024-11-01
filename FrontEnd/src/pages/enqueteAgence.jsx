@@ -6,26 +6,21 @@ import axios from 'axios'
 import country from '../composants/country.json';
 import destination from '../composants/destination.json'
 import agence from '../composants/agence.json'
+import Fildariane from '../composants/fildariane';
 import { motion } from 'framer-motion'
 import { AnimatePresence } from 'framer-motion'
 const apiUrl = import.meta.env.VITE_API_URL;
 
 const AgencySurvey = () => {
 
-    const sectionRefs = {
-        infos: useRef(null),
-        agence: useRef(null),
-        services: useRef(null),
-    };
-
-    const sections = [
-        { label: 'Informations générales', ref: sectionRefs.infos },
-        { label: 'Agence', ref: sectionRefs.agence },
-        { label: 'Services Afrijet', ref: sectionRefs.services },
-    ];
-
     const [isPopVisible, setIsPopVisible] = useState(false); // Declaration de la variable pour la popUp
     const popupRef = useRef(null)
+
+    const sections = [
+        { label: 'Informations générales'},
+        { label: 'Agence'},
+        { label: 'Services Afrijet'},
+    ];
 
     const date = new Date().toISOString() // Definition de la variable date
 
@@ -54,7 +49,7 @@ const AgencySurvey = () => {
         raison_agence: '',
         satisfaction_agent: '',
         temps_attente: '',
-        tarification: '',
+        satisfaction_client: '',
         note_programme_fidelite: '',
         note_salon_business: '',
         note_bagage: '',
@@ -150,24 +145,10 @@ const AgencySurvey = () => {
         >
             <div>
                 <Header image={logoAfrijet} type="Enquête en Agence" />
-                <div className='fil_ariane bg-brown-500'>
-                    <ol className="list-none flex p-0">
-                        {sections.map((section, index) => (
-                            <li key={index} className="flex items-center">
-                                {index > 0 && <span className="text-gray-100 span-fil"> &gt; </span>}
-                                <a
-                                    href={`#${section.label.toLowerCase()}`}
-                                    className="text-blue-600 hover:text-blue-800 focus:text-brown-600 focus:outline-none focus:ring-2 focus:ring-brown-300"
-                                >
-                                    <p className='p-[10px] text-xs text-white'>{section.label}</p>
-                                </a>
-                            </li>
-                        ))}
-                    </ol>
-                </div>
+                <Fildariane sections={sections} />
             </div>
             <form onSubmit={handleSubmit}>
-                <section ref={sectionRefs.infos} id="informations générales">
+                <section id="informations générales">
                     <div className='space'>
                         <br />
                     </div>
@@ -281,7 +262,7 @@ const AgencySurvey = () => {
                         </div>
                     </div>
                 </section>
-                <section ref={sectionRefs.agence} id="agence">
+                <section id="agence">
                     <div className='bg-white'>
                         <br />
                     </div>
@@ -309,49 +290,35 @@ const AgencySurvey = () => {
 
                         </div>
                     </div>
-                    <div className="mt-4 mx-4 border-b border-gray-900/10 pb-5">
+                    <div className="mt-4 mx-4 border-b border-gray-900/10 pb-3">
                         <fieldset>
-                            <legend className="text-sm font-semibold leading-6 text-gray-900">Comment jugez-vous l'acceuil au sein de nos agences ?</legend>
-                            <div className="mt-2 grid grid-cols-2">
-                                <div className="flex gap-x-3 p-2 bg-gray-200 rounded">
-                                    <div className="flex h-6 items-center">
-                                        <input
-                                            checked={CheckedItems.chaleureux}
-                                            onClick={handleChange}
+                            <legend className="text-sm font-semibold leading-6 text-gray-900">Comment évaluez-vous l'accueil au sein dans nos agences ?</legend>
+                            <small className='text-xs text-gray-700'>(La note 1 exprime un très faible dégré de satisfaction, la note 4 reflète un haut dégré de satisfaction)</small>
+                            <div>
+                                <div className="mt-4 grid grid-cols-4">
+                                    <div className="flex items-center mb-4">
+                                        <input type="radio" id="note_acceuil_1" name="note_acceuil" value="1" className="w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                             onChange={(e) => setData({ ...data, acceuil_agence: e.target.value })}
-                                            disabled={CheckedItems.pas_chaleureux}
-                                            id="chaleureux"
-                                            value="chaleureux"
-                                            name="chaleureux"
-                                            type="checkbox"
-                                            className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-
                                         />
+                                        <label htmlFor="note_acceuil_1" className="text-gray-700">1</label>
                                     </div>
-                                    <div className="text-sm leading-6">
-                                        <label htmlFor="chaleureux" className="font-medium text-gray-900">
-                                            Chaleureux
-                                        </label>
-                                    </div>
-                                </div>
-                                <div className="flex gap-x-3 mx-4 p-2 bg-gray-200 rounded">
-                                    <div className="flex h-6 items-center">
-                                        <input
-                                            checked={CheckedItems.pas_chaleureux}
-                                            onClick={handleChange}
+                                    <div className="flex items-center mb-4">
+                                        <input type="radio" id="note_acceuil_2" name="note_acceuil" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                             onChange={(e) => setData({ ...data, acceuil_agence: e.target.value })}
-                                            disabled={CheckedItems.chaleureux}
-                                            id="pas_chaleureux"
-                                            value="pas chaleureux"
-                                            name="pas_chaleureux"
-                                            type="checkbox"
-                                            className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                                         />
+                                        <label htmlFor="note_acceuil_2" className="text-gray-700">2</label>
                                     </div>
-                                    <div className="text-sm leading-6">
-                                        <label htmlFor="pas_chaleureux" className="font-medium text-gray-900">
-                                            Pas Chaleureux
-                                        </label>
+                                    <div className="flex items-center mb-4">
+                                        <input type="radio" id="note_acceuil_3" name="note_acceuil" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                            onChange={(e) => setData({ ...data, acceuil_agence: e.target.value })}
+                                        />
+                                        <label htmlFor="note_acceuil_3" className="text-gray-700">3</label>
+                                    </div>
+                                    <div className="flex items-center mb-4">
+                                        <input type="radio" id="note_acceuil_4" name="note_acceuil" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                            onChange={(e) => setData({ ...data, acceuil_agence: e.target.value })}
+                                        />
+                                        <label htmlFor="note_acceuil_4" className="text-gray-700">4</label>
                                     </div>
                                 </div>
                             </div>
@@ -538,53 +505,42 @@ const AgencySurvey = () => {
                     </div>
                     <div className="mt-4 mx-5 border-b border-gray-900/10 pb-5">
                         <fieldset>
-                            <legend className="text-sm font-semibold leading-6 text-gray-900">Etes-vous satisfait du choix du vendeur sur la tarification de votre billet ?</legend>
-                            <div className="mt-2 grid grid-cols-2">
-                                <div className="flex gap-x-3 p-3 bg-gray-200 rounded">
-                                    <div className="flex h-6 items-center">
-                                        <input
-                                            checked={CheckedItems.tarification_oui}
-                                            onClick={handleChange}
-                                            disabled={CheckedItems.tarification_non}
-                                            id="tarification_oui"
-                                            value="satisfaire du tarif"
-                                            name="tarification_oui"
-                                            type="checkbox"
-                                            className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                                            onChange={(e) => setData({ ...data, tarification: e.target.value })}
+                            <legend className="text-sm font-semibold leading-6 text-gray-900">
+                                Avez-vous été satisfait de la solution proposée à votre demande ?
+                            </legend>
+                            <small className='text-xs text-gray-700'>(Réservation,modification,Information, etc...)</small>
+                            <div>
+                                <div className="mt-4 grid grid-cols-4">
+                                    <div className="flex items-center mb-4">
+                                        <input type="radio" id="note_programme_1" name="note_programme" value="1" className="w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                            onChange={(e) => setData({ ...data, satisfaction_client: e.target.value })}
                                         />
+                                        <label htmlFor="note_programme_1" className="text-gray-700">1</label>
                                     </div>
-                                    <div className="text-sm leading-6">
-                                        <label htmlFor="tarification_oui" className="font-medium text-gray-900">
-                                            Oui
-                                        </label>
-                                    </div>
-                                </div>
-                                <div className="flex gap-x-3 mx-4 p-3 bg-gray-200 rounded">
-                                    <div className="flex h-6 items-center">
-                                        <input
-                                            checked={CheckedItems.tarification_non}
-                                            onClick={handleChange}
-                                            disabled={CheckedItems.tarification_oui}
-                                            id="tarification_non"
-                                            value="pas satisfaire du tarif"
-                                            name="tarification_non"
-                                            type="checkbox"
-                                            className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                                            onChange={(e) => setData({ ...data, tarification: e.target.value })}
+                                    <div className="flex items-center mb-4">
+                                        <input type="radio" id="note_programme_2" name="note_programme" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                            onChange={(e) => setData({ ...data, satisfaction_client: e.target.value })}
                                         />
+                                        <label htmlFor="note_programme_2" className="text-gray-700">2</label>
                                     </div>
-                                    <div className="text-sm leading-6">
-                                        <label htmlFor="tarification_non" className="font-medium text-gray-900">
-                                            Non
-                                        </label>
+                                    <div className="flex items-center mb-4">
+                                        <input type="radio" id="note_programme_3" name="note_programme" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                            onChange={(e) => setData({ ...data, satisfaction_client: e.target.value })}
+                                        />
+                                        <label htmlFor="note_programme_3" className="text-gray-700">3</label>
+                                    </div>
+                                    <div className="flex items-center mb-4">
+                                        <input type="radio" id="note_programme_4" name="note_programme" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                            onChange={(e) => setData({ ...data, satisfaction_client: e.target.value })}
+                                        />
+                                        <label htmlFor="note_programme_4" className="text-gray-700">4</label>
                                     </div>
                                 </div>
                             </div>
                         </fieldset>
                     </div>
                 </section>
-                <section ref={sectionRefs.infos} id="services afrijet">
+                <section id="services afrijet">
                     <div className='space'>
                         <br />
                     </div>
@@ -600,25 +556,25 @@ const AgencySurvey = () => {
                             <legend className="text-sm font-semibold leading-6 text-gray-900 pt-4">Programme de fidélité :</legend>
                             <div className="mt-4 grid grid-cols-4">
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" id="note_programme_1" name="note_programme" value="1" className="w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-red-500"
+                                    <input type="radio" id="note_programme_1" name="note_programme" value="1" className="w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={(e) => setData({ ...data, note_programme_fidelite: e.target.value })}
                                     />
                                     <label htmlFor="note_programme_1" className="text-gray-700">1</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" id="note_programme_2" name="note_programme" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-red-500"
+                                    <input type="radio" id="note_programme_2" name="note_programme" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={(e) => setData({ ...data, note_programme_fidelite: e.target.value })}
                                     />
                                     <label htmlFor="note_programme_2" className="text-gray-700">2</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" id="note_programme_3" name="note_programme" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-red-500"
+                                    <input type="radio" id="note_programme_3" name="note_programme" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={(e) => setData({ ...data, note_programme_fidelite: e.target.value })}
                                     />
                                     <label htmlFor="note_programme_3" className="text-gray-700">3</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" id="note_programme_4" name="note_programme" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-red-500"
+                                    <input type="radio" id="note_programme_4" name="note_programme" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={(e) => setData({ ...data, note_programme_fidelite: e.target.value })}
                                     />
                                     <label htmlFor="note_programme_4" className="text-gray-700">4</label>
@@ -631,25 +587,25 @@ const AgencySurvey = () => {
                             <legend className="text-sm font-semibold leading-6 text-gray-900 pt-4">Salon Business :</legend>
                             <div className="mt-4 grid grid-cols-4">
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" id="note_salon_1" name="note_salon" value="1" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-red-500"
+                                    <input type="radio" id="note_salon_1" name="note_salon" value="1" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={(e) => setData({ ...data, note_salon_business: e.target.value })}
                                     />
                                     <label htmlFor="note_salon_1" className="text-gray-700">1</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" id="note2" name="note_salon" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-red-500"
+                                    <input type="radio" id="note2" name="note_salon" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={(e) => setData({ ...data, note_salon_business: e.target.value })}
                                     />
                                     <label htmlFor="note2" className="text-gray-700">2</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" id="note3" name="note_salon" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-red-500"
+                                    <input type="radio" id="note3" name="note_salon" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={(e) => setData({ ...data, note_salon_business: e.target.value })}
                                     />
                                     <label htmlFor="note3" className="text-gray-700">3</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" id="note4" name="note_salon" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-red-500"
+                                    <input type="radio" id="note4" name="note_salon" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={(e) => setData({ ...data, note_salon_business: e.target.value })}
                                     />
                                     <label htmlFor="note4" className="text-gray-700">4</label>
@@ -662,25 +618,25 @@ const AgencySurvey = () => {
                             <legend className="text-sm font-semibold leading-6 text-gray-900 pt-4">Bagage supplémentaire :</legend>
                             <div className="mt-4 grid grid-cols-4">
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" id="note1" name="note_bagage" value="1" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-red-500"
+                                    <input type="radio" id="note1" name="note_bagage" value="1" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={(e) => setData({ ...data, note_bagage: e.target.value })}
                                     />
                                     <label htmlFor="note1" className="text-gray-700">1</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" id="note2" name="note_bagage" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-red-500"
+                                    <input type="radio" id="note2" name="note_bagage" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={(e) => setData({ ...data, note_bagage: e.target.value })}
                                     />
                                     <label htmlFor="note2" className="text-gray-700">2</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" id="note3" name="note_bagage" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-red-500"
+                                    <input type="radio" id="note3" name="note_bagage" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={(e) => setData({ ...data, note_bagage: e.target.value })}
                                     />
                                     <label htmlFor="note3" className="text-gray-700">3</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" id="note4" name="note_bagage" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-red-500"
+                                    <input type="radio" id="note4" name="note_bagage" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={(e) => setData({ ...data, note_bagage: e.target.value })}
                                     />
                                     <label htmlFor="note4" className="text-gray-700">4</label>
@@ -693,25 +649,25 @@ const AgencySurvey = () => {
                             <legend className="text-sm font-semibold leading-6 text-gray-900 pt-4">Service UM :</legend>
                             <div className="mt-4 grid grid-cols-4">
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" id="note1" name="note_service" value="1" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-red-500"
+                                    <input type="radio" id="note1" name="note_service" value="1" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={(e) => setData({ ...data, note_serviceUM: e.target.value })}
                                     />
                                     <label htmlFor="note1" className="text-gray-700">1</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" id="note2" name="note_service" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-red-500"
+                                    <input type="radio" id="note2" name="note_service" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={(e) => setData({ ...data, note_serviceUM: e.target.value })}
                                     />
                                     <label htmlFor="note2" className="text-gray-700">2</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" id="note3" name="note_service" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-red-500"
+                                    <input type="radio" id="note3" name="note_service" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={(e) => setData({ ...data, note_serviceUM: e.target.value })}
                                     />
                                     <label htmlFor="note3" className="text-gray-700">3</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" id="note4" name="note_service" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-red-500"
+                                    <input type="radio" id="note4" name="note_service" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={(e) => setData({ ...data, note_serviceUM: e.target.value })}
                                     />
                                     <label htmlFor="note4" className="text-gray-700">4</label>
@@ -724,25 +680,25 @@ const AgencySurvey = () => {
                             <legend className="text-sm font-semibold leading-6 text-gray-900 pt-4">Animaux en cabine :</legend>
                             <div className="mt-4 grid grid-cols-4">
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" id="note1" name="note_animal_cabine" value="1" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-red-500"
+                                    <input type="radio" id="note1" name="note_animal_cabine" value="1" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={(e) => setData({ ...data, note_animal_cabine: e.target.value })}
                                     />
                                     <label htmlFor="note1" className="text-gray-700">1</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" id="note2" name="note_animal_cabine" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-red-500"
+                                    <input type="radio" id="note2" name="note_animal_cabine" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={(e) => setData({ ...data, note_animal_cabine: e.target.value })}
                                     />
                                     <label htmlFor="note2" className="text-gray-700">2</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" id="note3" name="note_animal_cabine" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-red-500"
+                                    <input type="radio" id="note3" name="note_animal_cabine" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={(e) => setData({ ...data, note_animal_cabine: e.target.value })}
                                     />
                                     <label htmlFor="note3" className="text-gray-700">3</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" id="note4" name="note_animal_cabine" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-red-500"
+                                    <input type="radio" id="note4" name="note_animal_cabine" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={(e) => setData({ ...data, note_animal_cabine: e.target.value })}
                                     />
                                     <label htmlFor="note4" className="text-gray-700">4</label>
@@ -755,25 +711,25 @@ const AgencySurvey = () => {
                             <legend className="text-sm font-semibold leading-6 text-gray-900 pt-4">Animaux en soute :</legend>
                             <div className="mt-4 grid grid-cols-4">
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" id="note1" name="note_animal_soute" value="1" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-red-500"
+                                    <input type="radio" id="note1" name="note_animal_soute" value="1" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={(e) => setData({ ...data, note_animal_soute: e.target.value })}
                                     />
                                     <label htmlFor="note1" className="text-gray-700">1</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" id="note2" name="note_animal_soute" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-red-500"
+                                    <input type="radio" id="note2" name="note_animal_soute" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={(e) => setData({ ...data, note_animal_soute: e.target.value })}
                                     />
                                     <label htmlFor="note2" className="text-gray-700">2</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" id="note3" name="note_animal_soute" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-red-500"
+                                    <input type="radio" id="note3" name="note_animal_soute" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={(e) => setData({ ...data, note_animal_soute: e.target.value })}
                                     />
                                     <label htmlFor="note3" className="text-gray-700">3</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" id="note4" name="note_animal_soute" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-red-500"
+                                    <input type="radio" id="note4" name="note_animal_soute" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={(e) => setData({ ...data, note_animal_soute: e.target.value })}
                                     />
                                     <label htmlFor="note4" className="text-gray-700">4</label>
@@ -788,7 +744,7 @@ const AgencySurvey = () => {
                                 <textarea id="recommandation"
                                     name="recommandation"
                                     rows="3"
-                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6 bg-gray-200"
+                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-red-300 focus:ring-1 focus:ring-inset focus:ring-gray-500 sm:text-sm sm:leading-6 bg-gray-200"
                                     onChange={(e) => setData({ ...data, recommandation: e.target.value })}
                                 >
 
@@ -802,7 +758,7 @@ const AgencySurvey = () => {
                         whileHover={{ scale: 1.1, backgroundColor: 'rgb(165,42,42)', boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.2)' }}
                         whileTap={{ scale: 0.95, backgroundColor: 'rgb(165,42,42)' }}
                         transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                        className="btn-valider text-lg mx-auto my-[15px] flex items-center bg-brown-500 text-white py-2 px-4 rounded hover:bg-red-600"
+                        className="btn-valider text-lg mx-auto my-[15px] flex items-center bg-brown-500 text-white py-2 px-4 rounded hover:bg-brown-600"
                         type='submit'
                     >
                         Valider

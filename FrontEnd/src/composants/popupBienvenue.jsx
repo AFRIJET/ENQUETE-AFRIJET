@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion'
 import { AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import logoAfrijet from '../assets/images/Logo-SF.png'
 import '../styles/style.css'
 
 const PopupBienvenue = () => {
+
     const [showPopup, setShowPopup] = useState(false);
+    const { i18n } = useTranslation();
 
     useEffect(() => {
         // Vérifie si la popup a déjà été affichée
@@ -17,12 +20,16 @@ const PopupBienvenue = () => {
         }
     }, []);
 
-    const handleSelectChange = (e) => {
+    const handleLanguageChange = (event) => {
+        const selectedLanguage = event.target.value;
+        console.log(i18n)
+        i18n.changeLanguage(selectedLanguage); // Change la langue
         //Ferme la popupp immédiatement après la sélection de la langue
         if (showPopup) {
             setShowPopup(false)
         }
-    }
+        
+    };
 
     return (
         <>
@@ -42,10 +49,10 @@ const PopupBienvenue = () => {
                             transition={{ duration: 0.3 }}
                         >
                             <img src={logoAfrijet} alt='logo Afrijet' className='w-40 mx-auto' />
-                            <h4 className='mt-5 test-lg'>Bienvenue dans la plateforme d'enquête client AFRIJET !</h4>
+                            <h4 className='mt-5 text-lg'>Bienvenue dans la plateforme d'enquête client AFRIJET !</h4>
                             <select
                                 className='mt-8'
-                                onChange={handleSelectChange}
+                                onChange={handleLanguageChange}
                             >
                                 <option disabled selected>Veuillez sélectionner votre langue</option>
                                 <option value="fr">Français</option>
