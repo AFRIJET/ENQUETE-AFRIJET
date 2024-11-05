@@ -39,7 +39,7 @@ async function connectToDatabase() {
 }
 
 // Utilisation des routes
-app.use('/', routesClient); // Préfixez toutes les routes admin par /auth
+app.use('/api', routesClient); // Préfixez toutes les routes client par /api
 
 connectToDatabase();
 
