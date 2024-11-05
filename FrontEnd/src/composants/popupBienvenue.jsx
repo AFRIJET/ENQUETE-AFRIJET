@@ -22,7 +22,6 @@ const PopupBienvenue = () => {
 
     const handleLanguageChange = (event) => {
         const selectedLanguage = event.target.value;
-        console.log(i18n)
         i18n.changeLanguage(selectedLanguage); // Change la langue
         //Ferme la popupp immédiatement après la sélection de la langue
         if (showPopup) {

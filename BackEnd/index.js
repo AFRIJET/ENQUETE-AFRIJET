@@ -11,7 +11,7 @@ const port = process.env.PORT || 5000;
 
 // Configuration CORS
 app.use(cors({
-    origin: ["http://localhost:5173", "https://enquete-afrijet.onrender.com"], // Remplacez par l'URL de votre frontend
+    origin: ["https://enquete-afrijet.onrender.com"], // Remplacez par l'URL de votre frontend
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Méthodes autorisées
     credentials: true // Pour envoyer des cookies et des autorisations
 }));
@@ -44,5 +44,5 @@ app.use('/', routesClient); // Préfixez toutes les routes admin par /auth
 connectToDatabase();
 
 app.listen(port, () => {
-    console.log(`Server is running on https://enquete-afrijet.onrender.com:${port}`);
+    console.log(`Server is running on port : ${port}`);
 });

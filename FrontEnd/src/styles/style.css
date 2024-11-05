@@ -66,9 +66,9 @@ input[type="radio"] {
 .header {
     background: url('../assets/images/afrijet-agence.jpg') no-repeat;
     background-size: cover;
-    height: 100px;
+    height: 130px;
     margin: 0 400px;
-    width: 50%;
+    width: 60%;
     position: fixed;
 }
 
@@ -81,8 +81,8 @@ input[type="radio"] {
 .fil_ariane {
     margin: 0 400px;
     position: fixed;
-    width: 50%;
-    top: 100px;
+    width: 60%;
+    top: 130px;
 }
 
 .span-fil {
@@ -100,7 +100,7 @@ input[type="radio"] {
 
  /* Debut de la page Enquete agence */
  .info-generales-info {
-    margin-top: 130px;
+    margin-top: 160px;
 }
 
 /* PopUP */
