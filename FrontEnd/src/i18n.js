@@ -10,7 +10,7 @@ i18n
                     // Page Bienvenue
                     select_enquete: "Quelle enquête voulez-vous effectuer aujourd'hui ?",
                     enquete_agence: "Enquête en agence",
-                    enquete_escale: "Enquête à l'enregistrement au comptoir",
+                    enquete_escale: "Enquête au comptoir d'enregistrement",
                     enquete_envol: "Enquête expérience en vol",
                     enquete_entreprise: "Enquête Entreprise",
 
@@ -61,7 +61,7 @@ i18n
                     // Page Bienvenue
                     select_enquete: "What survey do you want to do today ?",
                     enquete_agence: "In-agency survey",
-                    enquete_escale: "Check-in counter survey",
+                    enquete_escale: "Investigation at the check-in counter",
                     enquete_envol: "In-flight experience survey",
                     enquete_entreprise: "Company survey",
 
@@ -112,7 +112,7 @@ i18n
                     // Page Bienvenue
                     select_enquete: "Qué encuesta quieres realizar hoy ?",
                     enquete_agence: "Investigación de la agencia",
-                    enquete_escale: "Consulta al momento del check-in en el mostrador",
+                    enquete_escale: "Investigación en el mostrador de facturación.",
                     enquete_envol: "Encuesta de experiencia de vuelo",
                     enquete_entreprise: "Encuesta empresarial",
 
@@ -148,7 +148,7 @@ i18n
                     critere_note: "(La nota 1 expresa un nivel de satisfacción muy bajo, la nota 4 refleja un nivel de satisfacción alto)",
                     programme_fidelite: "Programa de fidelidad :",
                     salon_business: "Negocio del salón :",
-                    baggage_supplementaire: "Equipaje adicional :",
+                    bagage_supplementaire: "Equipaje adicional :",
                     service_um: "Servicio UM :",
                     animal_cabine: "Animal en cabina :",
                     animal_soute: "Animal en bodega :",
@@ -156,6 +156,58 @@ i18n
                     raison_recommandation: "Por qué ?",
                     valider: "Validar",
                     feedback: "¡Gracias por su opinión!",
+                }
+            },
+            pt: {
+                translation: {
+                    //Page Bienvenue
+                    select_enquete: "Que inquérito gostaria de efetuar hoje",
+                    enquete_agence: "Inquérito da agência",
+                    enquete_escale: "Investigação no balcão de check-in",
+                    enquete_envol: "Inquérito sobre a experiência de voo",
+                    enquete_entreprise: "Inquérito à empresa",
+
+                    // Page enquete agence
+                    infos_generales: "Informações gerais",
+                    agence: "Agência",
+                    services_afrijet: "Serviços da Afrijet",
+                    sexe: "Are you a",
+                    homme: "Man",
+                    femme: "Mulher",
+                    numero_billet: "Introduza o número do seu bilhete, se tiver um",
+                    nationalite: "Qual é a sua nacionalidade ?",
+                    selection_pays: "Por favor, selecione o seu país",
+                    destination: "Para que destino viaja com mais frequência ?",
+                    selection_destination: "Por favor, selecione o seu destino",
+                    agence_afrijet: "Em que agência da AFRIJET trabalha ?",
+                    selection_agence: "Por favor, selecione a sua agência",
+                    acceuil_agence: "Como classificaria o acolhimento nas nossas agências ?",
+                    raison_agence: "Porque é que escolhe visitar as nossas agências ?",
+                    proche_de_chez_moi: "Perto do sítio onde vivo",
+                    plus_conseils: "Para mais conselhos",
+                    site_web: "Utilizei o sítio Web e quero pagar",
+                    paiement_facile: "O pagamento é fácil",
+                    satisfaction_agent: "O agente que o recebeu esteve atento às suas necessidades e correspondeu às suas expectativas ?",
+                    oui: "Sim",
+                    non: "Não",
+                    temps_attente: "O tempo que esperou antes de um agente o atender foi :",
+                    entre_5_15_minutes: "Entre 5 e 15 minutos",
+                    plus_15_minutes: "Mais de 15 minutos",
+                    satisfaction_client: "Ficou satisfeito com a solução dada ao seu pedido ?",
+                    type_satisfaction: "(reserva, modificação, informação, etc...)",
+                    note_service: "Se tivesse de assinalar de 1 a 4, a clareza das explicações sobre os diferentes serviços adicionais",
+                    critere_note: "(A nota 1 exprime um nível de satisfação muito baixo, a nota 4 reflecte um nível de satisfação elevado)",
+                    programme_fidelite: "Programa de fidelidade :",
+                    salon_business: "Negócio do salão :",
+                    bagage_supplementaire: "Bagagem adicional :",
+                    service_um: "Serviço UM :",
+                    animal_cabine: "Animal na cabina :",
+                    animal_soute: "Animal no porão :",
+                    recommandation: "Recomendaria o AFRIJET a alguém que conhece ?",
+                    raison_recommandation: "Porquê ?",
+                    valider: "Validar",
+                    feedback: "Obrigado pelo seu feedback !",
+
                 }
             }
         },

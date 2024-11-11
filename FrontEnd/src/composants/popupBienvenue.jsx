@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import logoAfrijet from '../assets/images/Logo-SF.png'
+import logoFlygabon from '../assets/images/Logo-FG2.png'
 import '../styles/style.css'
 
 const PopupBienvenue = () => {
@@ -41,7 +42,7 @@ const PopupBienvenue = () => {
                         exit={{ opacity: 0 }}
                     >
                         <motion.div
-                            className='bg-white p-[20px] rounded-md h-60 text-center  mt-40'
+                            className='bg-white p-[20px] rounded-md h-[280px] text-center  mt-40'
                             initial={{ y: -30 }}
                             animate={{ y: 0 }}
                             exit={{ y: -30 }}
@@ -57,7 +58,9 @@ const PopupBienvenue = () => {
                                 <option value="fr">Français</option>
                                 <option value="en">English</option>
                                 <option value="es">Espagnol</option>
+                                <option value="pt">Portugais</option>
                             </select>
+                            <img src={logoFlygabon} alt='logo Afrijet' className='mt-10 w-40 mx-auto' />
                         </motion.div>
 
                     </motion.div>

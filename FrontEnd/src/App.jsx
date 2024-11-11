@@ -6,6 +6,8 @@ import Animation from './composants/animation'
 import Bienvenue from './pages/bienvenue';
 import EnqueteAgence from './pages/enqueteAgence'
 import EnqueteEscale from './pages/enqueteEscale';
+import EnqueteEnvol from './pages/enqueteEnVol';
+import EnqueteCorporate from './pages/enqueteCorporate';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -28,6 +30,8 @@ function App() {
               <Route path='/' element={<Bienvenue />}></Route>
               <Route path='/enquete_agence' element={<EnqueteAgence />}></Route>
               <Route path='/enquete_escale' element={<EnqueteEscale />}></Route>
+              <Route path='/enquete_envol' element={<EnqueteEnvol />}></Route>
+              <Route path='/enquete_corporate' element={<EnqueteCorporate />}></Route>
             </Routes>
           </BrowserRouter>
         </Animation>

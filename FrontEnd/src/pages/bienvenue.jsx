@@ -1,6 +1,7 @@
 import React from 'react'
 import '../styles/style.css'
 import logoAfrijet from '../assets/images/Logo-SF.png'
+import logoFlygabon from '../assets/images/Logo-FG2.png'
 import PopupBienvenue from '../composants/popupBienvenue'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
@@ -55,14 +56,14 @@ const bienvenue = () => {
                         </Link>
                     </li>
                     <li className='mt-4 p-3 bg-brown-500 rounded-md w-4/5'>
-                        <Link className='flex items-center w-full h-full' to='/experiencesurvey'>
+                        <Link className='flex items-center w-full h-full' to='/enquete_envol'>
                             <i className="fa-solid fa-plane text-xl text-white"></i>
                             <span className='mx-3 text-xl text-white'>{t('enquete_envol')}</span>
                             <i className="fa-solid fa-arrow-right text-xl text-white ml-auto"></i>
                         </Link>
                     </li>
                     <li className='mt-4 p-3 bg-brown-500 rounded-md w-4/5'>
-                        <Link className='flex items-center w-full h-full' to='/corporatesurvey'>
+                        <Link className='flex items-center w-full h-full' to='/enquete_corporate'>
                             <i className="fa-solid fa-building text-xl text-white"></i>
                             <span className='mx-3 text-xl text-white'>{t('enquete_entreprise')}</span>
                             <i className="fa-solid fa-arrow-right text-xl text-white ml-auto"></i>
@@ -70,6 +71,11 @@ const bienvenue = () => {
                     </li>
                 </ul>
             </section>
+            <div className=''>
+                <div className=''>
+                    <img src={logoFlygabon} alt='logo Afrijet' className='mt-20 p-10 mx-auto logo-afrijet' />
+                </div>
+            </div>
 
         </motion.div>
     )
