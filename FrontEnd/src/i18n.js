@@ -54,6 +54,17 @@ i18n
                     raison_recommandation: "Pourquoi ?",
                     valider: "Valider",
                     feedback: "Merci pour votre Feedback !",
+
+                    // Page Enquete Escale
+                    escale: "Dans quelle escale êtes-vous ?",
+                    selection_escale: "Veuillez sélectionner votre escale",
+                    destination_escale: "Vers quelle destination voyagez-vous ?",
+                    experience_enregistrement: "Expérience d'Enregistrement",
+                    assistance_comptoire: "Avez-vous eu besoin d'assistance lors de l'enregistrement ?",
+                    experience_comptoire: "Comment évalueriez-vous votre expérience d'enregistrement dans nos escales ?",
+                    courtoisie_personnel: "Comment évalueriez-vous la courtoisie du personnel dans nos escales ?",
+                    difficulte: "Avez-vous rencontré des difficultés lors de l'enregistrement ?",
+                    explication_difficulte: "Si oui, Veuillez préciser lesquelles :",
                 }
             },
             en: {
@@ -105,6 +116,17 @@ i18n
                     raison_recommandation: "Why ?",
                     valider: "Validate",
                     feedback: "Thank you for your Feedback !",
+
+                    // Page Enquete Escale
+                    escale: "Which stopover are you in ?",
+                    selection_escale: "Please select your stopover",
+                    destination_escale: "To which destination do you travel ?",
+                    experience_enregistrement: "Check-in Experience",
+                    assistance_comptoire: "Did you need assistance during check-in ?",
+                    experience_comptoire: "How would you rate your check-in experience at our stops ?",
+                    courtoisie_personnel: "How would you rate the courtesy of the staff in our stops ?",
+                    difficulte: "Did you encounter any difficulties during registration ?",
+                    explication_difficulte: "If yes, please specify which ones :",
                 }
             },
             es: {
@@ -156,6 +178,17 @@ i18n
                     raison_recommandation: "Por qué ?",
                     valider: "Validar",
                     feedback: "¡Gracias por su opinión!",
+
+                    // Page Enquete Escale
+                    escale: "¿En qué escala estás ?",
+                    selection_escale: "Por favor seleccione su escala",
+                    destination_escale: "¿A dónde viajas ?",
+                    experience_enregistrement: "Experiencia de check-in",
+                    assistance_comptoire: "¿Necesitaste ayuda durante el check-in ?",
+                    experience_comptoire: "¿Cómo calificarías tu experiencia de check-in en nuestras paradas ?",
+                    courtoisie_personnel: "¿Cómo calificarías la cortesía del personal en nuestras paradas ?",
+                    difficulte: "¿Encontró alguna dificultad durante el registro ?",
+                    explication_difficulte: "En caso afirmativo, especifique cuáles :",
                 }
             },
             pt: {
@@ -208,6 +241,16 @@ i18n
                     valider: "Validar",
                     feedback: "Obrigado pelo seu feedback !",
 
+                    // Page Enquete Escale
+                    escale: "Em qual escala você está ?",
+                    selection_escale: "Por favor selecione sua escala",
+                    destination_escale: "Para onde você está viajando ?",
+                    experience_enregistrement: "Experiência de check-in",
+                    assistance_comptoire: "Você precisou de ajuda durante o check-in ?",
+                    experience_comptoire: "Como você avaliaria sua experiência de check-in em nossas paradas ?",
+                    courtoisie_personnel: "Como você avaliaria a cortesia da equipe em nossas paradas ?",
+                    difficulte: "Você encontrou alguma dificuldade durante o cadastro ?",
+                    explication_difficulte: "Se sim, especifique quais :",
                 }
             }
         },

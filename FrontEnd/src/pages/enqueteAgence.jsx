@@ -263,8 +263,8 @@ const AgencySurvey = () => {
                             <div class="mt-2">
                                 <input
                                     ref={fieldRefs.num_billet}
-                                    id="ajout_service"
-                                    name="ajout_service"
+                                    id="num_billet"
+                                    name="num_billet"
                                     rows="3"
                                     placeholder='EX : PNR 269C54DA'
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-red-300 focus:ring-1 focus:ring-inset focus:ring-gray-500 sm:text-sm sm:leading-6 bg-gray-200"

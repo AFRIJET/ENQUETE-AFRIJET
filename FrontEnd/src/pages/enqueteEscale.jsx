@@ -5,19 +5,95 @@ import Fildariane from '../composants/fildariane'
 import logoAfrijet from '../assets/images/logo.png';
 import { motion } from 'framer-motion'
 import { AnimatePresence } from 'framer-motion';
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
+import country from '../composants/country.json'
+import destination from '../composants/destination.json'
+
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const enqueteEscale = () => {
 
+  const { t } = useTranslation()
   // Déclarations des sections
   const sections = [
-    { label: "" },
-    { label: "" },
+    { label: t('infos_generales') },
+    { label: t('experience_enregistrement') },
     { label: "" }
   ]
   const [isPopVisible, setIsPopVisible] = useState(false)
+  const [errors, setErrors] = useState({})
+  const [selectedCheckbox, setSelectedCheckbox] = useState(false)
   const popupRef = useRef(null)
-  const { t } = useTranslation()
+  const date = new Date().toISOString
+  const [data, setData] = useState({
+    date: date,
+    sexe: '',
+    num_billet: '',
+    nationalite: '',
+    escale: '',
+    destination: '',
+    experience_comptoire: '',
+    assistance_comptoire: '',
+    courtoisie_personnel: '',
+    difficulte: '',
+    explication_difficulte: '',
+    note_salon_business: '',
+    note_bagage: '',
+    note_serviceUM: '',
+    recevoir_service: '',
+    recommandation: '',
+    raison_recommandation: ''
+  })
+  const fieldRefs = {
+    sexe: useRef(null),
+    num_billet: useRef(null),
+    nationalite: useRef(null),
+    escale: useRef(null),
+    destination: useRef(null),
+    experience_comptoire: useRef(null),
+    assistance_comptoire: useRef(null),
+    courtoisie_personnel: useRef(null),
+    difficulte: useRef(null),
+    explication_difficulte: useRef(null),
+    note_salon_business: useRef(null),
+    note_bagage: useRef(null),
+    note_serviceUM: useRef(null),
+    recevoir_service: useRef(null),
+    recommandation: useRef(null),
+    raison_recommandation: useRef(null),
+  }
+  const [CheckedItems, setCheckedItems] = useState({
+    homme: false,
+    femme: false,
+    assistance_oui: false,
+    assistance_non: false,
+    difficulte_oui: false,
+    difficulte_non: false,
+    explication_difficulte: false,
+    infos_oui: false,
+    infos_non: false,
+  })
+
+  const handleChange = (event) => {
+    const { name, checked } = event.target
+    setCheckedItems({
+      ...CheckedItems,
+      [name]: checked
+    })
+  }
+
+  const handleCheckboxChange = (e) => {
+    const value = e.target.value
+    if (selectedCheckbox = value) {
+      setSelectedCheckbox(null);
+    } else {
+      setSelectedCheckbox(true)
+    }
+  }
+
+  const generateId = (label) => {
+    return label.toLowerCase();
+  }
 
   // Définition des variantes d'animation pour l'apparition
   const variants = {
@@ -45,7 +121,7 @@ const enqueteEscale = () => {
       }
     };
 
-    if(isPopVisible) {
+    if (isPopVisible) {
       document.addEventListener("mousedown", handleClickOutside)
     } else {
       document.removeEventListener("mousedown", handleClickOutside)
@@ -68,6 +144,346 @@ const enqueteEscale = () => {
         <Fildariane sections={sections} />
       </div>
       <form>
+        <section id={generateId(t('infos_generales'))}>
+          <div className='space'>
+            <br />
+          </div>
+          <div className='info-generales-info mx-auto w-[330px] bg-brown-500 rounded-sm text-center'>
+            <h2 className='text-white text-xl uppercase'>{t('infos_generales')}</h2>
+          </div>
+          <div className="mt-4 mx-5 border-b border-gray-900/10 pb-5">
+            <fieldset>
+              <legend className="text-sm font-semibold leading-6 text-gray-900">{t('sexe')}</legend>
+              <div className="mt-2 grid grid-cols-2">
+                <div className="flex gap-x-3 p-2 bg-gray-200 rounded">
+                  <div className="flex h-6 items-center">
+                    <motion.input
+                      ref={fieldRefs.sexe}
+                      checked={CheckedItems.homme}
+                      onClick={handleChange}
+                      onChange={(e) => setData({ ...data, sexe: e.target.value })}
+                      disabled={CheckedItems.femme}
+                      id="homme"
+                      value="homme"
+                      name="homme"
+                      type="checkbox"
+                      className={errors.sexe ? "border border-red-500" : "h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-red-600"}
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                    />
+                  </div>
+                  <div className="text-sm leading-6">
+                    <label htmlFor="homme" className="font-medium text-gray-900">
+                      {t('homme')}
+                    </label>
+                  </div>
+                </div>
+                <div className="flex gap-x-3 mx-4 p-2 bg-gray-200 rounded">
+                  <div className="flex h-6 items-center">
+                    <input
+                      ref={fieldRefs.sexe}
+                      checked={CheckedItems.femme}
+                      onClick={handleChange}
+                      onChange={(e) => setData({ ...data, sexe: e.target.value })}
+                      disabled={CheckedItems.homme}
+                      id="femme"
+                      value="femme"
+                      name="femme"
+                      type="checkbox"
+                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-red-600"
+                    />
+                  </div>
+                  <div className="text-sm leading-6">
+                    <label htmlFor="femme" className="font-medium text-gray-900">
+                      {t('femme')}
+                    </label>
+                  </div>
+                </div>
+              </div>
+              {errors.sexe && <p className="text-red-500 text-sm mt-1">{errors.sexe}</p>}
+            </fieldset>
+          </div>
+          <div className="mt-4 mx-4 border-b border-gray-900/10 pb-5">
+            <fieldset>
+              <legend className="text-sm font-semibold leading-6 text-gray-900">{t('numero_billet')}</legend>
+              <div class="mt-2">
+                <input
+                  ref={fieldRefs.num_billet}
+                  id="num_billet"
+                  name="num_billet"
+                  rows="3"
+                  placeholder='EX : PNR 269C54DA'
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-red-300 focus:ring-1 focus:ring-inset focus:ring-gray-500 sm:text-sm sm:leading-6 bg-gray-200"
+                  onChange={(e) => setData({ ...data, num_billet: e.target.value })}
+                >
+                </input>
+              </div>
+            </fieldset>
+          </div>
+          <div className="mx-5 mt-5 sm:col-span-3 border-b border-gray-900/10 pb-5">
+            <label htmlFor="country" className="block text-sm font-medium leading-6 text-gray-900">
+              {t('nationalite')}
+            </label>
+            <div className="w-full mt-2">
+              <select
+                ref={fieldRefs.nationalite}
+                id="nationalite"
+                name="nationalite"
+                className="p-2 w-full bg-gray-200 block rounded-md font-medium border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:max-w-xl sm:text-sm sm:leading-6"
+                onChange={(e) => setData({ ...data, nationalite: e.target.value })}
+              >
+                <option selected disabled>{t('selection_pays')}</option>
+                {
+                  country.map((item) => (
+                    <option key={item.country}>{item.country}</option>
+                  ))
+                }
+
+              </select>
+              {errors.nationalite && <p className="text-red-500 text-sm mt-1">{errors.nationalite}</p>}
+            </div>
+          </div>
+          <div className="mx-5 mt-5 sm:col-span-3 border-b border-gray-900/10 pb-5">
+            <label htmlFor="country" className="block text-sm font-medium leading-6 text-gray-900">
+              {t('escale')}
+            </label>
+            <div className="w-full mt-2">
+              <select
+                ref={fieldRefs.escale}
+                id="escale"
+                name="escale"
+                className="p-2 w-full bg-gray-200 block rounded-md font-medium border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:max-w-xl sm:text-sm sm:leading-6"
+                onChange={(e) => setData({ ...data, escale: e.target.value })}
+              >
+                <option selected disabled>{t('selection_escale')}</option>
+                {
+                  destination.map((item) => (
+                    <option key={item.destiantion}>{item.destiantion}</option>
+                  ))
+                }
+
+              </select>
+              {errors.escale && <p className="text-red-500 text-sm mt-1">{errors.escale}</p>}
+            </div>
+          </div>
+          <div className="mx-5 mt-5 sm:col-span-3 border-b border-gray-900/10 pb-5">
+            <label htmlFor="destination" className="block text-sm font-medium leading-6 text-gray-900">
+              {t('destination_escale')}
+            </label>
+            <div className="w-full mt-2">
+              <select
+                ref={fieldRefs.destination}
+                id="destination"
+                name="destination"
+                className="p-2 bg-gray-200 block w-full rounded-md font-medium border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:max-w-xl sm:text-sm sm:leading-6"
+                onChange={(e) => setData({ ...data, destination: e.target.value })}
+              >
+                <option selected disabled>{t('selection_destination')}</option>
+                {
+                  destination.map((item) => (
+                    <option key={item.destiantion}>{item.destiantion}</option>
+                  ))
+                }
+              </select>
+              {errors.destination && <p className="text-red-500 text-sm mt-1">{errors.destination}</p>}
+            </div>
+          </div>
+        </section>
+        <section id={generateId(t('experience_enregistrement'))}>
+          <div className='space'>
+            <br />
+          </div>
+          <div className='info-generales mx-auto w-[360px] bg-brown-500 rounded-sm text-center'>
+            <h2 className='text-white text-xl uppercase'>{t('experience_enregistrement')}</h2>
+          </div>
+          <div className="mt-4 mx-5 border-b border-gray-900/10 pb-5">
+            <fieldset>
+              <legend className="text-sm font-semibold leading-6 text-gray-900">{t('assistance_comptoire')}</legend>
+              <div className="mt-2 grid grid-cols-2">
+                <div className="flex gap-x-3 p-3 bg-gray-200 rounded">
+                  <div className="flex h-6 items-center">
+                    <input
+                      ref={fieldRefs.assistance_comptoire}
+                      checked={CheckedItems.assistance_oui}
+                      onClick={handleChange}
+                      disabled={CheckedItems.assistance_non}
+                      id="assistance_oui"
+                      value="Oui"
+                      name="assistance_oui"
+                      type="checkbox"
+                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                      onChange={(e) => setData({ ...data, assistance_comptoire: e.target.value })}
+                    />
+                  </div>
+                  <div className="text-sm leading-6">
+                    <label htmlFor="assistance_oui" className="font-medium text-gray-900">
+                      {t('oui')}
+                    </label>
+                  </div>
+                </div>
+                <div className="flex gap-x-3 mx-4 p-3 bg-gray-200 rounded">
+                  <div className="flex h-6 items-center">
+                    <input
+                      ref={fieldRefs.assistance_comptoire}
+                      checked={CheckedItems.assistance_non}
+                      onClick={handleChange}
+                      disabled={CheckedItems.assistance_oui}
+                      id="assistance_non"
+                      value="Non"
+                      name="assistance_non"
+                      type="checkbox"
+                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                      onChange={(e) => setData({ ...data, assistance_comptoire: e.target.value })}
+                    />
+                  </div>
+                  <div className="text-sm leading-6">
+                    <label htmlFor="assistance_non" className="font-medium text-gray-900">
+                      {t('non')}
+                    </label>
+                  </div>
+                </div>
+              </div>
+              {errors.assistance_comptoire && <p className="text-red-500 text-sm mt-1">{errors.assistance_comptoire}</p>}
+            </fieldset>
+          </div>
+          <div className="mt-4 mx-4 border-b border-gray-900/10 pb-3">
+            <fieldset>
+              <legend className="text-sm font-semibold leading-6 text-gray-900">{t('experience_comptoire')}</legend>
+              <small className='text-xs text-gray-700'>{t('critere_note')}</small>
+              <div>
+                <div className="mt-4 grid grid-cols-4">
+                  <div className="flex items-center mb-4">
+                    <input ref={fieldRefs.experience_comptoire} type="radio" id="note_acceuil_1" name="note_acceuil" value="1" className="w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                      onChange={(e) => setData({ ...data, experience_comptoire: e.target.value })}
+                    />
+                    <label htmlFor="note_acceuil_1" className="text-gray-700">1</label>
+                  </div>
+                  <div className="flex items-center mb-4">
+                    <input type="radio" ref={fieldRefs.experience_comptoire} id="note_acceuil_2" name="note_acceuil" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                      onChange={(e) => setData({ ...data, experience_comptoire: e.target.value })}
+                    />
+                    <label htmlFor="note_acceuil_2" className="text-gray-700">2</label>
+                  </div>
+                  <div className="flex items-center mb-4">
+                    <input type="radio" ref={fieldRefs.experience_comptoire} id="note_acceuil_3" name="note_acceuil" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                      onChange={(e) => setData({ ...data, experience_comptoire: e.target.value })}
+                    />
+                    <label htmlFor="note_acceuil_3" className="text-gray-700">3</label>
+                  </div>
+                  <div className="flex items-center mb-4">
+                    <input type="radio" ref={fieldRefs.experience_comptoire} id="note_acceuil_4" name="note_acceuil" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                      onChange={(e) => setData({ ...data, experience_comptoire: e.target.value })}
+                    />
+                    <label htmlFor="note_acceuil_4" className="text-gray-700">4</label>
+                  </div>
+                </div>
+                {errors.experience_comptoire && <p className="text-red-500 text-sm mt-1">{errors.experience_comptoire}</p>}
+              </div>
+            </fieldset>
+          </div>
+          <div className="mt-4 mx-4 border-b border-gray-900/10 pb-3">
+            <fieldset>
+              <legend className="text-sm font-semibold leading-6 text-gray-900">{t('courtoisie_personnel')}</legend>
+              <div>
+                <div className="mt-4 grid grid-cols-4">
+                  <div className="flex items-center mb-4">
+                    <input ref={fieldRefs.courtoisie_personnel} type="radio" id="note_courtoisie_1" name="note_courtoisie" value="1" className="w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                      onChange={(e) => setData({ ...data, courtoisie_personnel: e.target.value })}
+                    />
+                    <label htmlFor="note_courtoisie_1" className="text-gray-700">1</label>
+                  </div>
+                  <div className="flex items-center mb-4">
+                    <input type="radio" ref={fieldRefs.courtoisie_personnel} id="note_courtoisie_2" name="note_courtoisie" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                      onChange={(e) => setData({ ...data, courtoisie_personnel: e.target.value })}
+                    />
+                    <label htmlFor="note_courtoisie_2" className="text-gray-700">2</label>
+                  </div>
+                  <div className="flex items-center mb-4">
+                    <input type="radio" ref={fieldRefs.courtoisie_personnel} id="note_courtoisie_3" name="note_courtoisie" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                      onChange={(e) => setData({ ...data, courtoisie_personnel: e.target.value })}
+                    />
+                    <label htmlFor="note_courtoisie_3" className="text-gray-700">3</label>
+                  </div>
+                  <div className="flex items-center mb-4">
+                    <input type="radio" ref={fieldRefs.courtoisie_personnel} id="note_courtoisie_4" name="note_courtoisie" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                      onChange={(e) => setData({ ...data, courtoisie_personnel: e.target.value })}
+                    />
+                    <label htmlFor="note_courtoisie_4" className="text-gray-700">4</label>
+                  </div>
+                </div>
+                {errors.courtoisie_personnel && <p className="text-red-500 text-sm mt-1">{errors.courtoisie_personnel}</p>}
+              </div>
+            </fieldset>
+          </div>
+          <div className="mt-4 mx-5 border-b border-gray-900/10 pb-5">
+            <fieldset>
+              <legend className="text-sm font-semibold leading-6 text-gray-900">{t('difficulte')}</legend>
+              <div className="mt-2 grid grid-cols-2">
+                <div className="flex gap-x-3 p-3 bg-gray-200 rounded">
+                  <div className="flex h-6 items-center">
+                    <input
+                      ref={fieldRefs.difficulte}
+                      checked={CheckedItems.difficulte_oui}
+                      onClick={handleChange}
+                      disabled={CheckedItems.difficulte_non}
+                      id="difficulte_oui"
+                      value="Oui"
+                      name="difficulte_oui"
+                      type="checkbox"
+                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                      onChange={(e) => setData({ ...data, difficulte: e.target.value })}
+                    />
+                  </div>
+                  <div className="text-sm leading-6">
+                    <label htmlFor="difficulte_oui" className="font-medium text-gray-900">
+                      {t('oui')}
+                    </label>
+                  </div>
+                </div>
+                <div className="flex gap-x-3 mx-4 p-3 bg-gray-200 rounded">
+                  <div className="flex h-6 items-center">
+                    <input
+                      ref={fieldRefs.difficulte}
+                      checked={CheckedItems.difficulte_non}
+                      onClick={handleChange}
+                      disabled={CheckedItems.difficulte_oui}
+                      id="difficulte_non"
+                      value="Non"
+                      name="difficulte_non"
+                      type="checkbox"
+                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                      onChange={(e) => setData({ ...data, difficulte: e.target.value })}
+                    />
+                  </div>
+                  <div className="text-sm leading-6">
+                    <label htmlFor="difficulte_non" className="font-medium text-gray-900">
+                      {t('non')}
+                    </label>
+                  </div>
+                </div>
+              </div>
+              {errors.difficulte && <p className="text-red-500 text-sm mt-1">{errors.difficulte}</p>}
+            </fieldset>
+          </div>
+          <div className="mt-4 mx-4 border-b border-gray-900/10 pb-5">
+            <fieldset>
+              <legend className="text-sm font-semibold leading-6 text-gray-900">{t('explication_difficulte')}</legend>
+              <div className="mt-2">
+                <textarea
+                  ref={fieldRefs.explication_difficulte}
+                  id="explication_difficulte"
+                  name="explication_difficulte"
+                  rows="3"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-red-300 focus:ring-1 focus:ring-inset focus:ring-gray-500 sm:text-sm sm:leading-6 bg-gray-200"
+                  onChange={(e) => setData({ ...data, explication_difficulte: e.target.value })}
+                >
+
+                </textarea>
+              </div>
+              {errors.explication_difficulte && <p className="text-red-500 text-sm mt-1">{errors.explication_difficulte}</p>}
+            </fieldset>
+          </div>
+        </section>
         <div className=''>
           <motion.button
             whileHover={{ scale: 1.1, backgroundColor: 'rgb(165,42,42)', boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.2)' }}
