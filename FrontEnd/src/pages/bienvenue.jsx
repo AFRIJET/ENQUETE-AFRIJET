@@ -29,6 +29,7 @@ const bienvenue = () => {
             initial="hidden"
             animate="visible"
             variants={variants}
+            className='h-screen'
         >
             <PopupBienvenue />
             <div className=''>
@@ -73,7 +74,7 @@ const bienvenue = () => {
             </section>
             <div className=''>
                 <div className=''>
-                    <img src={logoFlygabon} alt='logo Afrijet' className='mt-20 p-10 mx-auto logo-afrijet' />
+                    <img src={logoFlygabon} alt='logo Afrijet' className='fixed bottom-8 mx-auto logo-flygabon' />
                 </div>
             </div>
 

@@ -164,7 +164,7 @@ const AgencySurvey = () => {
     // fonction pour fermer la popup
     const closePopUp = () => {
         setIsPopVisible(false);
-        setData(''); // Réinitialise le champ de données
+        setData({}); // Réinitialise le champ de données
     }
 
     // Ferme la popup si on clique en dehors
