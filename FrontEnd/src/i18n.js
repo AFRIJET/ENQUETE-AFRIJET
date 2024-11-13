@@ -42,7 +42,7 @@ i18n
                     plus_15_minutes: "Plus de 15 minutes",
                     satisfaction_client: "Avez-vous été satisfait de la solution proposée à votre demande ?",
                     type_satisfaction: "(Réservation,modification,Information, etc...)",
-                    note_service: "S'il fallait noter de 1 à 4, la clarté des explications sur les différents services additionnels",
+                    note_explication: "S'il fallait noter de 1 à 4, la clarté des explications sur les différents services additionnels",
                     critere_note: "(La note 1 exprime un très faible dégré de satisfaction, la note 4 reflète un haut dégré de satisfaction)",
                     programme_fidelite: "Programme de fidélité :",
                     salon_business: "Salon business :",
@@ -65,6 +65,13 @@ i18n
                     courtoisie_personnel: "Comment évalueriez-vous la courtoisie du personnel dans nos escales ?",
                     difficulte: "Avez-vous rencontré des difficultés lors de l'enregistrement ?",
                     explication_difficulte: "Si oui, Veuillez préciser lesquelles :",
+                    service_commodites: "Services et commodités",
+                    note_service: "Quelle note donneriez-vous aux différents services additionels dans les escales ?",
+
+                    // Page Enquete en vol
+                    ville_depart: "Quelle est votre ville de départ ?",
+                    selection_depart: "Veuillez sélectionner la ville",
+                    destination_envol: "Vers quelle destination avez-vous voyager ?",
                 }
             },
             en: {
@@ -104,7 +111,7 @@ i18n
                     plus_15_minutes: "More than 15 minutes",
                     satisfaction_client: "Were you satisfied with the proposed solution to your request ?",
                     type_satisfaction: "(Reservation,modification,Information, etc...)",
-                    note_service: "If I had to rate from 1 to 4, the clarity of the explanations on the various additional services",
+                    note_explication: "If I had to rate from 1 to 4, the clarity of the explanations on the various additional services",
                     critere_note: "(Score 1 expresses a very low degree of satisfaction, score 4 reflects a high degree of satisfaction)",
                     programme_fidelite: "Loyalty program :",
                     salon_business: "Salon business :",
@@ -127,6 +134,13 @@ i18n
                     courtoisie_personnel: "How would you rate the courtesy of the staff in our stops ?",
                     difficulte: "Did you encounter any difficulties during registration ?",
                     explication_difficulte: "If yes, please specify which ones :",
+                    service_commodites: "Services and amenities",
+                    note_service: "What rating would you give to the various additional services during stopovers ?",
+
+                    // Page Enquete en vol
+                    ville_depart: "What is your departure city ?",
+                    selection_depart: "Please select city",
+                    destination_envol: "To which destination did you travel ?",
                 }
             },
             es: {
@@ -166,7 +180,7 @@ i18n
                     plus_15_minutes: "Más de 15 minutos",
                     satisfaction_client: "Quedó satisfecho con la solución a su solicitud ?",
                     type_satisfaction: "(Reserva, modificación, información, etc...)",
-                    note_service: "Si tuviera que puntuar de 1 a 4, la claridad de las explicaciones sobre los distintos servicios adicionales",
+                    note_explication: "Si tuviera que puntuar de 1 a 4, la claridad de las explicaciones sobre los distintos servicios adicionales",
                     critere_note: "(La nota 1 expresa un nivel de satisfacción muy bajo, la nota 4 refleja un nivel de satisfacción alto)",
                     programme_fidelite: "Programa de fidelidad :",
                     salon_business: "Negocio del salón :",
@@ -189,6 +203,13 @@ i18n
                     courtoisie_personnel: "¿Cómo calificarías la cortesía del personal en nuestras paradas ?",
                     difficulte: "¿Encontró alguna dificultad durante el registro ?",
                     explication_difficulte: "En caso afirmativo, especifique cuáles :",
+                    service_commodites: "Servicios y comodidades",
+                    note_service: "¿Qué valoración daría a los distintos servicios adicionales durante las escalas ?",
+
+                    // Page Enquete en vol
+                    ville_depart: "¿Cuál es tu ciudad de salida ?",
+                    selection_depart: "Por favor seleccione ciudad",
+                    destination_envol: "¿A qué destino viajaste ?",
                 }
             },
             pt: {
@@ -228,7 +249,7 @@ i18n
                     plus_15_minutes: "Mais de 15 minutos",
                     satisfaction_client: "Ficou satisfeito com a solução dada ao seu pedido ?",
                     type_satisfaction: "(reserva, modificação, informação, etc...)",
-                    note_service: "Se tivesse de assinalar de 1 a 4, a clareza das explicações sobre os diferentes serviços adicionais",
+                    note_explication: "Se tivesse de assinalar de 1 a 4, a clareza das explicações sobre os diferentes serviços adicionais",
                     critere_note: "(A nota 1 exprime um nível de satisfação muito baixo, a nota 4 reflecte um nível de satisfação elevado)",
                     programme_fidelite: "Programa de fidelidade :",
                     salon_business: "Negócio do salão :",
@@ -251,6 +272,13 @@ i18n
                     courtoisie_personnel: "Como você avaliaria a cortesia da equipe em nossas paradas ?",
                     difficulte: "Você encontrou alguma dificuldade durante o cadastro ?",
                     explication_difficulte: "Se sim, especifique quais :",
+                    service_commodites: "Serviços e comodidades",
+                    note_service: "Que classificação daria aos vários serviços adicionais durante as escalas ?",
+
+                    // Page Enquete en vol
+                    ville_depart: "Qual é a sua cidade de partida ?",
+                    selection_depart: "Selecione a cidade",
+                    destination_envol: "Para qual destino você viajou ?",
                 }
             }
         },

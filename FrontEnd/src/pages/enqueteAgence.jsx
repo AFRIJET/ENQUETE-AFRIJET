@@ -275,7 +275,7 @@ const AgencySurvey = () => {
                         </fieldset>
                     </div>
                     <div className="mx-5 mt-5 sm:col-span-3 border-b border-gray-900/10 pb-5">
-                        <label htmlFor="country" className="block text-sm font-medium leading-6 text-gray-900">
+                        <label htmlFor="country" className="text-sm font-semibold leading-6 text-gray-900">
                             {t('nationalite')}
                         </label>
                         <div className="w-full mt-2">
@@ -298,7 +298,7 @@ const AgencySurvey = () => {
                         </div>
                     </div>
                     <div className="mx-5 mt-5 sm:col-span-3 border-b border-gray-900/10 pb-5">
-                        <label htmlFor="destination" className="block text-sm font-medium leading-6 text-gray-900">
+                        <label htmlFor="destination" className="text-sm font-semibold leading-6 text-gray-900">
                             {t('destination')}
                         </label>
                         <div className="w-full mt-2">
@@ -312,7 +312,7 @@ const AgencySurvey = () => {
                                 <option selected disabled>{t('selection_destination')}</option>
                                 {
                                     destination.map((item) => (
-                                        <option key={item.destiantion}>{item.destiantion}</option>
+                                        <option key={item.destination}>{item.destination}</option>
                                     ))
                                 }
                             </select>
@@ -328,7 +328,7 @@ const AgencySurvey = () => {
                         <h2 className='text-white text-xl uppercase'>{t('agence')}</h2>
                     </div>
                     <div className="mx-5 mt-5 sm:col-span-3 border-b border-gray-900/10 pb-5">
-                        <label htmlFor="agence" className=" mt-4 block text-sm font-medium leading-6 text-gray-900">
+                        <label htmlFor="agence" className="text-sm font-semibold leading-6 text-gray-900">
                             {t('agence_afrijet')}
                         </label>
                         <div className="w-full mt-2">
@@ -620,7 +620,7 @@ const AgencySurvey = () => {
                         <h2 className='text-white text-xl uppercase'>{t('services_afrijet')}</h2>
                     </div>
                     <div className='mt-4 mx-5'>
-                        <p className='mt-8'>{t('note_service')}</p>
+                        <p className='mt-8'>{t('note_explication')}</p>
                         <small className='text-xs text-gray-700'>{t('critere_note')}</small>
                     </div>
                     <div className="bg-white mt-4 px-6 border-b border-gray-900/10 pb-3">
