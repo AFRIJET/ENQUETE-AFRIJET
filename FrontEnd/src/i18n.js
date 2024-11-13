@@ -72,6 +72,24 @@ i18n
                     ville_depart: "Quelle est votre ville de départ ?",
                     selection_depart: "Veuillez sélectionner la ville",
                     destination_envol: "Vers quelle destination avez-vous voyager ?",
+                    experience_vol: "Expérience de vol",
+                    ponctualite: "Le vol a-t-il respecté les horaires prévues ?",
+                    confort: "Comment évalueriez-vous le confort de votre siège ?",
+                    proprete: "Comment évalueriez-vous la propreté de l'avion ?",
+                    experience_globale: "Comment évalueriez-vous votre expérience globale de vol ?",
+                    service_envol: "Services à bord",
+                    note_service_envol: "Quelle note donneriez-vous aux différents services à bord ?",
+                    repas: "Les repas/snacks servis ?",
+                    divertissement: "Avez-vous utilisé le service de divertissement à bord ?",
+                    note_divertissement: "Si oui, quelle note donneriez-vous ?",
+                    courtoisie_personnel: "Comment évalueriez-vous la courtoisie et l'efficacité du personnel de bord ?",
+
+                    // Page Enquete Entreprise
+                    experience_collaboration: "Expérience de collaboration",
+                    annee_colloboration: "Depuis combien de temps travaillez-vous avec Afrijet ?",
+                    moins_1_an: " Moins de 1 ans",
+                    entre_1_3_ans: "De 1 à 3 ans",
+                    plus_3_ans: "Plus de 3 ans",
                 }
             },
             en: {
@@ -141,6 +159,24 @@ i18n
                     ville_depart: "What is your departure city ?",
                     selection_depart: "Please select city",
                     destination_envol: "To which destination did you travel ?",
+                    experience_vol: "Flight Experience",
+                    ponctualite: "Did the flight respect the scheduled times ?",
+                    confort: "How would you rate the comfort of your seat?",
+                    proprete: "How would you rate the cleanliness of the plane ?",
+                    experience_globale: "How would you rate your overall flying experience ?",
+                    service_envol: "Services on board",
+                    note_service_envol: "What rating would you give to the different services on board ?",
+                    repas: "The meals/snacks served ?",
+                    divertissement: "Have you used the inflight entertainment service ?",
+                    note_divertissement: "If so, what rating would you give ?",
+                    courtoisie_personnel: "How would you rate the courtesy and efficiency of the flight attendants ?",
+
+                    // Page Enquete Entreprise
+                    experience_collaboration: "Collaborative experience",
+                    annee_colloboration: "How long have you been working with Afrijet ?",
+                    moins_1_an: "Less than 1 year old",
+                    entre_1_3_ans: "From 1 to 3 years",
+                    plus_3_ans: "More than 3 years",
                 }
             },
             es: {
@@ -210,6 +246,24 @@ i18n
                     ville_depart: "¿Cuál es tu ciudad de salida ?",
                     selection_depart: "Por favor seleccione ciudad",
                     destination_envol: "¿A qué destino viajaste ?",
+                    experience_vol: "Experiencia de vuelo",
+                    ponctualite: "¿El vuelo respetó los horarios previstos ?",
+                    confort: "¿Cómo calificarías la comodidad de tu asiento ?",
+                    proprete: "¿Cómo calificarías la limpieza del avión ?",
+                    experience_globale: "¿Cómo calificaría su experiencia de vuelo en general ?",
+                    service_envol: "Servicios a bordo",
+                    note_service_envol: "¿Qué calificación le darías a los diferentes servicios a bordo ?",
+                    repas: "Las comidas/refrigerios servidos :",
+                    divertissement: "¿Has utilizado el servicio de entretenimiento a bordo ?",
+                    note_divertissement: "Si es así, ¿qué calificación le darías ?",
+                    courtoisie_personnel: "¿Cómo calificaría la cortesía y eficiencia de las azafatas ?",
+
+                    // Page Enquete Entreprise
+                    experience_collaboration: "Experiencia colaborativa",
+                    annee_colloboration: "¿Cuánto tiempo llevas trabajando con Afrijet ?",
+                    moins_1_an: "Menos de 1 año",
+                    entre_1_3_ans: "De 1 a 3 años",
+                    plus_3_ans: "Más de 3 años",
                 }
             },
             pt: {
@@ -279,6 +333,24 @@ i18n
                     ville_depart: "Qual é a sua cidade de partida ?",
                     selection_depart: "Selecione a cidade",
                     destination_envol: "Para qual destino você viajou ?",
+                    experience_vol: "Experiência de voo",
+                    ponctualite: "O voo respeitou os horários programados ?",
+                    confort: "Como você avaliaria o conforto do seu assento ?",
+                    proprete: "Como você avaliaria a limpeza do avião ?",
+                    experience_globale: "Como você avaliaria sua experiência geral de voo ?",
+                    service_envol: "Serviços a bordo",
+                    note_service_envol: "Que classificação você daria aos diferentes serviços a bordo ?",
+                    repas: "Das refeições/lanches servidos :",
+                    divertissement: "Você já utilizou o serviço de entretenimento a bordo ?",
+                    note_divertissement: "Se sim, que classificação você daria ?",
+                    courtoisie_personnel: "Como você avaliaria a cortesia e eficiência dos comissários de bordo ?",
+
+                    // Page Enquete Entreprise
+                    experience_collaboration: "Experiência colaborativa",
+                    annee_colloboration: "Há quanto tempo você trabalha com a Afrijet ?",
+                    moins_1_an: "Menos de 1 ano",
+                    entre_1_3_ans: "De 1 a 3 anos",
+                    plus_3_ans: "Mais de 3 anos",
                 }
             }
         },

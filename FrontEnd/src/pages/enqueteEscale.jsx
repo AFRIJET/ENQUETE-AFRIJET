@@ -66,6 +66,8 @@ const enqueteEscale = () => {
     explication_difficulte: false,
     infos_oui: false,
     infos_non: false,
+    recommandation_oui: false,
+    recommandation_non: false,
   })
 
   const handleChange = (event) => {
