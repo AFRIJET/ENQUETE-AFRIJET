@@ -53,6 +53,7 @@ const AgencySurvey = () => {
     // Références pour chaque champ
     const fieldRefs = {
         sexe: useRef(null),
+        num_billet: useRef(null),
         nationalite: useRef(null),
         destination: useRef(null),
         agence: useRef(null),
@@ -136,7 +137,7 @@ const AgencySurvey = () => {
 
         // Validation des champs (sauf num_billet)
         Object.keys(data).forEach((key) => {
-            if (key !== 'num_billet' && !data[key]) {
+            if (!data[key]) {
                 newErrors[key] = 'Ce champ est requis';
             }
         });
@@ -220,13 +221,16 @@ const AgencySurvey = () => {
                     <div className='info-generales-info mx-auto w-[330px] bg-brown-500 rounded-sm text-center'>
                         <h2 className='text-white text-xl uppercase'>{t('infos_generales')}</h2>
                     </div>
-                    <div className="mt-4 mx-5 border-b border-gray-900/10 pb-5">
+                    <div className={`mt-4 mx-5 border-b border-gray-900/10 pb-5 ${errors.sexe ? 'p-2 rounded-lg border-2 border-red-500' : ''}`}>
                         <fieldset>
-                            <legend className="text-sm font-semibold leading-6 text-gray-900">{t('sexe')}</legend>
+                            <div className='flex items-center space-x-2'>
+                                <legend className="text-sm font-semibold leading-6 text-gray-900">1. {t('sexe')} <span className='text-red-500'>*</span></legend>
+                                {errors.sexe && <p className="text-brown-500 text-sm mt-1">{"("}{errors.sexe}{")"}</p>}
+                            </div>
                             <div className="mt-2 grid grid-cols-2">
                                 <div className="flex gap-x-3 p-2 bg-gray-200 rounded">
                                     <div className="flex h-6 items-center">
-                                        <motion.input
+                                        <input
                                             ref={fieldRefs.sexe}
                                             checked={CheckedItems.homme}
                                             onClick={handleChange}
@@ -236,7 +240,7 @@ const AgencySurvey = () => {
                                             value="homme"
                                             name="homme"
                                             type="checkbox"
-                                            className={errors.sexe ? "border border-red-500" : "h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-red-600"}
+                                            className={"h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-red-600"}
                                             whileHover={{ scale: 1.1 }}
                                             whileTap={{ scale: 0.9 }}
                                         />
@@ -269,12 +273,15 @@ const AgencySurvey = () => {
                                     </div>
                                 </div>
                             </div>
-                            {errors.sexe && <p className="text-red-500 text-sm mt-1">{errors.sexe}</p>}
+
                         </fieldset>
                     </div>
-                    <div className="mt-4 mx-4 border-b border-gray-900/10 pb-5">
+                    <div className={`"mt-4 mx-4 border-b border-gray-900/10 pb-5" ${errors.num_billet ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
                         <fieldset>
-                            <legend className="text-sm font-semibold leading-6 text-gray-900">{t('numero_billet')}</legend>
+                            <div className='flex items-center space-x-2'>
+                                <legend className="text-sm font-semibold leading-6 text-gray-900">2. {t('numero_billet')} <span className='text-red-500'>*</span></legend>
+                                {errors.num_billet && <p className="text-brown-500 text-sm mt-1">{"("}{errors.num_billet}{")"}</p>}
+                            </div>
                             <div class="mt-2">
                                 <input
                                     ref={fieldRefs.num_billet}
@@ -289,10 +296,13 @@ const AgencySurvey = () => {
                             </div>
                         </fieldset>
                     </div>
-                    <div className="mx-5 mt-5 sm:col-span-3 border-b border-gray-900/10 pb-5">
-                        <label htmlFor="country" className="text-sm font-semibold leading-6 text-gray-900">
-                            {t('nationalite')}
-                        </label>
+                    <div className={`"mt-4 mx-4 border-b border-gray-900/10 pb-5" ${errors.nationalite ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
+                        <div className='flex items-center space-x-2'>
+                            <legend htmlFor="country" className="text-sm font-semibold leading-6 text-gray-900">
+                                3. {t('nationalite')} <span className='text-red-500'>*</span>
+                            </legend>
+                            {errors.nationalite && <p className="text-brown-500 text-sm mt-1">{"("}{errors.nationalite}{")"}</p>}
+                        </div>
                         <div className="w-full mt-2">
                             <select
                                 ref={fieldRefs.nationalite}
@@ -309,13 +319,15 @@ const AgencySurvey = () => {
                                 }
 
                             </select>
-                            {errors.nationalite && <p className="text-red-500 text-sm mt-1">{errors.nationalite}</p>}
                         </div>
                     </div>
-                    <div className="mx-5 mt-5 sm:col-span-3 border-b border-gray-900/10 pb-5">
-                        <label htmlFor="destination" className="text-sm font-semibold leading-6 text-gray-900">
-                            {t('destination')}
-                        </label>
+                    <div className={`"mt-4 mx-4 border-b border-gray-900/10 pb-5" ${errors.destination ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
+                        <div className='flex items-center space-x-2'>
+                            <legend htmlFor="destination" className="text-sm font-semibold leading-6 text-gray-900">
+                                4. {t('destination')} <span className='text-red-500'>*</span>
+                            </legend>
+                            {errors.destination && <p className="text-brown-500 text-sm mt-1">{"("}{errors.destination}{")"}</p>}
+                        </div>
                         <div className="w-full mt-2">
                             <select
                                 ref={fieldRefs.destination}
@@ -331,7 +343,6 @@ const AgencySurvey = () => {
                                     ))
                                 }
                             </select>
-                            {errors.destination && <p className="text-red-500 text-sm mt-1">{errors.destination}</p>}
                         </div>
                     </div>
                 </section>
@@ -931,7 +942,7 @@ const AgencySurvey = () => {
                 )}
             </AnimatePresence>
 
-        </motion.div>
+        </motion.div >
     )
 }
 
