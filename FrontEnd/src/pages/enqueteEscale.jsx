@@ -53,7 +53,6 @@ const enqueteEscale = () => {
     experience_comptoire: useRef(null),
     courtoisie_personnel: useRef(null),
     difficulte: useRef(null),
-    explication_difficulte: useRef(null),
     recommandation: useRef(null),
     raison_recommandation: useRef(null),
   }
@@ -126,7 +125,7 @@ const enqueteEscale = () => {
     const newErrors = {};
 
     Object.keys(data).forEach((key) => {
-      if (!data(key)) {
+      if (!data[key]) {
         newErrors[key] = 'Ce champ est requis';
       }
     });
@@ -250,6 +249,7 @@ const enqueteEscale = () => {
                 >
                 </input>
               </div>
+              {errors.num_billet && <p className="text-red-500 text-sm mt-1">{errors.num_billet}</p>}
             </fieldset>
           </div>
           <div className="mx-5 mt-5 sm:col-span-3 border-b border-gray-900/10 pb-5">
@@ -502,7 +502,6 @@ const enqueteEscale = () => {
               <legend className="text-sm font-semibold leading-6 text-gray-900">{t('explication_difficulte')}</legend>
               <div className="mt-2">
                 <textarea
-                  ref={fieldRefs.explication_difficulte}
                   id="explication_difficulte"
                   name="explication_difficulte"
                   rows="3"
@@ -512,7 +511,6 @@ const enqueteEscale = () => {
 
                 </textarea>
               </div>
-              {errors.explication_difficulte && <p className="text-red-500 text-sm mt-1">{errors.explication_difficulte}</p>}
             </fieldset>
           </div>
         </section>

@@ -195,7 +195,7 @@ const AgencySurvey = () => {
             <div>
                 <div className='header'
                     style={{
-                        background: `url(${imageAgence}) no repeat`,
+                        background: `url(${imageAgence}) no-repeat`,
                         backgroundSize: 'cover'
                     }}
                 >

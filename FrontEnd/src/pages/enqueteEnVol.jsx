@@ -129,7 +129,7 @@ const enqueteEnVol = () => {
         const newErrors = {};
 
         Object.keys(data).forEach((key) => {
-            if (!data(key)) {
+            if (!data[key]) {
                 newErrors[key] = 'Ce champ est requis';
             }
         })
@@ -253,6 +253,7 @@ const enqueteEnVol = () => {
                                 >
                                 </input>
                             </div>
+                            {errors.num_billet && <p className="text-red-500 text-sm mt-1">{errors.num_billet}</p>}
                         </fieldset>
                     </div>
                     <div className="mx-5 mt-5 sm:col-span-3 border-b border-gray-900/10 pb-5">

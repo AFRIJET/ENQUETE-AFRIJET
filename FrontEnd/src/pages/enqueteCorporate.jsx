@@ -125,7 +125,7 @@ const enqueteCorporate = () => {
         const newErrors = {};
 
         Object.keys(data).forEach((key) => {
-            if (!data(key)) {
+        if (!data[key]) {
                 newErrors[key] = 'Ce champ est requis'
             }
         })
