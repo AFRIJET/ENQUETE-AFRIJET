@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import '../styles/style.css'
-import Header from '../composants/header';
 import logoAfrijet from '../assets/images/logo.png';
+import imageAgence from '../assets/images/afrijet-agence.jpg'
 import axios from 'axios'
 import country from '../composants/country.json';
 import destination from '../composants/destination.json'
@@ -148,16 +148,15 @@ const AgencySurvey = () => {
             fieldRefs[firstErrorField].current.scrollIntoView({ behavior: 'smooth' });
         } else {
             // Envoi des données s'il n'y a pas d'erreurs
-            axios.post(`${apiUrl}/enqueteagence`, data, {
+            axios.post(`${apiUrl}/enquete_agence`, data, {
                 headers: { 'Content-Type': 'application/json' }
             })
                 .then(response => {
-                    console.log(response.data);
                     setIsPopVisible(true);
                     setData({}); // Remet les valeurs initiales
                     setErrors({});
                 })
-                .catch(err => console.log("Erreur lors de l'envoi des données :", err));
+                .catch(err => console.log("Erreur lors de la sauvegarde des données:", err));
         }
     }
 
@@ -194,7 +193,23 @@ const AgencySurvey = () => {
             variants={variants}
         >
             <div>
-                <Header image={logoAfrijet} type={t('enquete_agence')} />
+                <div className='header'
+                    style={{
+                        background: `url(${imageAgence}) no repeat`,
+                        backgroundSize: 'cover'
+                    }}
+                >
+                    <div className='w-full h-full bg-red-500/15'>
+                        <div className='content relative text-center z-10'>
+                            <div className='float-left w-1/2 p-[30px_2px]'>
+                                <img src={logoAfrijet} alt='logo Afrijet' />
+                            </div>
+                            <div className='customer_survey float-right w-1/2'>
+                                <h1 className='text-white'>{t('enquete_agence')}</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <Fildariane sections={sections} />
             </div>
             <form onSubmit={handleSubmit}>

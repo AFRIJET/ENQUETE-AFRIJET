@@ -1,13 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react'
 import '../styles/style.css'
-import Header from '../composants/header'
 import Fildariane from '../composants/fildariane'
 import logoAfrijet from '../assets/images/logo.png';
+import imageEnvol from '../assets/images/Afrijet-envol2.jpg'
 import { motion } from 'framer-motion'
 import { AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import country from '../composants/country.json';
 import destination from '../composants/destination.json';
+
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const enqueteEnVol = () => {
 
@@ -29,17 +31,17 @@ const enqueteEnVol = () => {
         nationalite: '',
         depart: '',
         destination: '',
-        experience_vol: '',
-        horaire_vol: '',
+        ponctualite: '',
+        courtoisie: '',
         confort_siege: '',
         proprete: '',
+        experience_vol: '',
         note_serviceUM: '',
         note_animal_cabine: '',
         note_animal_soute: '',
         note_repas: '',
         divertissement: '',
         note_divertissement: '',
-        courtoisie: '',
         recommandation: '',
         raison_recommandation: ''
     })
@@ -49,12 +51,13 @@ const enqueteEnVol = () => {
         nationalite: useRef(null),
         depart: useRef(null),
         destination: useRef(null),
-        experience_vol: useRef(null),
-        horaire_vol: useRef(null),
+        ponctualite: useRef(null),
+        courtoisie: useRef(null),
         confort_siege: useRef(null),
         proprete: useRef(null),
+        experience_vol: useRef(null),
         divertissement: useRef(null),
-        courtoisie: useRef(null),
+        note_divertissement: useRef(null),
         recommandation: useRef(null),
         raison_recommandation: useRef(null)
     }
@@ -99,7 +102,8 @@ const enqueteEnVol = () => {
     }
 
     const closePopUp = () => {
-        setIsPopVisible(false)
+        setIsPopVisible(false);
+        setData({});
     }
 
     useEffect(() => {
@@ -118,7 +122,34 @@ const enqueteEnVol = () => {
         return () => {
             document.removeEventListener('mousedown', handleClickOutside)
         }
-    }, [isPopVisible])
+    }, [isPopVisible]);
+
+    const handleSubmit = (e) => {
+        e.prevenetDefault();
+        const newErrors = {};
+
+        Object.keys(data).forEach((key) => {
+            if (!data(key)) {
+                newErrors[key] = 'Ce champ est requis';
+            }
+        })
+        setErrors(newErrors)
+
+        if (Object.keys(newErrors).length > 0) {
+            const firstErrorField = Object.keys(newErrors)[0];
+            fieldRefs[firstErrorField].current.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            axios.post(`${apiUrl}/enquete_envol`, data, {
+                headers: { 'Content-Type': 'Application/json' }
+            })
+                .then(response => {
+                    setIsPopVisible(true);
+                    setErrors({});
+                    setData({});
+                })
+                .catch(err => console.log("Erreur lors de la sauvegarde des données: ", err))
+        }
+    }
 
     return (
         <motion.div
@@ -128,10 +159,26 @@ const enqueteEnVol = () => {
             variants={variants}
         >
             <div>
-                <Header image={logoAfrijet} type={t('enquete_envol')} />
+                <div className='header'
+                    style={{
+                        background: `url(${imageEnvol}) no-repeat`,
+                        backgroundSize: 'cover'
+                    }}
+                >
+                    <div className='w-full h-full bg-red-500/15'>
+                        <div className='content relative text-center z-10'>
+                            <div className='float-left w-1/2 p-[30px_2px]'>
+                                <img src={logoAfrijet} alt='logo Afrijet' />
+                            </div>
+                            <div className='customer_survey float-right w-1/2'>
+                                <h1 className='text-white'>{t('enquete_envol')}</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <Fildariane sections={sections} />
             </div>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <section id={generateId(t('infos_generales'))}>
                     <div className='space'>
                         <br />
@@ -663,30 +710,31 @@ const enqueteEnVol = () => {
                             <legend className="text-sm font-semibold leading-6 text-gray-900 pt-4">{t('note_divertissement')}</legend>
                             <div className="mt-4 grid grid-cols-4">
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" id="note1" name="note_divertissement" value="1" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                    <input type="radio" ref={fieldRefs.note_divertissement} id="note1" name="note_divertissement" value="1" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={(e) => setData({ ...data, note_divertissement: e.target.value })}
                                     />
                                     <label htmlFor="note1" className="text-gray-700">1</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" id="note2" name="note_divertissement" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                    <input type="radio" ref={fieldRefs.note_divertissement} id="note2" name="note_divertissement" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={(e) => setData({ ...data, note_divertissement: e.target.value })}
                                     />
                                     <label htmlFor="note2" className="text-gray-700">2</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" id="note3" name="note_divertissement" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                    <input type="radio" ref={fieldRefs.note_divertissement} id="note3" name="note_divertissement" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={(e) => setData({ ...data, note_divertissement: e.target.value })}
                                     />
                                     <label htmlFor="note3" className="text-gray-700">3</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" id="note4" name="note_divertissement" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                    <input type="radio" ref={fieldRefs.note_divertissement} id="note4" name="note_divertissement" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={(e) => setData({ ...data, note_divertissement: e.target.value })}
                                     />
                                     <label htmlFor="note4" className="text-gray-700">4</label>
                                 </div>
                             </div>
+                            {errors.note_divertissement && <p className="text-red-500 text-sm mt-1">{errors.note_divertissement}</p>}
                         </fieldset>
                     </div>
                     <div className="mt-4 mx-5 border-b border-gray-900/10 pb-5">

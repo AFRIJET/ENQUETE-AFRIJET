@@ -28,11 +28,6 @@ async function connectToDatabase() {
         await client.connect();
         db = client.db('EnqueteAfrijet-db');
         console.log('Connected to MongoDB');
-        //const collection = db.collection('Enquete_Agence'); // Remplace 'users' par le nom de ta collection
-
-        //Récupérer toutes les données de la collection
-        //const users = await collection.find({}).toArray();
-        //console.log(users); // Afficher les données récupérées
     } catch (error) {
         console.error('Error connecting to MongoDB:', error);
     }

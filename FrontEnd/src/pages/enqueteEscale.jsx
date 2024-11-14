@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react'
 import '../styles/style.css'
-import Header from '../composants/header'
 import Fildariane from '../composants/fildariane'
 import logoAfrijet from '../assets/images/logo.png';
+import imageEscale from '../assets/images/afrijet-comptoire.jpg'
 import { motion } from 'framer-motion'
 import { AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import country from '../composants/country.json'
 import destination from '../composants/destination.json'
+import axios from 'axios';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -31,8 +32,8 @@ const enqueteEscale = () => {
     nationalite: '',
     escale: '',
     destination: '',
-    experience_comptoire: '',
     assistance_comptoire: '',
+    experience_comptoire: '',
     courtoisie_personnel: '',
     difficulte: '',
     explication_difficulte: '',
@@ -48,8 +49,8 @@ const enqueteEscale = () => {
     nationalite: useRef(null),
     escale: useRef(null),
     destination: useRef(null),
-    experience_comptoire: useRef(null),
     assistance_comptoire: useRef(null),
+    experience_comptoire: useRef(null),
     courtoisie_personnel: useRef(null),
     difficulte: useRef(null),
     explication_difficulte: useRef(null),
@@ -98,6 +99,7 @@ const enqueteEscale = () => {
   //Fonction pour fermer la popup
   const closePopup = () => {
     setIsPopVisible(false);
+    setData({});
   }
 
   //Fonction qui permet de fermer la popup lorsqu'on clique en dehors
@@ -117,7 +119,34 @@ const enqueteEscale = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside)
     }
-  }, [isPopVisible])
+  }, [isPopVisible]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const newErrors = {};
+
+    Object.keys(data).forEach((key) => {
+      if (!data(key)) {
+        newErrors[key] = 'Ce champ est requis';
+      }
+    });
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) {
+      const firstErrorField = Object.keys(newErrors)[0];
+      fieldRefs[firstErrorField].current.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      axios.post(`${apiUrl}/enquete_escale`, data, {
+        headers: { 'Content-Type': 'application/json' }
+      })
+        .then(response => {
+          setIsPopVisible(true);
+          setErrors({});
+          setData({});
+        })
+        .catch(err => console.log("Erreur lors de la sauvegarde des données: ", err))
+    }
+  }
 
   return (
     <motion.div
@@ -127,10 +156,26 @@ const enqueteEscale = () => {
       variants={variants}
     >
       <div>
-        <Header image={logoAfrijet} type={t('enquete_escale')} />
+        <div className='header'
+          style={{
+            background: `url(${imageEscale}) no-repeat center`,
+            backgroundSize: 'cover'
+          }}
+        >
+          <div className='w-full h-full bg-red-500/15'>
+            <div className='content relative text-center z-10'>
+              <div className='float-left w-1/2 p-[30px_2px]'>
+                <img src={logoAfrijet} alt='logo Afrijet' />
+              </div>
+              <div className='customer_survey float-right w-1/2'>
+                <h1 className='text-white'>{t('enquete_escale')}</h1>
+              </div>
+            </div>
+          </div>
+        </div>
         <Fildariane sections={sections} />
       </div>
-      <form>
+      <form onSubmit={handleSubmit}>
         <section id={generateId(t('infos_generales'))}>
           <div className='space'>
             <br />

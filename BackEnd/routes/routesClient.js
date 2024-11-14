@@ -11,7 +11,7 @@ let db;
 
 
 // Route pour sauvegarder une enquête client
-router.post('/enqueteagence', async (req, res) => {
+router.post('/enquete_agence', async (req, res) => {
     const data = req.body;
     console.log('Données reçues:', data);
     

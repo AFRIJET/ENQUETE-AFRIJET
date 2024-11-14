@@ -50,6 +50,11 @@ span {
 
 input::placeholder {
     padding: 10px;
+    font-family: 'Poppins', 'Arial';
+}
+
+option {
+    font-family: 'Poppins', 'Arial';
 }
 
 section {
@@ -64,8 +69,6 @@ input[type="radio"] {
 
 /* Composant header */
 .header {
-    background: url('../assets/images/afrijet-agence.jpg') no-repeat;
-    background-size: cover;
     height: 130px;
     margin: 0 400px;
     width: 60%;
