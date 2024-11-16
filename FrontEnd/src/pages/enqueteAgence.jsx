@@ -20,7 +20,7 @@ const AgencySurvey = () => {
     const { t } = useTranslation()
     const sections = [
         { label: t('infos_generales') },
-        { label: t('agence') },
+        { label: t('enquete_agence') },
         { label: t('services_afrijet') },
     ];
     const [errors, setErrors] = useState({})
@@ -122,13 +122,55 @@ const AgencySurvey = () => {
     }
 
     // fonction qui permet de changer l'etat des checkboxs
-    const handleChange = (event) => {
-        const { name, checked } = event.target;
+    const handleChangeBox = (event) => {
+        const { id, checked } = event.target;
         setCheckedItems({
             ...CheckedItems,
-            [name]: checked
+            [id]: checked
         })
     }
+
+    // Fonction pour récuperer les données entrées par l'utilisateur
+    const handleChange = (e) => {
+        const { name, value, type, checked } = e.target;
+
+        // Pour les cases à cocher
+        if (type === 'checkbox') {
+            setCheckedItems((prev) => ({
+                ...prev,
+                [value]: checked // Met à jour l'état pour le sexe
+            }));
+
+            // Mettre à jour l'état des données
+            setData({
+                ...data,
+                [name]: value
+            });
+
+            // Annuler l'erreur pour le champ sexe
+            setErrors({
+                ...errors,
+                sexe: ''
+            });
+
+        } else {
+            // Mettre à jour l'état des données
+            setData({
+                ...data,
+                [name]: value
+            });
+
+            // Vérifier si le champ est rempli et annuler l'erreur
+            if (value.trim() !== '') {
+                setErrors({
+                    ...errors,
+                    [name]: '' // Annule l'erreur pour le champ correspondant
+                });
+            }
+        }
+    };
+
+    console.log(data)
 
     // Fonction qui permet d'envoyer les donnees stocker dans la variable data pour stocker les informations grace a axios
     const handleSubmit = (e) => {
@@ -223,22 +265,19 @@ const AgencySurvey = () => {
                     </div>
                     <div className={`mt-4 mx-5 border-b border-gray-900/10 pb-5 ${errors.sexe ? 'p-2 rounded-lg border-2 border-red-500' : ''}`}>
                         <fieldset>
-                            <div className='flex items-center space-x-2'>
-                                <legend className="text-sm font-semibold leading-6 text-gray-900">1. {t('sexe')} <span className='text-red-500'>*</span></legend>
-                                {errors.sexe && <p className="text-brown-500 text-sm mt-1">{"("}{errors.sexe}{")"}</p>}
-                            </div>
+                            <legend className="text-sm font-semibold leading-6 text-gray-900">1. {t('sexe')} <span className='text-red-500'>*</span></legend>
                             <div className="mt-2 grid grid-cols-2">
                                 <div className="flex gap-x-3 p-2 bg-gray-200 rounded">
                                     <div className="flex h-6 items-center">
                                         <input
                                             ref={fieldRefs.sexe}
                                             checked={CheckedItems.homme}
-                                            onClick={handleChange}
-                                            onChange={(e) => setData({ ...data, sexe: e.target.value })}
+                                            onClick={handleChangeBox}
+                                            onChange={handleChange}
                                             disabled={CheckedItems.femme}
                                             id="homme"
                                             value="homme"
-                                            name="homme"
+                                            name="sexe"
                                             type="checkbox"
                                             className={"h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-red-600"}
                                             whileHover={{ scale: 1.1 }}
@@ -256,12 +295,12 @@ const AgencySurvey = () => {
                                         <input
                                             ref={fieldRefs.sexe}
                                             checked={CheckedItems.femme}
-                                            onClick={handleChange}
-                                            onChange={(e) => setData({ ...data, sexe: e.target.value })}
+                                            onClick={handleChangeBox}
+                                            onChange={handleChange}
                                             disabled={CheckedItems.homme}
                                             id="femme"
                                             value="femme"
-                                            name="femme"
+                                            name="sexe"
                                             type="checkbox"
                                             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-red-600"
                                         />
@@ -276,12 +315,10 @@ const AgencySurvey = () => {
 
                         </fieldset>
                     </div>
-                    <div className={`"mt-4 mx-4 border-b border-gray-900/10 pb-5" ${errors.num_billet ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
+                    {errors.sexe && <small className="text-brown-500 text-sm mt-1 mx-5">{"("}{errors.sexe}{")"}</small>}
+                    <div className={`mt-4 mx-4 border-b border-gray-900/10 pb-5 ${errors.num_billet ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
                         <fieldset>
-                            <div className='flex items-center space-x-2'>
-                                <legend className="text-sm font-semibold leading-6 text-gray-900">2. {t('numero_billet')} <span className='text-red-500'>*</span></legend>
-                                {errors.num_billet && <p className="text-brown-500 text-sm mt-1">{"("}{errors.num_billet}{")"}</p>}
-                            </div>
+                            <legend className="text-sm font-semibold leading-6 text-gray-900">2. {t('numero_billet')} <span className='text-red-500'>*</span></legend>
                             <div class="mt-2">
                                 <input
                                     ref={fieldRefs.num_billet}
@@ -290,26 +327,24 @@ const AgencySurvey = () => {
                                     rows="3"
                                     placeholder='EX : PNR 269C54DA'
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-red-300 focus:ring-1 focus:ring-inset focus:ring-gray-500 sm:text-sm sm:leading-6 bg-gray-200"
-                                    onChange={(e) => setData({ ...data, num_billet: e.target.value })}
+                                    onChange={handleChange}
                                 >
                                 </input>
                             </div>
                         </fieldset>
                     </div>
-                    <div className={`"mt-4 mx-4 border-b border-gray-900/10 pb-5" ${errors.nationalite ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
-                        <div className='flex items-center space-x-2'>
-                            <legend htmlFor="country" className="text-sm font-semibold leading-6 text-gray-900">
-                                3. {t('nationalite')} <span className='text-red-500'>*</span>
-                            </legend>
-                            {errors.nationalite && <p className="text-brown-500 text-sm mt-1">{"("}{errors.nationalite}{")"}</p>}
-                        </div>
+                    {errors.num_billet && <small className="text-brown-500 text-sm mt-1 mx-5">{"("}{errors.num_billet}{")"}</small>}
+                    <div className={`mt-4 mx-4 border-b border-gray-900/10 pb-5 ${errors.nationalite ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
+                        <legend htmlFor="country" className="text-sm font-semibold leading-6 text-gray-900">
+                            3. {t('nationalite')} <span className='text-red-500'>*</span>
+                        </legend>
                         <div className="w-full mt-2">
                             <select
                                 ref={fieldRefs.nationalite}
                                 id="nationalite"
                                 name="nationalite"
                                 className="p-2 w-full bg-gray-200 block rounded-md font-medium border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:max-w-xl sm:text-sm sm:leading-6"
-                                onChange={(e) => setData({ ...data, nationalite: e.target.value })}
+                                onChange={handleChange}
                             >
                                 <option selected disabled>{t('selection_pays')}</option>
                                 {
@@ -321,20 +356,18 @@ const AgencySurvey = () => {
                             </select>
                         </div>
                     </div>
-                    <div className={`"mt-4 mx-4 border-b border-gray-900/10 pb-5" ${errors.destination ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
-                        <div className='flex items-center space-x-2'>
-                            <legend htmlFor="destination" className="text-sm font-semibold leading-6 text-gray-900">
-                                4. {t('destination')} <span className='text-red-500'>*</span>
-                            </legend>
-                            {errors.destination && <p className="text-brown-500 text-sm mt-1">{"("}{errors.destination}{")"}</p>}
-                        </div>
+                    {errors.nationalite && <small className="text-brown-500 text-sm mt-1 mx-5">{"("}{errors.nationalite}{")"}</small>}
+                    <div className={`mt-4 mx-4 border-b border-gray-900/10 pb-5 ${errors.destination ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
+                        <legend htmlFor="destination" className="text-sm font-semibold leading-6 text-gray-900">
+                            4. {t('destination')} <span className='text-red-500'>*</span>
+                        </legend>
                         <div className="w-full mt-2">
                             <select
                                 ref={fieldRefs.destination}
                                 id="destination"
                                 name="destination"
                                 className="p-2 bg-gray-200 block w-full rounded-md font-medium border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:max-w-xl sm:text-sm sm:leading-6"
-                                onChange={(e) => setData({ ...data, destination: e.target.value })}
+                                onChange={handleChange}
                             >
                                 <option selected disabled>{t('selection_destination')}</option>
                                 {
@@ -345,25 +378,26 @@ const AgencySurvey = () => {
                             </select>
                         </div>
                     </div>
+                    {errors.destination && <small className="text-brown-500 text-sm mt-1 mx-5">{"("}{errors.destination}{")"}</small>}
                 </section>
-                <section id={generateId(t('agence'))}>
+                <section id={generateId(t('enquete_agence'))}>
                     <div className='bg-white'>
                         <br />
                     </div>
                     <div className='mx-auto w-[330px] bg-brown-500 rounded-sm text-center'>
-                        <h2 className='text-white text-xl uppercase'>{t('agence')}</h2>
+                        <h2 className='text-white text-xl uppercase'>{t('enquete_agence')}</h2>
                     </div>
-                    <div className="mx-5 mt-5 sm:col-span-3 border-b border-gray-900/10 pb-5">
-                        <label htmlFor="agence" className="text-sm font-semibold leading-6 text-gray-900">
-                            {t('agence_afrijet')}
-                        </label>
+                    <div className={`mx-5 mt-5 sm:col-span-3 border-b border-gray-900/10 pb-5 ${errors.agence ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
+                        <legend htmlFor="agence" className="text-sm font-semibold leading-6 text-gray-900">
+                            5. {t('agence_afrijet')} <span className='text-red-500'>*</span>
+                        </legend>
                         <div className="w-full mt-2">
                             <select
                                 ref={fieldRefs.agence}
                                 id="agence"
                                 name="agence"
                                 className="p-2 bg-gray-200 block w-full rounded-md font-medium border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:max-w-xl sm:text-sm sm:leading-6"
-                                onChange={(e) => setData({ ...data, agence: e.target.value })}
+                                onChange={handleChange}
                             >
                                 <option selected disabled>{t('selection_agence')}</option>
                                 {
@@ -372,47 +406,47 @@ const AgencySurvey = () => {
                                     ))
                                 }
                             </select>
-                            {errors.agence && <p className="text-red-500 text-sm mt-1">{errors.agence}</p>}
                         </div>
                     </div>
-                    <div className="mt-4 mx-4 border-b border-gray-900/10 pb-3">
+                    {errors.agence && <small className="text-brown-500 text-sm mt-1 mx-5">{"("}{errors.agence}{")"}</small>}
+                    <div className={`mt-4 mx-4 border-b border-gray-900/10 pb-5 ${errors.acceuil_agence ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
                         <fieldset>
-                            <legend className="text-sm font-semibold leading-6 text-gray-900">{t('acceuil_agence')}</legend>
+                            <legend className="text-sm font-semibold leading-6 text-gray-900">6. {t('acceuil_agence')} <span className='text-red-500'>*</span></legend>
                             <small className='text-xs text-gray-700'>{t('critere_note')}</small>
                             <div>
                                 <div className="mt-4 grid grid-cols-4">
                                     <div className="flex items-center mb-4">
-                                        <input ref={fieldRefs.acceuil_agence} type="radio" id="note_acceuil_1" name="note_acceuil" value="1" className="w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                            onChange={(e) => setData({ ...data, acceuil_agence: e.target.value })}
+                                        <input ref={fieldRefs.acceuil_agence} type="radio" id="note_acceuil_1" name="acceuil_agence" value="1" className="w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                            onChange={handleChange}
                                         />
                                         <label htmlFor="note_acceuil_1" className="text-gray-700">1</label>
                                     </div>
                                     <div className="flex items-center mb-4">
-                                        <input type="radio" ref={fieldRefs.acceuil_agence} id="note_acceuil_2" name="note_acceuil" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                            onChange={(e) => setData({ ...data, acceuil_agence: e.target.value })}
+                                        <input type="radio" ref={fieldRefs.acceuil_agence} id="note_acceuil_2" name="acceuil_agence" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                            onChange={handleChange}
                                         />
                                         <label htmlFor="note_acceuil_2" className="text-gray-700">2</label>
                                     </div>
                                     <div className="flex items-center mb-4">
-                                        <input type="radio" ref={fieldRefs.acceuil_agence} id="note_acceuil_3" name="note_acceuil" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                            onChange={(e) => setData({ ...data, acceuil_agence: e.target.value })}
+                                        <input type="radio" ref={fieldRefs.acceuil_agence} id="note_acceuil_3" name="acceuil_agence" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                            onChange={handleChange}
                                         />
                                         <label htmlFor="note_acceuil_3" className="text-gray-700">3</label>
                                     </div>
                                     <div className="flex items-center mb-4">
-                                        <input type="radio" ref={fieldRefs.acceuil_agence} id="note_acceuil_4" name="note_acceuil" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                            onChange={(e) => setData({ ...data, acceuil_agence: e.target.value })}
+                                        <input type="radio" ref={fieldRefs.acceuil_agence} id="note_acceuil_4" name="acceuil_agence" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                            onChange={handleChange}
                                         />
                                         <label htmlFor="note_acceuil_4" className="text-gray-700">4</label>
                                     </div>
                                 </div>
-                                {errors.acceuil_agence && <p className="text-red-500 text-sm mt-1">{errors.acceuil_agence}</p>}
                             </div>
                         </fieldset>
                     </div>
-                    <div className="mt-4 mx-5 border-b border-gray-900/10 pb-5">
+                    {errors.acceuil_agence && <small className="text-brown-500 text-sm mt-1 mx-5">{"("}{errors.acceuil_agence}{")"}</small>}
+                    <div className={`mt-4 mx-5 border-b border-gray-900/10 pb-5 ${errors.raison_agence ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
                         <fieldset>
-                            <legend className="text-sm font-semibold leading-6 text-gray-900">{t('raison_agence')}</legend>
+                            <legend className="text-sm font-semibold leading-6 text-gray-900">7. {t('raison_agence')} <span className='text-red-500'>*</span></legend>
                             <div className="mt-2 grid grid-cols-2">
                                 <div className="flex gap-x-3 p-2 bg-gray-200 rounded">
                                     <div className="flex h-6 items-center">
@@ -420,10 +454,10 @@ const AgencySurvey = () => {
                                             ref={fieldRefs.raison_agence}
                                             id="proche_de_chez_moi"
                                             value="proche de chez moi"
-                                            name="proche_de_chez_moi"
+                                            name="raison_agence"
                                             type="checkbox"
                                             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                                            onChange={(e) => setData({ ...data, raison_agence: e.target.value })}
+                                            onChange={handleChange}
                                             checked={selectedCheckbox === "proche de chez moi"}
                                             onClick={handleCheckboxChange}
                                         />
@@ -440,10 +474,10 @@ const AgencySurvey = () => {
                                             ref={fieldRefs.raison_agence}
                                             id="pour_plus_conseils"
                                             value="pour plus de conseils"
-                                            name="pour_plus_conseils"
+                                            name="raison_agence"
                                             type="checkbox"
                                             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                                            onChange={(e) => setData({ ...data, raison_agence: e.target.value })}
+                                            onChange={handleChange}
                                             checked={selectedCheckbox === "pour plus de conseils"}
                                             onClick={handleCheckboxChange}
                                         />
@@ -462,10 +496,10 @@ const AgencySurvey = () => {
                                             ref={fieldRefs.raison_agence}
                                             id="site_web"
                                             value="effectuer le paiement"
-                                            name="site_web"
+                                            name="raison_agence"
                                             type="checkbox"
                                             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                                            onChange={(e) => setData({ ...data, raison_agence: e.target.value })}
+                                            onChange={handleChange}
                                             checked={selectedCheckbox === "effectuer le paiement"}
                                             onClick={handleCheckboxChange}
                                         />
@@ -482,10 +516,10 @@ const AgencySurvey = () => {
                                             ref={fieldRefs.raison_agence}
                                             id="paiement_facile"
                                             value="paiement facile"
-                                            name="paiement_facile"
+                                            name="raison_agence"
                                             type="checkbox"
                                             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                                            onChange={(e) => setData({ ...data, raison_agence: e.target.value })}
+                                            onChange={handleChange}
                                             checked={selectedCheckbox === "paiement facile"}
                                             onClick={handleCheckboxChange}
                                         />
@@ -498,25 +532,25 @@ const AgencySurvey = () => {
                                 </div>
                             </div>
                         </fieldset>
-                        {errors.raison_agence && <p className="text-red-500 text-sm mt-1">{errors.raison_agence}</p>}
                     </div>
-                    <div className="mt-4 mx-5 border-b border-gray-900/10 pb-5">
+                    {errors.raison_agence && <small className="text-brown-500 text-sm mt-1 mx-5">{"("}{errors.raison_agence}{")"}</small>}
+                    <div className={`mt-4 mx-5 border-b border-gray-900/10 pb-5 ${errors.satisfaction_agent ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
                         <fieldset>
-                            <legend className="text-sm font-semibold leading-6 text-gray-900">{t('satisfaction_agent')}</legend>
+                            <legend className="text-sm font-semibold leading-6 text-gray-900">8. {t('satisfaction_agent')} <span className='text-red-500'>*</span></legend>
                             <div className="mt-2 grid grid-cols-2">
                                 <div className="flex gap-x-3 p-3 bg-gray-200 rounded">
                                     <div className="flex h-6 items-center">
                                         <input
                                             ref={fieldRefs.satisfaction_agent}
                                             checked={CheckedItems.attente_oui}
-                                            onClick={handleChange}
+                                            onClick={handleChangeBox}
                                             disabled={CheckedItems.attente_non}
                                             id="attente_oui"
                                             value="attente satisfait"
-                                            name="attente_oui"
+                                            name="satisfaction_agent"
                                             type="checkbox"
                                             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                                            onChange={(e) => setData({ ...data, satisfaction_agent: e.target.value })}
+                                            onChange={handleChange}
                                         />
                                     </div>
                                     <div className="text-sm leading-6">
@@ -530,14 +564,14 @@ const AgencySurvey = () => {
                                         <input
                                             ref={fieldRefs.satisfaction_agent}
                                             checked={CheckedItems.attente_non}
-                                            onClick={handleChange}
+                                            onClick={handleChangeBox}
                                             disabled={CheckedItems.attente_oui}
                                             id="attente_non"
                                             value="attente non satisfait"
-                                            name="attente_non"
+                                            name="satisfaction_agent"
                                             type="checkbox"
                                             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                                            onChange={(e) => setData({ ...data, satisfaction_agent: e.target.value })}
+                                            onChange={handleChange}
                                         />
                                     </div>
                                     <div className="text-sm leading-6">
@@ -547,26 +581,26 @@ const AgencySurvey = () => {
                                     </div>
                                 </div>
                             </div>
-                            {errors.satisfaction_agent && <p className="text-red-500 text-sm mt-1">{errors.satisfaction_agent}</p>}
                         </fieldset>
                     </div>
-                    <div className="mt-4 mx-5 border-b border-gray-900/10 pb-5">
+                    {errors.satisfaction_agent && <small className="text-brown-500 text-sm mt-1 mx-5">{"("}{errors.satisfaction_agent}{")"}</small>}
+                    <div className={`mt-4 mx-5 border-b border-gray-900/10 pb-5 ${errors.temps_attente ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
                         <fieldset>
-                            <legend className="text-sm font-semibold leading-6 text-gray-900">{t('temps_attente')}</legend>
+                            <legend className="text-sm font-semibold leading-6 text-gray-900">9. {t('temps_attente')} <span className='text-red-500'>*</span></legend>
                             <div className="mt-2 grid grid-cols-2">
                                 <div className="flex gap-x-3 p-3 bg-gray-200 rounded">
                                     <div className="flex h-6 items-center">
                                         <input
                                             ref={fieldRefs.temps_attente}
                                             checked={CheckedItems.Entre_5minutes}
-                                            onClick={handleChange}
+                                            onClick={handleChangeBox}
                                             disabled={CheckedItems.plus_15minutes}
                                             id="Entre_5minutes"
                                             value="entre 5 et 15 minutes"
-                                            name="Entre_5minutes"
+                                            name="temps_attente"
                                             type="checkbox"
                                             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                                            onChange={(e) => setData({ ...data, temps_attente: e.target.value })}
+                                            onChange={handleChange}
                                         />
                                     </div>
                                     <div className="text-sm leading-6">
@@ -580,14 +614,14 @@ const AgencySurvey = () => {
                                         <input
                                             ref={fieldRefs.temps_attente}
                                             checked={CheckedItems.plus_15minutes}
-                                            onClick={handleChange}
+                                            onClick={handleChangeBox}
                                             disabled={CheckedItems.Entre_5minutes}
                                             id="plus_15minutes"
                                             value="plus de 15 minutes"
-                                            name="plus_15minutes"
+                                            name="temps_attente"
                                             type="checkbox"
                                             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                                            onChange={(e) => setData({ ...data, temps_attente: e.target.value })}
+                                            onChange={handleChange}
                                         />
                                     </div>
                                     <div className="text-sm leading-6">
@@ -597,46 +631,46 @@ const AgencySurvey = () => {
                                     </div>
                                 </div>
                             </div>
-                            {errors.temps_attente && <p className="text-red-500 text-sm mt-1">{errors.temps_attente}</p>}
                         </fieldset>
                     </div>
-                    <div className="mt-4 mx-5 border-b border-gray-900/10 pb-5">
+                    {errors.temps_attente && <small className="text-brown-500 text-sm mt-1 mx-5">{"("}{errors.temps_attente}{")"}</small>}
+                    <div className={`mt-4 mx-5 border-b border-gray-900/10 pb-5 ${errors.satisfaction_client ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
                         <fieldset>
                             <legend className="text-sm font-semibold leading-6 text-gray-900">
-                                {t('satisfaction_client')}
+                                10. {t('satisfaction_client')} <span className='text-red-500'>*</span>
                             </legend>
                             <small className='text-xs text-gray-700'>{t('type_satisfaction')}</small>
                             <div>
                                 <div className="mt-4 grid grid-cols-4">
                                     <div className="flex items-center mb-4">
-                                        <input type="radio" ref={fieldRefs.satisfaction_client} id="note_satisfaction_1" name="note_satisfaction" value="1" className="w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                            onChange={(e) => setData({ ...data, satisfaction_client: e.target.value })}
+                                        <input type="radio" ref={fieldRefs.satisfaction_client} id="note_satisfaction_1" name="satisfaction_client" value="1" className="w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                            onChange={handleChange}
                                         />
                                         <label htmlFor="note_satisfaction_1" className="text-gray-700">1</label>
                                     </div>
                                     <div className="flex items-center mb-4">
-                                        <input type="radio" ref={fieldRefs.satisfaction_client} id="note_satisfaction_2" name="note_satisfaction" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                            onChange={(e) => setData({ ...data, satisfaction_client: e.target.value })}
+                                        <input type="radio" ref={fieldRefs.satisfaction_client} id="note_satisfaction_2" name="satisfaction_client" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                            onChange={handleChange}
                                         />
                                         <label htmlFor="note_satisfaction_2" className="text-gray-700">2</label>
                                     </div>
                                     <div className="flex items-center mb-4">
-                                        <input type="radio" ref={fieldRefs.satisfaction_client} id="note_satisfaction_3" name="note_satisfaction" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                            onChange={(e) => setData({ ...data, satisfaction_client: e.target.value })}
+                                        <input type="radio" ref={fieldRefs.satisfaction_client} id="note_satisfaction_3" name="satisfaction_client" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                            onChange={handleChange}
                                         />
                                         <label htmlFor="note_satisfaction_3" className="text-gray-700">3</label>
                                     </div>
                                     <div className="flex items-center mb-4">
-                                        <input type="radio" ref={fieldRefs.satisfaction_client} id="note_satisfaction_4" name="note_satisfaction" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                            onChange={(e) => setData({ ...data, satisfaction_client: e.target.value })}
+                                        <input type="radio" ref={fieldRefs.satisfaction_client} id="note_satisfaction_4" name="satisfaction_client" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                            onChange={handleChange}
                                         />
                                         <label htmlFor="note_satisfaction_4" className="text-gray-700">4</label>
                                     </div>
                                 </div>
                             </div>
-                            {errors.satisfaction_client && <p className="text-red-500 text-sm mt-1">{errors.satisfaction_client}</p>}
                         </fieldset>
                     </div>
+                    {errors.satisfaction_client && <small className="text-brown-500 text-sm mt-1 mx-5">{"("}{errors.satisfaction_client}{")"}</small>}
                 </section>
                 <section id={generateId(t('services_afrijet'))}>
                     <div className='space'>
@@ -835,20 +869,20 @@ const AgencySurvey = () => {
                             </div>
                         </fieldset>
                     </div>
-                    <div className="mt-4 mx-5 border-b border-gray-900/10 pb-5">
+                    <div className={`mt-4 mx-5 border-b border-gray-900/10 pb-5 ${errors.recommandation ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
                         <fieldset>
-                            <legend className="text-sm font-semibold leading-6 text-gray-900">{t('recommandation')}</legend>
+                            <legend className="text-sm font-semibold leading-6 text-gray-900">{t('recommandation')} <span className='text-red-500'>*</span></legend>
                             <div className="mt-2 grid grid-cols-2">
                                 <div className="flex gap-x-3 p-3 bg-gray-200 rounded">
                                     <div className="flex h-6 items-center">
                                         <input
                                             ref={fieldRefs.recommandation}
                                             checked={CheckedItems.recommandation_oui}
-                                            onClick={handleChange}
+                                            onClick={handleChangeBox}
                                             disabled={CheckedItems.recommandation_non}
                                             id="recommandation_oui"
                                             value="Oui"
-                                            name="recommandation_oui"
+                                            name="recommandation"
                                             type="checkbox"
                                             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                                             onChange={(e) => setData({ ...data, recommandation: e.target.value })}
@@ -865,11 +899,11 @@ const AgencySurvey = () => {
                                         <input
                                             ref={fieldRefs.recommandation}
                                             checked={CheckedItems.recommandation_non}
-                                            onClick={handleChange}
+                                            onClick={handleChangeBox}
                                             disabled={CheckedItems.recommandation_oui}
                                             id="recommandation_non"
                                             value="Non"
-                                            name="recommandation_non"
+                                            name="recommandation"
                                             type="checkbox"
                                             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                                             onChange={(e) => setData({ ...data, recommandation: e.target.value })}
@@ -882,25 +916,24 @@ const AgencySurvey = () => {
                                     </div>
                                 </div>
                             </div>
-                            {errors.recommandation && <p className="text-red-500 text-sm mt-1">{errors.recommandation}</p>}
                         </fieldset>
                     </div>
+                    {errors.recommandation && <p className="text-brown-500 text-sm mt-1 mx-5">{"("}{errors.recommandation}{")"}</p>}
                     <div className="mt-4 mx-4 pb-5">
                         <fieldset>
                             <legend className="text-sm font-semibold leading-6 text-gray-900">{t('raison_recommandation')}</legend>
-                            <div className="mt-2">
-                                <textarea
-                                    ref={fieldRefs.raison_recommandation}
-                                    id="recommandation"
-                                    name="recommandation"
-                                    rows="3"
-                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-red-300 focus:ring-1 focus:ring-inset focus:ring-gray-500 sm:text-sm sm:leading-6 bg-gray-200"
-                                    onChange={(e) => setData({ ...data, raison_recommandation: e.target.value })}
-                                >
-
-                                </textarea>
-                            </div>
-                            {errors.raison_recommandation && <p className="text-red-500 text-sm mt-1">{errors.raison_recommandation}</p>}
+                            <div className="w-full mt-2">
+                            <select
+                                ref={fieldRefs.raison_recommandation}
+                                id="raison_recommandation"
+                                name="raison_recommandation"
+                                className="p-2 bg-gray-200 block w-full rounded-md font-medium border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:max-w-xl sm:text-sm sm:leading-6"
+                                onChange={handleChange}
+                            >
+                                <option selected disabled>Veuillez</option>
+                            </select>
+                        </div>
+                        {errors.raison_recommandation && <p className="text-red-500 text-sm mt-1">{errors.raison_recommandation}</p>}
                         </fieldset>
                     </div>
                 </section>
