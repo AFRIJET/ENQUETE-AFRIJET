@@ -10,6 +10,7 @@ import Fildariane from '../composants/fildariane';
 import { motion } from 'framer-motion'
 import { AnimatePresence } from 'framer-motion'
 import { useTranslation } from 'react-i18next';
+import LanguageSelector from '../composants/languageSelector';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -22,32 +23,30 @@ const AgencySurvey = () => {
         { label: t('infos_generales') },
         { label: t('enquete_agence') },
         { label: t('services_afrijet') },
+        { label: t('recommandation') },
     ];
-    const [errors, setErrors] = useState({})
-    const date = new Date().toISOString() // Definition de la variable date
+    const date = new Date().toISOString() // Définition de la variable date
     const [selectedCheckbox, setSelectedCheckbox] = useState(null); // État pour la sélection de la checkbox
 
     // Initialisation de l'etat de ma variable data grace au hook UseState pour recuperer les donnees entrees par les utilisateurs
     const [data, setData] = useState({
         date: date,
-        sexe: '',
-        num_billet: '',
-        nationalite: '',
-        destination: '',
-        agence: '',
-        acceuil_agence: '',
-        raison_agence: '',
-        satisfaction_agent: '',
-        temps_attente: '',
-        satisfaction_client: '',
-        note_programme_fidelite: '',
-        note_salon_business: '',
-        note_bagage: '',
-        note_serviceUM: '',
-        note_animal_cabine: '',
-        note_animal_soute: '',
-        recommandation: '',
-        raison_recommandation: ''
+    })
+
+    const [errors, setErrors] = useState({
+        sexe: "",
+        num_billet: "",
+        nationalite: "",
+        destination: "",
+        agence: "",
+        acceuil_agence: "",
+        raison_agence: "",
+        satisfaction_agent: "",
+        temps_attente: "",
+        satisfaction_client: "",
+        selection_services: "",
+        recommandation: "",
+        raison_recommandation: ""
     })
 
     // Références pour chaque champ
@@ -62,6 +61,7 @@ const AgencySurvey = () => {
         satisfaction_agent: useRef(null),
         temps_attente: useRef(null),
         satisfaction_client: useRef(null),
+        selection_services: useRef(null),
         note_programme_fidelite: useRef(null),
         note_salon_business: useRef(null),
         note_bagage: useRef(null),
@@ -70,6 +70,29 @@ const AgencySurvey = () => {
         note_animal_soute: useRef(null),
         recommandation: useRef(null),
         raison_recommandation: useRef(null)
+    };
+
+    const [options, setOptions] = useState([
+        { key: "programme_fidelite", label: t("programme_fidelite"), name: "programme_fidelite" },
+        { key: "salon_business", label: t("salon_business"), name: "salon_business" },
+        { key: "bagage_supplementaire", label: t("bagage_supplementaire"), name: "bagage_supplementaire" },
+        { key: "service_um", label: t("service_um"), name: "service_um" },
+        { key: "animal_cabine", label: t("animal_cabine"), name: "animal_cabine" },
+        { key: "animal_soute", label: t("animal_soute"), name: "animal_soute" },
+    ]);
+
+    const [selectedOptions, setSelectedOptions] = useState([]);
+
+    const handleSelect = (event) => {
+        const selectedKey = event.target.value;
+        if (selectedKey && !selectedOptions.find(option => option.key === selectedKey)) {
+            const selectedOption = options.find(option => option.key === selectedKey);
+            setSelectedOptions((prev) => [...prev, selectedOption]);
+        }
+    };
+
+    const handleRemove = (key) => {
+        setSelectedOptions((prev) => prev.filter(option => option.key !== key));
     };
 
     // Definiton des checkboxs
@@ -170,16 +193,14 @@ const AgencySurvey = () => {
         }
     };
 
-    console.log(data)
-
     // Fonction qui permet d'envoyer les donnees stocker dans la variable data pour stocker les informations grace a axios
     const handleSubmit = (e) => {
         e.preventDefault();
         const newErrors = {};
 
         // Validation des champs (sauf num_billet)
-        Object.keys(data).forEach((key) => {
-            if (!data[key]) {
+        Object.keys(errors).forEach((key) => {
+            if (!errors[key]) {
                 newErrors[key] = 'Ce champ est requis';
             }
         });
@@ -196,8 +217,6 @@ const AgencySurvey = () => {
             })
                 .then(response => {
                     setIsPopVisible(true);
-                    setData({}); // Remet les valeurs initiales
-                    setErrors({});
                 })
                 .catch(err => console.log("Erreur lors de la sauvegarde des données:", err));
         }
@@ -206,7 +225,27 @@ const AgencySurvey = () => {
     // fonction pour fermer la popup
     const closePopUp = () => {
         setIsPopVisible(false);
-        setData({}); // Réinitialise le champ de données
+        setData({
+            sexe: "",
+            num_billet: "",
+            nationalite: "",
+            destination: "",
+            agence: "",
+            acceuil_agence: "",
+            raison_agence: "",
+            satisfaction_agent: "",
+            temps_attente: "",
+            satisfaction_client: "",
+            selection_services: "",
+            programme_fidelite: "",
+            salon_business: "",
+            bagage_supplementaire: "",
+            service_um: "",
+            animal_cabine: "",
+            animal_soute: "",
+            recommandation: "",
+            raison_recommandation: ""
+        }); // Réinitialise le champ de données
     }
 
     // Ferme la popup si on clique en dehors
@@ -679,199 +718,92 @@ const AgencySurvey = () => {
                     <div className='mx-auto w-[330px] bg-brown-500 rounded-sm text-center'>
                         <h2 className='text-white text-xl uppercase'>{t('services_afrijet')}</h2>
                     </div>
-                    <div className='mt-4 mx-5'>
-                        <p className='mt-8'>{t('note_explication')}</p>
+                    <div className='mx-5'>
+                        <p className='mt-6'>{t('note_explication')}</p>
                         <small className='text-xs text-gray-700'>{t('critere_note')}</small>
                     </div>
-                    <div className="bg-white mt-4 px-6 border-b border-gray-900/10 pb-3">
-                        <fieldset>
-                            <legend className="text-sm font-semibold leading-6 text-gray-900 pt-4">{t('programme_fidelite')}</legend>
-                            <div className="mt-4 grid grid-cols-4">
-                                <div className="flex items-center mb-4">
-                                    <input type="radio" id="note_programme_1" name="note_programme" value="1" className="w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                        onChange={(e) => setData({ ...data, note_programme_fidelite: e.target.value })}
-                                    />
-                                    <label htmlFor="note_programme_1" className="text-gray-700">1</label>
-                                </div>
-                                <div className="flex items-center mb-4">
-                                    <input type="radio" id="note_programme_2" name="note_programme" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                        onChange={(e) => setData({ ...data, note_programme_fidelite: e.target.value })}
-                                    />
-                                    <label htmlFor="note_programme_2" className="text-gray-700">2</label>
-                                </div>
-                                <div className="flex items-center mb-4">
-                                    <input type="radio" id="note_programme_3" name="note_programme" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                        onChange={(e) => setData({ ...data, note_programme_fidelite: e.target.value })}
-                                    />
-                                    <label htmlFor="note_programme_3" className="text-gray-700">3</label>
-                                </div>
-                                <div className="flex items-center mb-4">
-                                    <input type="radio" id="note_programme_4" name="note_programme" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                        onChange={(e) => setData({ ...data, note_programme_fidelite: e.target.value })}
-                                    />
-                                    <label htmlFor="note_programme_4" className="text-gray-700">4</label>
-                                </div>
-                            </div>
-                        </fieldset>
+                    <div className={`mt-4 mx-4 border-b border-gray-900/10 pb-5 ${errors.selection_services ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
+                        <legend htmlFor="services" className="text-sm font-semibold leading-6 text-gray-900">
+                            11. {t('selection_services')} <span className='text-red-500'>*</span>
+                        </legend>
+                        <div className="mt-2">
+                            <select
+                                ref={fieldRefs.selection_services}
+                                id="services"
+                                name="services"
+                                className="p-2 bg-gray-200 block w-full rounded-md font-medium border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:max-w-xl sm:text-sm sm:leading-6"
+                                onChange={handleSelect}
+                            >
+                                <option value="" selected disabled>{t("selection")}</option>
+                                {options.map(option => (
+                                    <option
+                                        key={option.key}
+                                        value={option.key}
+                                        disabled={selectedOptions.find(sel => sel.key === option.key)}
+                                    >
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
                     </div>
-                    <div className="bg-white px-6 border-b border-gray-900/10 pb-3">
-                        <fieldset>
-                            <legend className="text-sm font-semibold leading-6 text-gray-900 pt-4">{t('salon_business')}</legend>
-                            <div className="mt-4 grid grid-cols-4">
-                                <div className="flex items-center mb-4">
-                                    <input type="radio" id="note1" name="note_salon" value="1" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                        onChange={(e) => setData({ ...data, note_salon_business: e.target.value })}
-                                    />
-                                    <label htmlFor="note1" className="text-gray-700">1</label>
-                                </div>
-                                <div className="flex items-center mb-4">
-                                    <input type="radio" id="note2" name="note_salon" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                        onChange={(e) => setData({ ...data, note_salon_business: e.target.value })}
-                                    />
-                                    <label htmlFor="note2" className="text-gray-700">2</label>
-                                </div>
-                                <div className="flex items-center mb-4">
-                                    <input type="radio" id="note3" name="note_salon" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                        onChange={(e) => setData({ ...data, note_salon_business: e.target.value })}
-                                    />
-                                    <label htmlFor="note3" className="text-gray-700">3</label>
-                                </div>
-                                <div className="flex items-center mb-4">
-                                    <input type="radio" id="note4" name="note_salon" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                        onChange={(e) => setData({ ...data, note_salon_business: e.target.value })}
-                                    />
-                                    <label htmlFor="note4" className="text-gray-700">4</label>
-                                </div>
+                    {errors.selection_services && <small className="text-brown-500 text-sm mt-1 mx-5">{"("}{errors.selection_services}{")"}</small>}
+                    {/* Div pour les options sélectionnées */}
+                    <div className="">
+                        {selectedOptions.map(option => (
+                            <div
+                                key={option.key}
+                                className="mx-5 bg-white px-6 border-b border-gray-900/10 pb-2"
+                            >
+                                <fieldset>
+                                    <legend className="text-sm font-semibold leading-6 text-gray-900 pt-4">{option.label} :</legend>
+                                    <div className='flex space-x-20'>
+                                        <div className="w-80 mt-4 grid grid-cols-4">
+                                            <div className="flex items-center mb-4">
+                                                <input type="radio" id={`${option.name}_1`} name={option.name} value="1" className="w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                                    onChange={handleChange}
+                                                />
+                                                <label htmlFor={`${option.name}_1`} className="text-gray-700">1</label>
+                                            </div>
+                                            <div className="flex items-center mb-4">
+                                                <input type="radio" id={`${option.name}_2`} name={option.name} value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                                    onChange={handleChange}
+                                                />
+                                                <label htmlFor={`${option.name}_2`} className="text-gray-700">2</label>
+                                            </div>
+                                            <div className="flex items-center mb-4">
+                                                <input type="radio" id={`${option.name}_3`} name={option.name} value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                                    onChange={handleChange}
+                                                />
+                                                <label htmlFor={`${option.name}_3`} className="text-gray-700">3</label>
+                                            </div>
+                                            <div className="flex items-center mb-4">
+                                                <input type="radio" id={`${option.name}_4`} name={option.name} value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                                    onChange={handleChange}
+                                                />
+                                                <label htmlFor={`${option.name}_4`} className="text-gray-700">4</label>
+                                            </div>
+                                        </div>
+                                        <i
+                                            onClick={() => handleRemove(option.key)}
+                                            className="mt-3 p-1 text-red-500 border border-red-500 h-6 rounded-full w-6 fa-solid fa-minus">
+                                        </i>
+                                    </div>
+                                </fieldset>
                             </div>
-                        </fieldset>
+                        ))}
                     </div>
-                    <div className="bg-white px-6 border-b border-gray-900/10 pb-3">
-                        <fieldset>
-                            <legend className="text-sm font-semibold leading-6 text-gray-900 pt-4">{t('bagage_supplementaire')}</legend>
-                            <div className="mt-4 grid grid-cols-4">
-                                <div className="flex items-center mb-4">
-                                    <input type="radio" id="note1" name="note_bagage" value="1" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                        onChange={(e) => setData({ ...data, note_bagage: e.target.value })}
-                                    />
-                                    <label htmlFor="note1" className="text-gray-700">1</label>
-                                </div>
-                                <div className="flex items-center mb-4">
-                                    <input type="radio" id="note2" name="note_bagage" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                        onChange={(e) => setData({ ...data, note_bagage: e.target.value })}
-                                    />
-                                    <label htmlFor="note2" className="text-gray-700">2</label>
-                                </div>
-                                <div className="flex items-center mb-4">
-                                    <input type="radio" id="note3" name="note_bagage" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                        onChange={(e) => setData({ ...data, note_bagage: e.target.value })}
-                                    />
-                                    <label htmlFor="note3" className="text-gray-700">3</label>
-                                </div>
-                                <div className="flex items-center mb-4">
-                                    <input type="radio" id="note4" name="note_bagage" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                        onChange={(e) => setData({ ...data, note_bagage: e.target.value })}
-                                    />
-                                    <label htmlFor="note4" className="text-gray-700">4</label>
-                                </div>
-                            </div>
-                        </fieldset>
+                </section>
+                <section id={generateId(t('recommandation'))}>
+                    <div className='space'>
+                        <br />
                     </div>
-                    <div className="bg-white px-6 border-b border-gray-900/10 pb-3">
-                        <fieldset>
-                            <legend className="text-sm font-semibold leading-6 text-gray-900 pt-4">{t('service_um')}</legend>
-                            <div className="mt-4 grid grid-cols-4">
-                                <div className="flex items-center mb-4">
-                                    <input type="radio" id="note1" name="note_service" value="1" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                        onChange={(e) => setData({ ...data, note_serviceUM: e.target.value })}
-                                    />
-                                    <label htmlFor="note1" className="text-gray-700">1</label>
-                                </div>
-                                <div className="flex items-center mb-4">
-                                    <input type="radio" id="note2" name="note_service" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                        onChange={(e) => setData({ ...data, note_serviceUM: e.target.value })}
-                                    />
-                                    <label htmlFor="note2" className="text-gray-700">2</label>
-                                </div>
-                                <div className="flex items-center mb-4">
-                                    <input type="radio" id="note3" name="note_service" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                        onChange={(e) => setData({ ...data, note_serviceUM: e.target.value })}
-                                    />
-                                    <label htmlFor="note3" className="text-gray-700">3</label>
-                                </div>
-                                <div className="flex items-center mb-4">
-                                    <input type="radio" id="note4" name="note_service" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                        onChange={(e) => setData({ ...data, note_serviceUM: e.target.value })}
-                                    />
-                                    <label htmlFor="note4" className="text-gray-700">4</label>
-                                </div>
-                            </div>
-                        </fieldset>
-                    </div>
-                    <div className="bg-white px-6 border-b border-gray-900/10 pb-3">
-                        <fieldset>
-                            <legend className="text-sm font-semibold leading-6 text-gray-900 pt-4">{t('animal_cabine')}</legend>
-                            <div className="mt-4 grid grid-cols-4">
-                                <div className="flex items-center mb-4">
-                                    <input type="radio" id="note1" name="note_animal_cabine" value="1" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                        onChange={(e) => setData({ ...data, note_animal_cabine: e.target.value })}
-                                    />
-                                    <label htmlFor="note1" className="text-gray-700">1</label>
-                                </div>
-                                <div className="flex items-center mb-4">
-                                    <input type="radio" id="note2" name="note_animal_cabine" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                        onChange={(e) => setData({ ...data, note_animal_cabine: e.target.value })}
-                                    />
-                                    <label htmlFor="note2" className="text-gray-700">2</label>
-                                </div>
-                                <div className="flex items-center mb-4">
-                                    <input type="radio" id="note3" name="note_animal_cabine" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                        onChange={(e) => setData({ ...data, note_animal_cabine: e.target.value })}
-                                    />
-                                    <label htmlFor="note3" className="text-gray-700">3</label>
-                                </div>
-                                <div className="flex items-center mb-4">
-                                    <input type="radio" id="note4" name="note_animal_cabine" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                        onChange={(e) => setData({ ...data, note_animal_cabine: e.target.value })}
-                                    />
-                                    <label htmlFor="note4" className="text-gray-700">4</label>
-                                </div>
-                            </div>
-                        </fieldset>
-                    </div>
-                    <div className="bg-white px-6 border-b border-gray-900/10 pb-3">
-                        <fieldset>
-                            <legend className="text-sm font-semibold leading-6 text-gray-900 pt-4">{t('animal_soute')}</legend>
-                            <div className="mt-4 grid grid-cols-4">
-                                <div className="flex items-center mb-4">
-                                    <input type="radio" id="note1" name="note_animal_soute" value="1" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                        onChange={(e) => setData({ ...data, note_animal_soute: e.target.value })}
-                                    />
-                                    <label htmlFor="note1" className="text-gray-700">1</label>
-                                </div>
-                                <div className="flex items-center mb-4">
-                                    <input type="radio" id="note2" name="note_animal_soute" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                        onChange={(e) => setData({ ...data, note_animal_soute: e.target.value })}
-                                    />
-                                    <label htmlFor="note2" className="text-gray-700">2</label>
-                                </div>
-                                <div className="flex items-center mb-4">
-                                    <input type="radio" id="note3" name="note_animal_soute" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                        onChange={(e) => setData({ ...data, note_animal_soute: e.target.value })}
-                                    />
-                                    <label htmlFor="note3" className="text-gray-700">3</label>
-                                </div>
-                                <div className="flex items-center mb-4">
-                                    <input type="radio" id="note4" name="note_animal_soute" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                        onChange={(e) => setData({ ...data, note_animal_soute: e.target.value })}
-                                    />
-                                    <label htmlFor="note4" className="text-gray-700">4</label>
-                                </div>
-                            </div>
-                        </fieldset>
+                    <div className='mx-auto w-[330px] bg-brown-500 rounded-sm text-center'>
+                        <h2 className='text-white text-xl uppercase'>{t('recommandation')}</h2>
                     </div>
                     <div className={`mt-4 mx-5 border-b border-gray-900/10 pb-5 ${errors.recommandation ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
                         <fieldset>
-                            <legend className="text-sm font-semibold leading-6 text-gray-900">{t('recommandation')} <span className='text-red-500'>*</span></legend>
+                            <legend className="text-sm font-semibold leading-6 text-gray-900">12. {t('recommandation_afrijet')} <span className='text-red-500'>*</span></legend>
                             <div className="mt-2 grid grid-cols-2">
                                 <div className="flex gap-x-3 p-3 bg-gray-200 rounded">
                                     <div className="flex h-6 items-center">
@@ -919,23 +851,64 @@ const AgencySurvey = () => {
                         </fieldset>
                     </div>
                     {errors.recommandation && <p className="text-brown-500 text-sm mt-1 mx-5">{"("}{errors.recommandation}{")"}</p>}
-                    <div className="mt-4 mx-4 pb-5">
-                        <fieldset>
-                            <legend className="text-sm font-semibold leading-6 text-gray-900">{t('raison_recommandation')}</legend>
-                            <div className="w-full mt-2">
-                            <select
-                                ref={fieldRefs.raison_recommandation}
-                                id="raison_recommandation"
-                                name="raison_recommandation"
-                                className="p-2 bg-gray-200 block w-full rounded-md font-medium border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:max-w-xl sm:text-sm sm:leading-6"
-                                onChange={handleChange}
-                            >
-                                <option selected disabled>Veuillez</option>
-                            </select>
+                    {CheckedItems.recommandation_oui &&
+                        <div>
+                            <div className={`mt-4 mx-4 pb-5 ${errors.raison_recommandation ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
+                                <fieldset>
+                                    <legend className="text-sm font-semibold leading-6 text-gray-900">13. {t('raison_recommandation1')}</legend>
+                                    <div className="w-full mt-2">
+                                        <select
+                                            ref={fieldRefs.raison_recommandation}
+                                            id="raison_recommandation"
+                                            name="raison_recommandation"
+                                            className="p-2 bg-gray-200 block w-full rounded-md font-medium border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:max-w-xl sm:text-sm sm:leading-6"
+                                            onChange={handleChange}
+                                        >
+                                            <option selected disabled>{t('selection')}</option>
+                                            <option>{t('Aimabilite')}</option>
+                                            <option>{t('Bon_acceuil')}</option>
+                                            <option>{t('billet_promo')}</option>
+                                            <option>{t('couverture_regionale')}</option>
+                                            <option>{t('disponibilite_place')}</option>
+                                            <option>{t('frequence_vol')}</option>
+                                            <option>{t('volume_bagage')}</option>
+                                            <option>{t('prix_billet')}</option>
+                                        </select>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            {errors.raison_recommandation && <p className="text-brown-500 text-sm mt-1 mx-5">{"("}{errors.raison_recommandation}{")"}</p>}
                         </div>
-                        {errors.raison_recommandation && <p className="text-red-500 text-sm mt-1">{errors.raison_recommandation}</p>}
-                        </fieldset>
-                    </div>
+                    }
+                    {CheckedItems.recommandation_non &&
+                        <div>
+                            <div className={`mt-4 mx-4 pb-5 ${errors.raison_recommandation ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
+                                <fieldset>
+                                    <legend className="text-sm font-semibold leading-6 text-gray-900">{t('raison_recommandation2')}</legend>
+                                    <div className="w-full mt-2">
+                                        <select
+                                            ref={fieldRefs.raison_recommandation}
+                                            id="raison_recommandation"
+                                            name="raison_recommandation"
+                                            className="p-2 bg-gray-200 block w-full rounded-md font-medium border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:max-w-xl sm:text-sm sm:leading-6"
+                                            onChange={handleChange}
+                                        >
+                                            <option selected disabled>{t('selection')}</option>
+                                            <option>{t('Aimabilite')}</option>
+                                            <option>{t('Bon_acceuil')}</option>
+                                            <option>{t('billet_promo')}</option>
+                                            <option>{t('couverture_regionale')}</option>
+                                            <option>{t('disponibilite_place')}</option>
+                                            <option>{t('frequence_vol')}</option>
+                                            <option>{t('volume_bagage')}</option>
+                                            <option>{t('prix_billet')}</option>
+                                        </select>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            {errors.raison_recommandation && <p className="text-brown-500 text-sm mt-1 mx-5">{"("}{errors.raison_recommandation}{")"}</p>}
+                        </div>
+                    }
                 </section>
                 <div className=''>
                     <motion.button
@@ -950,6 +923,7 @@ const AgencySurvey = () => {
                     </motion.button>
                 </div>
             </form>
+            <LanguageSelector />
 
             <AnimatePresence>
                 {isPopVisible && (
@@ -974,7 +948,6 @@ const AgencySurvey = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
-
         </motion.div >
     )
 }

@@ -64,6 +64,7 @@ const FildAriane = ({ sections }) => {
             <ol className="list-none flex p-0 space-x-2">
                 {visibleSections.map((sectionId, index) => {
                     const section = sections.find((sec) => sec.label.toLowerCase() === sectionId);
+                    if (!section) return null; // Éviter les erreurs si `section` est indéfini
                     return (
                         <li key={index} className="flex items-center">
                             {index > 0 && <span className="text-gray-100 span-fil"> &gt; </span>}
