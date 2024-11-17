@@ -45,7 +45,7 @@ p {
 }
 
 span {
-    font-family: 'SUSE', 'Arial';
+    font-family: 'Poppins', 'Arial';
 }
 
 input::placeholder {
@@ -86,10 +86,6 @@ input[type="radio"] {
     position: fixed;
     width: 60%;
     top: 130px;
-}
-
-.span-fil {
-    padding: -30px;
 }
 
 /* Page Bienvenue */

@@ -16,15 +16,14 @@ const apiUrl = import.meta.env.VITE_API_URL;
 
 const AgencySurvey = () => {
 
-    const [isPopVisible, setIsPopVisible] = useState(false); // Declaration de la variable pour la popUp
-    const popupRef = useRef(null)
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
     const sections = [
         { label: t('infos_generales') },
         { label: t('enquete_agence') },
         { label: t('services_afrijet') },
-        { label: t('recommandation') },
     ];
+    const [isPopVisible, setIsPopVisible] = useState(false); // Declaration de la variable pour la popUp
+    const popupRef = useRef(null)
     const date = new Date().toISOString() // Définition de la variable date
     const [selectedCheckbox, setSelectedCheckbox] = useState(null); // État pour la sélection de la checkbox
 
@@ -32,7 +31,6 @@ const AgencySurvey = () => {
     const [data, setData] = useState({
         date: date,
     })
-
     const [errors, setErrors] = useState({
         sexe: "",
         num_billet: "",
@@ -44,7 +42,20 @@ const AgencySurvey = () => {
         satisfaction_agent: "",
         temps_attente: "",
         satisfaction_client: "",
-        selection_services: "",
+        recommandation: "",
+        raison_recommandation: ""
+    })
+    const [dataErrors, setDataErrors] = useState({
+        sexe: "",
+        num_billet: "",
+        nationalite: "",
+        destination: "",
+        agence: "",
+        acceuil_agence: "",
+        raison_agence: "",
+        satisfaction_agent: "",
+        temps_attente: "",
+        satisfaction_client: "",
         recommandation: "",
         raison_recommandation: ""
     })
@@ -80,6 +91,15 @@ const AgencySurvey = () => {
         { key: "animal_cabine", label: t("animal_cabine"), name: "animal_cabine" },
         { key: "animal_soute", label: t("animal_soute"), name: "animal_soute" },
     ]);
+
+    // Mise à jour des labels à chaque changement de langue
+    useEffect(() => {
+        const updatedOptions = options.map(option => ({
+            ...option,
+            label: t(option.key), // Recalcule le label pour la langue actuelle
+        }));
+        setOptions(updatedOptions);
+    }, [i18n.language]); // Déclenche une mise à jour à chaque changement de langue
 
     const [selectedOptions, setSelectedOptions] = useState([]);
 
@@ -171,9 +191,29 @@ const AgencySurvey = () => {
             });
 
             // Annuler l'erreur pour le champ sexe
-            setErrors({
-                ...errors,
-                sexe: ''
+            setDataErrors((prevErrors) => {
+                const updatedErrors = { ...prevErrors };
+
+                // Parcourir les clés des erreurs pour trouver le champ correspondant
+                Object.keys(updatedErrors).forEach((key) => {
+                    if (key === name) {
+                        updatedErrors[key] = value; // Annule l'erreur pour le champ correspondant
+                    }
+                });
+
+                return updatedErrors;
+            });
+            setErrors((prevErrors) => {
+                const updatedErrors = { ...prevErrors };
+
+                // Parcourir les clés des erreurs pour trouver le champ correspondant
+                Object.keys(updatedErrors).forEach((key) => {
+                    if (key === name) {
+                        updatedErrors[key] = ''; // Annule l'erreur pour le champ correspondant
+                    }
+                });
+
+                return updatedErrors;
             });
 
         } else {
@@ -185,9 +225,30 @@ const AgencySurvey = () => {
 
             // Vérifier si le champ est rempli et annuler l'erreur
             if (value.trim() !== '') {
-                setErrors({
-                    ...errors,
-                    [name]: '' // Annule l'erreur pour le champ correspondant
+                // Annuler l'erreur pour le champ sexe
+                setDataErrors((prevErrors) => {
+                    const updatedErrors = { ...prevErrors };
+
+                    // Parcourir les clés des erreurs pour trouver le champ correspondant
+                    Object.keys(updatedErrors).forEach((key) => {
+                        if (key === name) {
+                            updatedErrors[key] = value; // Annule l'erreur pour le champ correspondant
+                        }
+                    });
+
+                    return updatedErrors;
+                });
+                setErrors((prevErrors) => {
+                    const updatedErrors = { ...prevErrors };
+
+                    // Parcourir les clés des erreurs pour trouver le champ correspondant
+                    Object.keys(updatedErrors).forEach((key) => {
+                        if (key === name) {
+                            updatedErrors[key] = ''; // Annule l'erreur pour le champ correspondant
+                        }
+                    });
+
+                    return updatedErrors;
                 });
             }
         }
@@ -199,8 +260,8 @@ const AgencySurvey = () => {
         const newErrors = {};
 
         // Validation des champs (sauf num_billet)
-        Object.keys(errors).forEach((key) => {
-            if (!errors[key]) {
+        Object.keys(dataErrors).forEach((key) => {
+            if (!dataErrors[key].trim()) {
                 newErrors[key] = 'Ce champ est requis';
             }
         });
@@ -211,12 +272,14 @@ const AgencySurvey = () => {
             const firstErrorField = Object.keys(newErrors)[0];
             fieldRefs[firstErrorField].current.scrollIntoView({ behavior: 'smooth' });
         } else {
+            console.log("les donnees envoyees:", data)
             // Envoi des données s'il n'y a pas d'erreurs
             axios.post(`${apiUrl}/enquete_agence`, data, {
                 headers: { 'Content-Type': 'application/json' }
             })
                 .then(response => {
                     setIsPopVisible(true);
+                    console.log(response);
                 })
                 .catch(err => console.log("Erreur lors de la sauvegarde des données:", err));
         }
@@ -225,27 +288,7 @@ const AgencySurvey = () => {
     // fonction pour fermer la popup
     const closePopUp = () => {
         setIsPopVisible(false);
-        setData({
-            sexe: "",
-            num_billet: "",
-            nationalite: "",
-            destination: "",
-            agence: "",
-            acceuil_agence: "",
-            raison_agence: "",
-            satisfaction_agent: "",
-            temps_attente: "",
-            satisfaction_client: "",
-            selection_services: "",
-            programme_fidelite: "",
-            salon_business: "",
-            bagage_supplementaire: "",
-            service_um: "",
-            animal_cabine: "",
-            animal_soute: "",
-            recommandation: "",
-            raison_recommandation: ""
-        }); // Réinitialise le champ de données
+        window.location.reload(); // Recharge la page
     }
 
     // Ferme la popup si on clique en dehors
@@ -294,6 +337,7 @@ const AgencySurvey = () => {
                 </div>
                 <Fildariane sections={sections} />
             </div>
+            <LanguageSelector />
             <form onSubmit={handleSubmit}>
                 <section id={generateId(t('infos_generales'))}>
                     <div className='space'>
@@ -757,8 +801,8 @@ const AgencySurvey = () => {
                             >
                                 <fieldset>
                                     <legend className="text-sm font-semibold leading-6 text-gray-900 pt-4">{option.label} :</legend>
-                                    <div className='flex space-x-20'>
-                                        <div className="w-80 mt-4 grid grid-cols-4">
+                                    <div className='flex'>
+                                        <div className="w-full mt-4 grid grid-cols-4">
                                             <div className="flex items-center mb-4">
                                                 <input type="radio" id={`${option.name}_1`} name={option.name} value="1" className="w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                                     onChange={handleChange}
@@ -817,7 +861,7 @@ const AgencySurvey = () => {
                                             name="recommandation"
                                             type="checkbox"
                                             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                                            onChange={(e) => setData({ ...data, recommandation: e.target.value })}
+                                            onChange={handleChange}
                                         />
                                     </div>
                                     <div className="text-sm leading-6">
@@ -838,7 +882,7 @@ const AgencySurvey = () => {
                                             name="recommandation"
                                             type="checkbox"
                                             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                                            onChange={(e) => setData({ ...data, recommandation: e.target.value })}
+                                            onChange={handleChange}
                                         />
                                     </div>
                                     <div className="text-sm leading-6">
@@ -873,6 +917,7 @@ const AgencySurvey = () => {
                                             <option>{t('frequence_vol')}</option>
                                             <option>{t('volume_bagage')}</option>
                                             <option>{t('prix_billet')}</option>
+                                            <option>{t('autre')}</option>
                                         </select>
                                     </div>
                                 </fieldset>
@@ -902,6 +947,7 @@ const AgencySurvey = () => {
                                             <option>{t('frequence_vol')}</option>
                                             <option>{t('volume_bagage')}</option>
                                             <option>{t('prix_billet')}</option>
+                                            <option>{t('autre')}</option>
                                         </select>
                                     </div>
                                 </fieldset>
@@ -923,7 +969,7 @@ const AgencySurvey = () => {
                     </motion.button>
                 </div>
             </form>
-            <LanguageSelector />
+
 
             <AnimatePresence>
                 {isPopVisible && (

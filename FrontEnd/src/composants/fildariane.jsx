@@ -61,18 +61,18 @@ const FildAriane = ({ sections }) => {
 
     return (
         <div className='fil_ariane bg-brown-500'>
-            <ol className="list-none flex p-0 space-x-2">
+            <ol className="list-none flex p-1">
                 {visibleSections.map((sectionId, index) => {
                     const section = sections.find((sec) => sec.label.toLowerCase() === sectionId);
                     if (!section) return null; // Éviter les erreurs si `section` est indéfini
                     return (
                         <li key={index} className="flex items-center">
-                            {index > 0 && <span className="text-gray-100 span-fil"> &gt; </span>}
+                            {index > 0 && <span className="text-gray-100 pt-1 px-1"> &gt; </span>}
                             <a
                                 href={`#${section.label.toLowerCase()}`}
                                 className="text-blue-600 hover:text-blue-800 focus:text-brown-600 focus:outline-none focus:ring-2 focus:ring-brown-300"
                             >
-                                <p className='p-[10px] text-xs text-white'>{section.label}</p>
+                                <small className='text-xs text-white'>{section.label}</small>
                             </a>
                         </li>
                     );

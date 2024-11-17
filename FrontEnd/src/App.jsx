@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Loader from './composants/loader'
 import Animation from './composants/animation'
-import Bienvenue from './pages/bienvenue';
+import Bienvenue from './composants/bienvenueAgence';
 import EnqueteAgence from './pages/enqueteAgence'
 import EnqueteEscale from './pages/enqueteEscale';
 import EnqueteEnvol from './pages/enqueteEnVol';
@@ -27,8 +27,8 @@ function App() {
         <Animation>
           <BrowserRouter>
             <Routes>
-              <Route path='/' element={<Bienvenue />}></Route>
-              <Route path='/enquete_agence' element={<EnqueteAgence />}></Route>
+              <Route path='/enquete_agence' element={<Bienvenue />}></Route>
+              <Route path='/enquete_agence/enquete' element={<EnqueteAgence />}></Route>
               <Route path='/enquete_escale' element={<EnqueteEscale />}></Route>
               <Route path='/enquete_envol' element={<EnqueteEnvol />}></Route>
               <Route path='/enquete_corporate' element={<EnqueteCorporate />}></Route>

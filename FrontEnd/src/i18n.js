@@ -8,7 +8,9 @@ i18n
             fr: {
                 translation: {
                     // Page Bienvenue
-                    select_enquete: "Quelle enquête voulez-vous effectuer aujourd'hui ?",
+                    start_enquete: "Je commence mon enquête !",
+                    appel_enquete: "Cliquez sur le bouton ci-dessous pour partager votre expérience avec nous.",
+                    choix_afrijet: "Merci d'avoir choisi AFRIJET !",
                     enquete_agence: "Expérience en agence",
                     enquete_escale: "Enquête au comptoir d'enregistrement",
                     enquete_envol: "Enquête expérience en vol",
@@ -78,6 +80,7 @@ i18n
                     embarquement: "Embarquement",
                     rafraichissement: "Rafraichissement",
                     acceuil_sol: "Accueil au sol",
+                    autre: "Autre",
                     valider: "Valider",
                     feedback: "Merci pour votre Feedback !",
 
@@ -137,7 +140,9 @@ i18n
             en: {
                 translation: {
                     // Page Bienvenue
-                    select_enquete: "What survey do you want to do today ?",
+                    start_enquete: "I'm starting my investigation !",
+                    appel_enquete: "Click the button below to share your experience with us.",
+                    choix_afrijet: "Thank you for choosing AFRIJET !",
                     enquete_agence: "Agency experience",
                     enquete_escale: "Investigation at the check-in counter",
                     enquete_envol: "In-flight experience survey",
@@ -208,6 +213,7 @@ i18n
                     rafraichissement: "Refreshment",
                     acceuil_sol: "Reception on the ground",
                     valider: "Validate",
+                    autre: "Other",
                     feedback: "Thank you for your Feedback !",
 
                     // Page Enquete Escale
@@ -266,7 +272,9 @@ i18n
             es: {
                 translation: {
                     // Page Bienvenue
-                    select_enquete: "Qué encuesta quieres realizar hoy ?",
+                    start_enquete: "¡Estoy comenzando mi investigación !",
+                    appel_enquete: "Haga clic en el botón a continuación para compartir su experiencia con nosotros.",
+                    choix_afrijet: "¡Gracias por elegir AFRIJET !",
                     enquete_agence: "Experiencia en agencia",
                     enquete_escale: "Investigación en el mostrador de facturación.",
                     enquete_envol: "Encuesta de experiencia de vuelo",
@@ -336,6 +344,7 @@ i18n
                     embarquement: "Embarque",
                     rafraichissement: "Refresco",
                     acceuil_sol: "Recepción en tierra",
+                    autre: "Otro",
                     valider: "Validar",
                     feedback: "¡Gracias por su opinión!",
 
@@ -395,7 +404,9 @@ i18n
             pt: {
                 translation: {
                     //Page Bienvenue
-                    select_enquete: "Que inquérito gostaria de efetuar hoje",
+                    start_enquete: "Estou começando minha investigação !",
+                    appel_enquete: "Clique no botão abaixo para compartilhar sua experiência conosco.",
+                    choix_afrijet: "Obrigado por escolher a AFRIJET !",
                     enquete_agence: "Experiência de agência",
                     enquete_escale: "Investigação no balcão de check-in",
                     enquete_envol: "Inquérito sobre a experiência de voo",
@@ -465,6 +476,7 @@ i18n
                     embarquement: "Embarque",
                     rafraichissement: "Refresco",
                     acceuil_sol: "Recepção no terreno",
+                    autre: "Outro",
                     valider: "Validar",
                     feedback: "Obrigado pelo seu feedback !",
 
