@@ -10,8 +10,14 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 // Configuration CORS
+// Configurez les origines autorisées
+const allowedOrigins = [
+    'http://localhost:5173', // Local pour développement
+    'http://185.158.107.39', // Adresse IP directe de mon serveur VPS
+    'https://enquete-afrijet.onrender.com', // Serveur Render
+];
 app.use(cors({
-    origin: ["http://localhost:5173"], // Remplacez par l'URL de votre frontend
+    origin: allowedOrigins, // Remplacez par l'URL de votre frontend
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Méthodes autorisées
     credentials: true // Pour envoyer des cookies et des autorisations
 }));
