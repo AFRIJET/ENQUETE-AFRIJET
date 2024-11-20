@@ -10,10 +10,9 @@ const url = process.env.MONGO_URL || "mongodb+srv://bryan:bryanafrijet@enquete-a
 let db;
 
 
-// Route pour sauvegarder une enquête client
+// Route pour sauvegarder une enquête agence
 router.post('/enquete_agence', async (req, res) => {
     const data = req.body;
-    console.log('Données reçues:', data);
     
     try {
         // Effectuer l'opération d'insertion en base de données
@@ -28,15 +27,14 @@ router.post('/enquete_agence', async (req, res) => {
     }
 });
 
-// Route pour sauvegarder une enquete escale
-router.post('/enquete_escale', async (req, res) => {
+// Route pour sauvegarder une enquete satisfaction
+router.post('/enquete_satisfaction', async (req, res) => {
     const data = req.body;
-    console.log(data);
 
     try {
         const client = new MongoClient(url);
         db = client.db('EnqueteAfrijet-db');
-        const collection = db.collection('Enquete_Escale');
+        const collection = db.collection('Enquete_Satisfaction');
         const result = await collection.insertOne(data);
         res.status(201).json(result);
     } catch (error) {
@@ -45,28 +43,11 @@ router.post('/enquete_escale', async (req, res) => {
     }
 })
 
-router.post('/enquete_envol', async (req, res) => {
-    const data = req.body;
-    console.log("data");
-
-    try {
-        const client = MongoClient(url);
-        db = client.db('EnqueteAfrijet-db');
-        const collection = db.collection('Enquete_Envol')
-        const result = await collection.insertOne(data);
-        res.status(201).json(result);
-    } catch (error) {
-        console.error("Erreur lors de l\'insertion des données", error);
-        res.status(500).send("Erreur lors de l\'insertion");
-    }
-})
-
 router.post('/enquete_entreprise', async (req, res) => {
     const data = req.body;
-    console.log(data);
 
     try {
-        const client = MongoClient(url);
+        const client = new MongoClient(url);
         db = client.db('EnqueteAfrijet-db');
         const collection = db.collection('Enquete_Entreprise');
         const result = await collection.insertOne(data);

@@ -2,12 +2,11 @@ import React from 'react'
 import '../styles/style.css'
 import logoAfrijet from '../assets/images/Logo-SF.png'
 import logoFlygabon from '../assets/images/Logo-FG2.png'
-import PopupBienvenue from './popupBienvenue'
-import { Link } from 'react-router-dom'
+import { Link, Outlet } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next';
 
-const bienvenueAgence = () => {
+const bienvenue = () => {
 
     const { t } = useTranslation();
 
@@ -31,7 +30,6 @@ const bienvenueAgence = () => {
             variants={variants}
             className='h-screen'
         >
-            <PopupBienvenue />
             <div className=''>
                 <div className=''>
                     <img src={logoAfrijet} alt='logo Afrijet' className='p-10 mx-auto logo-afrijet' />
@@ -39,14 +37,24 @@ const bienvenueAgence = () => {
             </div>
             <section className='welcome-section'>
                 <div className=''>
-                    <h3 className='mt-10 p-3 text-center text-xl'>{t('choix_afrijet')}</h3>
-                    <p className='p-3 text-center text-sm'>{t('appel_enquete')}</p>
+                    <h3 className='mt-10 p-3 text-center text-xl'>Plateforme d'enquête client AFRIJET</h3>
                 </div>
                 <ul className='mt-8 ml-[15%] options'>
                     <li className='p-3 bg-brown-500 rounded-md w-4/5'>
-                        <Link className='flex items-center w-full h-full' to="/enquete_agence/enquete">
-                            
-                            <span className='mx-3 text-xl text-white'>{t('start_enquete')}</span>
+                        <Link className='flex items-center w-full h-full' to="/enquete_agence">
+                            <span className='mx-3 text-xl text-white'>Enquête en Agence</span>
+                            <i className="fa-solid fa-arrow-right text-xl text-white ml-auto"></i>
+                        </Link>
+                    </li>
+                    <li className='mt-3 p-3 bg-brown-500 rounded-md w-4/5'>
+                        <Link className='flex items-center w-full h-full' to="/enquete_satisfaction">
+                            <span className='mx-3 text-xl text-white'>Enquête de Satisfaction</span>
+                            <i className="fa-solid fa-arrow-right text-xl text-white ml-auto"></i>
+                        </Link>
+                    </li>
+                    <li className='mt-3 p-3 bg-brown-500 rounded-md w-4/5'>
+                        <Link className='flex items-center w-full h-full' to="/enquete_corporate">
+                            <span className='mx-3 text-xl text-white'>Enquête Entreprise</span>
                             <i className="fa-solid fa-arrow-right text-xl text-white ml-auto"></i>
                         </Link>
                     </li>
@@ -54,11 +62,11 @@ const bienvenueAgence = () => {
             </section>
             <div className=''>
                 <div className=''>
-                    <img src={logoFlygabon} alt='logo Afrijet' className='fixed bottom-20 mx-auto logo-flygabon' />
+                    <img src={logoFlygabon} alt='logo Afrijet' className='fixed bottom-8 mx-auto logo-flygabon' />
                 </div>
             </div>
         </motion.div>
     )
 }
 
-export default bienvenueAgence
+export default bienvenue

@@ -21,7 +21,7 @@ const AnimatedItem = ({ children }) => {
       animate="visible"
       variants={variants}
       style={{ willChange: 'auto' }}
-      className="mb-4"
+      className=""
     >
       {children}
     </motion.div>

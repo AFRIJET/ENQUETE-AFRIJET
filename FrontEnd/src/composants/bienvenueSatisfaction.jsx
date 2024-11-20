@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next';
 
-const bienvenueAgence = () => {
+const bienvenueSatisfaction = () => {
 
     const { t } = useTranslation();
 
@@ -44,8 +44,7 @@ const bienvenueAgence = () => {
                 </div>
                 <ul className='mt-8 ml-[15%] options'>
                     <li className='p-3 bg-brown-500 rounded-md w-4/5'>
-                        <Link className='flex items-center w-full h-full' to="/enquete_agence/enquete">
-                            
+                        <Link className='flex items-center w-full h-full' to="/enquete_satisfaction/enquete">
                             <span className='mx-3 text-xl text-white'>{t('start_enquete')}</span>
                             <i className="fa-solid fa-arrow-right text-xl text-white ml-auto"></i>
                         </Link>
@@ -61,4 +60,4 @@ const bienvenueAgence = () => {
     )
 }
 
-export default bienvenueAgence
+export default bienvenueSatisfaction

@@ -11,7 +11,7 @@ const port = process.env.PORT || 5000;
 
 // Configuration CORS
 app.use(cors({
-    origin: ["https://enquete-afrijet-flygabon.netlify.app"], // Remplacez par l'URL de votre frontend
+    origin: ["http://localhost:5173"], // Remplacez par l'URL de votre frontend
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Méthodes autorisées
     credentials: true // Pour envoyer des cookies et des autorisations
 }));

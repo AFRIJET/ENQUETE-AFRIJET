@@ -2,12 +2,15 @@ import './App.css'
 import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Loader from './composants/loader'
-import Animation from './composants/animation'
-import Bienvenue from './composants/bienvenueAgence';
+import Animation from './composants/animation';
+import Bienvenue from './pages/bienvenue';
+import BienvenueAgence from './composants/bienvenueAgence';
+import BienvenueCorporate from './composants/bienvenueCorporate';
+import BienvenueSatisfaction from './composants/bienvenueSatisfaction'
 import EnqueteAgence from './pages/enqueteAgence'
-import EnqueteEscale from './pages/enqueteEscale';
-import EnqueteEnvol from './pages/enqueteEnVol';
+import EnqueteSatisfaction from './pages/enqueteSatisfaction';
 import EnqueteCorporate from './pages/enqueteCorporate';
+import Login from './pages/login';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -27,11 +30,14 @@ function App() {
         <Animation>
           <BrowserRouter>
             <Routes>
-              <Route path='/enquete_agence' element={<Bienvenue />}></Route>
+            <Route path='/' element={<Bienvenue />}></Route>
+              <Route path='/enquete_agence' element={<BienvenueAgence />}></Route>
               <Route path='/enquete_agence/enquete' element={<EnqueteAgence />}></Route>
-              <Route path='/enquete_escale' element={<EnqueteEscale />}></Route>
-              <Route path='/enquete_envol' element={<EnqueteEnvol />}></Route>
-              <Route path='/enquete_corporate' element={<EnqueteCorporate />}></Route>
+              <Route path='/enquete_satisfaction' element={<BienvenueSatisfaction />}></Route>
+              <Route path='/enquete_satisfaction/enquete' element={<EnqueteSatisfaction />}></Route>
+              <Route path='/enquete_corporate' element={<BienvenueCorporate />}></Route>
+              <Route path='/enquete_corporate/enquete' element={<EnqueteCorporate />}></Route>
+              <Route path='/admin' element={<Login />}></Route>
             </Routes>
           </BrowserRouter>
         </Animation>
