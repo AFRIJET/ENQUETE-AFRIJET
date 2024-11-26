@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import '../styles/style.css'
 import Fildariane from '../composants/fildariane'
 import logoAfrijet from '../assets/images/logo.png';
+import logoFlygabon from '../assets/images/Logo-FG1.png'
 import imageEntreprise from '../assets/images/Afrijet-entreprise.jpg'
 import { motion } from 'framer-motion'
 import { AnimatePresence } from 'framer-motion';
@@ -197,18 +198,17 @@ const enqueteCorporate = () => {
                         backgroundSize: 'cover'
                     }}
                 >
-                    <div className='w-full h-full bg-red-500/15'>
+                    <div className='w-full h-full bg-white-500/15'>
                         <div className='content relative text-center z-10'>
                             <div className='float-left w-1/2 p-[30px_2px]'>
                                 <img src={logoAfrijet} alt='logo Afrijet' />
                             </div>
-                            <div className='customer_survey float-right w-1/2'>
-                                <h1 className='text-white'>{t('enquete_entreprise')}</h1>
+                            <div className='float-right w-1/2 p-[2vh_2px]'>
+                                <img src={logoFlygabon} alt='logo Afrijet' />
                             </div>
                         </div>
                     </div>
                 </div>
-                <Fildariane sections={sections} />
             </div>
             <LanguageSelector />
             <form onSubmit={handleSubmit}>
@@ -417,7 +417,7 @@ const enqueteCorporate = () => {
                             <legend className="text-sm font-semibold leading-6 text-gray-900">5. {t('experience_entreprise')} <span className='text-red-500'>*</span></legend>
                             <small className='text-xs text-gray-700'>{t('critere_note')}</small>
                             <div>
-                                <div className="mt-4 grid grid-cols-4">
+                                <div className="mt-4 grid grid-cols-5">
                                     <div className="flex items-center mb-4">
                                         <input ref={fieldRefs.experience_globale} type="radio" id="note1" name="experience_globale" value="1" className="w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                             onChange={handleChange}
@@ -442,6 +442,12 @@ const enqueteCorporate = () => {
                                         />
                                         <label htmlFor="note4" className="text-gray-700">4</label>
                                     </div>
+                                    <div className="flex items-center mb-4">
+                                        <input type="radio" ref={fieldRefs.experience_globale} id="note5" name="experience_globale" value="5" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                            onChange={handleChange}
+                                        />
+                                        <label htmlFor="note5" className="text-gray-700">5</label>
+                                    </div>
                                 </div>
                             </div>
                         </fieldset>
@@ -462,7 +468,7 @@ const enqueteCorporate = () => {
                     <div className={`bg-white mt-4 px-6 border-b border-gray-900/10 pb-3 ${errors.service_client ? 'p-2 mx-5 rounded-lg border-2 border-red-500' : ''}`}>
                         <fieldset>
                             <legend className="text-sm font-semibold leading-6 text-gray-900 pt-4">6. {t('qualite_service')} : <span className='text-red-500'>*</span></legend>
-                            <div className="mt-4 grid grid-cols-4">
+                            <div className="mt-4 grid grid-cols-5">
                                 <div className="flex items-center mb-4">
                                     <input type="radio" ref={fieldRefs.service_client} id="note1" name="service_client" value="1" className="w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={handleChange}
@@ -487,6 +493,12 @@ const enqueteCorporate = () => {
                                     />
                                     <label htmlFor="note4" className="text-gray-700">4</label>
                                 </div>
+                                <div className="flex items-center mb-4">
+                                    <input type="radio" ref={fieldRefs.service_client} id="note5" name="service_client" value="5" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                        onChange={handleChange}
+                                    />
+                                    <label htmlFor="note5" className="text-gray-700">5</label>
+                                </div>
                             </div>
                         </fieldset>
                     </div>
@@ -494,7 +506,7 @@ const enqueteCorporate = () => {
                     <div className={`bg-white mt-4 px-6 border-b border-gray-900/10 pb-3 ${errors.ponctualite ? 'p-2 mx-5 rounded-lg border-2 border-red-500' : ''}`}>
                         <fieldset>
                             <legend className="text-sm font-semibold leading-6 text-gray-900 pt-4">7. {t('ponctualite')} : <span className='text-red-500'>*</span></legend>
-                            <div className="mt-4 grid grid-cols-4">
+                            <div className="mt-4 grid grid-cols-5">
                                 <div className="flex items-center mb-4">
                                     <input type="radio" ref={fieldRefs.ponctualite} id="note1" name="ponctualite" value="1" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={handleChange}
@@ -519,6 +531,12 @@ const enqueteCorporate = () => {
                                     />
                                     <label htmlFor="note4" className="text-gray-700">4</label>
                                 </div>
+                                <div className="flex items-center mb-4">
+                                    <input type="radio" ref={fieldRefs.ponctualite} id="note5" name="ponctualite" value="5" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                        onChange={handleChange}
+                                    />
+                                    <label htmlFor="note5" className="text-gray-700">5</label>
+                                </div>
                             </div>
                         </fieldset>
                     </div>
@@ -526,7 +544,7 @@ const enqueteCorporate = () => {
                     <div className={`bg-white mt-4 px-6 border-b border-gray-900/10 pb-3 ${errors.confort ? 'p-2 mx-5 rounded-lg border-2 border-red-500' : ''}`}>
                         <fieldset>
                             <legend className="text-sm font-semibold leading-6 text-gray-900 pt-4">8. {t('confort')} : <span className='text-red-500'>*</span></legend>
-                            <div className="mt-4 grid grid-cols-4">
+                            <div className="mt-4 grid grid-cols-5">
                                 <div className="flex items-center mb-4">
                                     <input type="radio" ref={fieldRefs.confort} id="note1" name="confort" value="1" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={handleChange}
@@ -551,6 +569,12 @@ const enqueteCorporate = () => {
                                     />
                                     <label htmlFor="note4" className="text-gray-700">4</label>
                                 </div>
+                                <div className="flex items-center mb-4">
+                                    <input type="radio" ref={fieldRefs.confort} id="note5" name="confort" value="5" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                        onChange={handleChange}
+                                    />
+                                    <label htmlFor="note5" className="text-gray-700">5</label>
+                                </div>
                             </div>
                         </fieldset>
                     </div>
@@ -558,7 +582,7 @@ const enqueteCorporate = () => {
                     <div className={`bg-white mt-4 px-6 border-b border-gray-900/10 pb-3 ${errors.reservation ? 'p-2 mx-5 rounded-lg border-2 border-red-500' : ''}`}>
                         <fieldset>
                             <legend className="text-sm font-semibold leading-6 text-gray-900 pt-4">9. {t('reservation')} : <span className='text-red-500'>*</span></legend>
-                            <div className="mt-4 grid grid-cols-4">
+                            <div className="mt-4 grid grid-cols-5">
                                 <div className="flex items-center mb-4">
                                     <input type="radio" ref={fieldRefs.reservation} id="note1" name="reservation" value="1" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={handleChange}
@@ -583,6 +607,12 @@ const enqueteCorporate = () => {
                                     />
                                     <label htmlFor="note4" className="text-gray-700">4</label>
                                 </div>
+                                <div className="flex items-center mb-4">
+                                    <input type="radio" ref={fieldRefs.reservation} id="note5" name="reservation" value="5" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                        onChange={handleChange}
+                                    />
+                                    <label htmlFor="note5" className="text-gray-700">5</label>
+                                </div>
                             </div>
                         </fieldset>
                     </div>
@@ -590,7 +620,7 @@ const enqueteCorporate = () => {
                     <div className={`bg-white mt-4 px-6 border-b border-gray-900/10 pb-3 ${errors.prix ? 'p-2 mx-5 rounded-lg border-2 border-red-500' : ''}`}>
                         <fieldset>
                             <legend className="text-sm font-semibold leading-6 text-gray-900 pt-4">10. {t('qualite_prix')} : <span className='text-red-500'>*</span></legend>
-                            <div className="mt-4 grid grid-cols-4">
+                            <div className="mt-4 grid grid-cols-5">
                                 <div className="flex items-center mb-4">
                                     <input type="radio" ref={fieldRefs.prix} id="note1" name="prix" value="1" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={handleChange}
@@ -614,6 +644,12 @@ const enqueteCorporate = () => {
                                         onChange={handleChange}
                                     />
                                     <label htmlFor="note4" className="text-gray-700">4</label>
+                                </div>
+                                <div className="flex items-center mb-4">
+                                    <input type="radio" ref={fieldRefs.prix} id="note5" name="prix" value="5" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                        onChange={handleChange}
+                                    />
+                                    <label htmlFor="note5" className="text-gray-700">5</label>
                                 </div>
                             </div>
                         </fieldset>

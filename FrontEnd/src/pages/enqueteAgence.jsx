@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import '../styles/style.css'
 import logoAfrijet from '../assets/images/logo.png';
-import imageAgence from '../assets/images/afrijet-agence.jpg'
+import logoFlygabon from '../assets/images/Logo-FG1.png'
+import imageAgence from '../assets/images/imageEnAgence.jpg'
 import axios from 'axios'
 import country from '../composants/country.json';
 import destination from '../composants/destination.json'
@@ -33,7 +34,6 @@ const AgencySurvey = () => {
     })
     const initialErrors = {
         sexe: "",
-        num_billet: "",
         nationalite: "",
         destination: "",
         agence: "",
@@ -255,18 +255,17 @@ const AgencySurvey = () => {
                         backgroundSize: 'cover'
                     }}
                 >
-                    <div className='w-full h-full bg-red-500/15'>
+                    <div className='w-full h-full bg-white-500/10'>
                         <div className='content relative text-center z-10'>
                             <div className='float-left w-1/2 p-[30px_2px]'>
                                 <img src={logoAfrijet} alt='logo Afrijet' />
                             </div>
-                            <div className='customer_survey float-right w-1/2'>
-                                <h1 className='text-white'>{t('enquete_agence')}</h1>
+                            <div className='float-right w-1/2 p-[2vh_2px]'>
+                                <img src={logoFlygabon} alt='logo Afrijet' />
                             </div>
                         </div>
                     </div>
                 </div>
-                <Fildariane sections={sections} />
             </div>
             <LanguageSelector />
             <form onSubmit={handleSubmit}>
@@ -279,7 +278,7 @@ const AgencySurvey = () => {
                     </div>
                     <div className={`mt-4 mx-5 border-b border-gray-900/10 pb-5 ${errors.sexe ? 'p-2 rounded-lg border-2 border-red-500' : ''}`}>
                         <fieldset>
-                            <legend className="text-sm font-semibold leading-6 text-gray-900">1. {t('sexe')} <span className='text-red-500'>*</span></legend>
+                            <legend className="text-sm font-semibold leading-6 text-gray-900">1. {t('sexe')} ? <span className='text-red-500'>*</span></legend>
                             <div className="mt-2 grid grid-cols-2">
                                 <div className="flex gap-x-3 p-2 bg-gray-200 rounded">
                                     <div className="flex h-6 items-center">
@@ -330,12 +329,11 @@ const AgencySurvey = () => {
                         </fieldset>
                     </div>
                     {errors.sexe && <small className="text-brown-500 text-sm mt-1 mx-5">{"("}{errors.sexe}{")"}</small>}
-                    <div className={`mt-4 mx-4 border-b border-gray-900/10 pb-5 ${errors.num_billet ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
+                    <div className='mt-4 mx-4 border-b border-gray-900/10 pb-5'>
                         <fieldset>
-                            <legend className="text-sm font-semibold leading-6 text-gray-900">2. {t('numero_billet')} <span className='text-red-500'>*</span></legend>
+                            <legend className="text-sm font-semibold leading-6 text-gray-900">2. {t('numero_billet')}</legend>
                             <div class="mt-2">
                                 <input
-                                    ref={fieldRefs.num_billet}
                                     id="num_billet"
                                     name="num_billet"
                                     rows="3"
@@ -347,7 +345,6 @@ const AgencySurvey = () => {
                             </div>
                         </fieldset>
                     </div>
-                    {errors.num_billet && <small className="text-brown-500 text-sm mt-1 mx-5">{"("}{errors.num_billet}{")"}</small>}
                     <div className={`mt-4 mx-4 border-b border-gray-900/10 pb-5 ${errors.nationalite ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
                         <legend htmlFor="country" className="text-sm font-semibold leading-6 text-gray-900">
                             3. {t('nationalite')} <span className='text-red-500'>*</span>
@@ -600,7 +597,7 @@ const AgencySurvey = () => {
                     {errors.satisfaction_agent && <small className="text-brown-500 text-sm mt-1 mx-5">{"("}{errors.satisfaction_agent}{")"}</small>}
                     <div className={`mt-4 mx-5 border-b border-gray-900/10 pb-5 ${errors.temps_attente ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
                         <fieldset>
-                            <legend className="text-sm font-semibold leading-6 text-gray-900">9. {t('temps_attente')} <span className='text-red-500'>*</span></legend>
+                            <legend className="text-sm font-semibold leading-6 text-gray-900">9. {t('temps_attente')} ? <span className='text-red-500'>*</span></legend>
                             <div className="mt-2 grid grid-cols-2">
                                 <div className="flex gap-x-3 p-3 bg-gray-200 rounded">
                                     <div className="flex h-6 items-center">
@@ -654,8 +651,9 @@ const AgencySurvey = () => {
                                 10. {t('satisfaction_client')} <span className='text-red-500'>*</span>
                             </legend>
                             <small className='text-xs text-gray-700'>{t('type_satisfaction')}</small>
+                            <small className='text-xs text-gray-700'>{t('critere_note')}</small>
                             <div>
-                                <div className="mt-4 grid grid-cols-4">
+                                <div className="mt-4 grid grid-cols-5">
                                     <div className="flex items-center mb-4">
                                         <input type="radio" ref={fieldRefs.satisfaction_client} id="note_satisfaction_1" name="satisfaction_client" value="1" className="w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                             onChange={handleChange}
@@ -679,6 +677,12 @@ const AgencySurvey = () => {
                                             onChange={handleChange}
                                         />
                                         <label htmlFor="note_satisfaction_4" className="text-gray-700">4</label>
+                                    </div>
+                                    <div className="flex items-center mb-4">
+                                        <input type="radio" ref={fieldRefs.satisfaction_client} id="note_satisfaction_5" name="satisfaction_client" value="5" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                            onChange={handleChange}
+                                        />
+                                        <label htmlFor="note_satisfaction_5" className="text-gray-700">5</label>
                                     </div>
                                 </div>
                             </div>
@@ -733,7 +737,7 @@ const AgencySurvey = () => {
                                 <fieldset>
                                     <legend className="text-sm font-semibold leading-6 text-gray-900 pt-4">{option.label} :</legend>
                                     <div className='flex'>
-                                        <div className="w-full mt-4 grid grid-cols-4">
+                                        <div className="w-full mt-4 grid grid-cols-5">
                                             <div className="flex items-center mb-4">
                                                 <input type="radio" id={`${option.name}_1`} name={option.name} value="1" className="w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                                     onChange={handleChange}
@@ -757,6 +761,12 @@ const AgencySurvey = () => {
                                                     onChange={handleChange}
                                                 />
                                                 <label htmlFor={`${option.name}_4`} className="text-gray-700">4</label>
+                                            </div>
+                                            <div className="flex items-center mb-4">
+                                                <input type="radio" id={`${option.name}_5`} name={option.name} value="5" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                                    onChange={handleChange}
+                                                />
+                                                <label htmlFor={`${option.name}_5`} className="text-gray-700">5</label>
                                             </div>
                                         </div>
                                         <i

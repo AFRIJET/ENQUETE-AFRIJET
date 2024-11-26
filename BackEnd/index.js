@@ -3,6 +3,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import routesClient from './routes/routesClient.js'
+import routesAdmin from './routes/routesAdmin.js'
 
 dotenv.config();
 
@@ -14,7 +15,8 @@ const port = process.env.PORT || 5000;
 const allowedOrigins = [
     'http://localhost:5173', // Local pour développement
     'http://185.158.107.39', // Adresse IP directe de mon serveur VPS
-    'https://enquete-afrijet.onrender.com', // Serveur Render
+    'http://enquete-afrijet-flygabon.com',
+    'https://enquete-afrijet-flygabon.com', // Nom de domaine
 ];
 app.use(cors({
     origin: allowedOrigins, // Remplacez par l'URL de votre frontend
@@ -41,6 +43,7 @@ async function connectToDatabase() {
 
 // Utilisation des routes
 app.use('/api', routesClient); // Préfixez toutes les routes client par /api
+app.use('/admin', routesAdmin); // Préfixez toutes les routes administrateur par /admin
 
 connectToDatabase();
 

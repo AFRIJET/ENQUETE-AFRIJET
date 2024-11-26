@@ -34,13 +34,21 @@ const bienvenueCorporate = () => {
             <PopupBienvenue />
             <div className=''>
                 <div className=''>
-                    <img src={logoAfrijet} alt='logo Afrijet' className='p-10 mx-auto logo-afrijet' />
+                    <img src={logoAfrijet} alt='logo Afrijet' className='pt-10 mx-auto logo-afrijet' />
+                </div>
+                <div className=''>
+                    <img src={logoFlygabon} alt='logo Afrijet' className='pt-5 pb-8 mx-auto logo-flygabon' />
                 </div>
             </div>
             <section className='welcome-section'>
                 <div className=''>
-                    <h3 className='mt-10 p-3 text-center text-xl'>{t('choix_afrijet')}</h3>
-                    <p className='p-3 text-center text-sm'>{t('appel_enquete')}</p>
+                    <p className='mt-8 p-5 text-justify'>{t('offre')}</p>
+                    <p className='mt-2 text-center'><strong>{t('pourquoi_repondre')} ?</strong></p>
+                    <ol className='text-center mt-2'>
+                        <li>1. {t('opinion')}</li>
+                        <li>2. {t('aide_service')}</li>
+                        <li>3. {t('evolution_offre')}</li>
+                    </ol>
                 </div>
                 <ul className='mt-8 ml-[15%] options'>
                     <li className='p-3 bg-brown-500 rounded-md w-4/5'>
@@ -51,11 +59,6 @@ const bienvenueCorporate = () => {
                     </li>
                 </ul>
             </section>
-            <div className=''>
-                <div className=''>
-                    <img src={logoFlygabon} alt='logo Afrijet' className='fixed bottom-20 mx-auto logo-flygabon' />
-                </div>
-            </div>
         </motion.div>
     )
 }

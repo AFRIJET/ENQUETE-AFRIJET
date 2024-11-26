@@ -11,6 +11,7 @@ import EnqueteAgence from './pages/enqueteAgence'
 import EnqueteSatisfaction from './pages/enqueteSatisfaction';
 import EnqueteCorporate from './pages/enqueteCorporate';
 import Login from './pages/login';
+import Dashboard from './pages/dashboard'
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -38,6 +39,7 @@ function App() {
               <Route path='/enquete_corporate' element={<BienvenueCorporate />}></Route>
               <Route path='/enquete_corporate/enquete' element={<EnqueteCorporate />}></Route>
               <Route path='/admin' element={<Login />}></Route>
+              <Route path='/admin/dashboard' element={<Dashboard />}></Route>
             </Routes>
           </BrowserRouter>
         </Animation>

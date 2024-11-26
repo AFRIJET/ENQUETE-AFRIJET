@@ -12,8 +12,36 @@
     padding: 0;
 }
 
+button {
+    font-family: 'Poppins', 'Arial';
+}
+
+h1 {
+    font-family: 'SUSE', 'Arial';
+}
+
+h2 {
+    font-family: 'Poppins', 'Arial';
+}
+
+h3 {
+    font-family: "SUSE", "Arial";
+}
+
+h4 {
+    font-family: "SUSE", "Arial";
+}
+
+p {
+    font-family: 'Inter', 'Arial';
+}
+
+span {
+    font-family: 'Poppins', 'Arial';
+}
+
 .login {
-    background: url('../assets/images/afrijet-agence.jpg') no-repeat;
+    background: linear-gradient(to top, rgba(0,0,0,0.3)50%, rgba(0,0,0,0.3)50%), url('../assets/images/imageEnAgence2.jpg') no-repeat;
     background-size: cover;
     background-position: top;
 }

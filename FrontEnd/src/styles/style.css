@@ -41,11 +41,15 @@ h4 {
 }
 
 p {
-    font-family: 'Poppins', 'Arial';
+    font-family: 'Inter', 'Arial';
 }
 
 span {
     font-family: 'Poppins', 'Arial';
+}
+
+ol li {
+    font-family: 'Inter', 'Arial';
 }
 
 input::placeholder {
@@ -69,7 +73,7 @@ input[type="radio"] {
 
 /* Composant header */
 .header {
-    height: 130px;
+    height: 150px;
     margin: 0 400px;
     width: 60%;
     position: fixed;
@@ -94,17 +98,16 @@ input[type="radio"] {
 }
 
 .logo-flygabon {
-    width: 25%;
-    right: 38%;
+    width: 20%;
 }
 
 .welcome-section {
     margin-top: -30px;
 }
 
- /* Debut de la page Enquete agence */
- .info-generales-info {
-    margin-top: 160px;
+/* Debut de la page Enquete agence */
+.info-generales-info {
+    margin-top: 140px;
 }
 
 /* PopUP */
@@ -181,7 +184,7 @@ input[type="radio"] {
 
     /* Debut de la page Enquete agence */
     .info-generales-info {
-        margin-top: 200px;
+        margin-top: 170px;
     }
 }
 
@@ -244,7 +247,7 @@ input[type="radio"] {
 
     /* Debut de la page Enquete agence */
     .info-generales-info {
-        margin-top: 210px;
+        margin-top: 180px;
     }
 
 }
@@ -259,7 +262,7 @@ input[type="radio"] {
     /* Composant header */
     .header {
         position: fixed;
-        height: 150px;
+        height: 170px;
         width: 100%;
         margin: 0;
         top: 0;
@@ -308,7 +311,7 @@ input[type="radio"] {
 
     /* Debut de la page Enquete agence */
     .info-generales-info {
-        margin-top: 180px;
+        margin-top: 160px;
     }
 
 }
