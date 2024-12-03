@@ -1,7 +1,317 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=SUSE:wght@100..800&display=swap');
 
+/* Proprietes generales */
+:root {
+    --color-text-primary: #fff;
+    --bg-principal: red;
+    --bg-secondaire: white;
+}
+
 * {
     margin: 0;
     padding: 0;
+}
+
+legend {
+    font-family: 'Poppins', 'Arial';
+}
+
+label {
+    font-family: 'Poppins', 'Arial';
+}
+
+button {
+    font-family: 'Poppins', 'Arial';
+}
+
+h1 {
     font-family: 'SUSE', 'Arial';
+}
+
+h2 {
+    font-family: 'Poppins', 'Arial';
+}
+
+h3 {
+    font-family: "SUSE", "Arial";
+}
+
+h4 {
+    font-family: "SUSE", "Arial";
+}
+
+p {
+    font-family: 'Inter', 'Arial';
+}
+
+span {
+    font-family: 'Poppins', 'Arial';
+}
+
+ol li {
+    font-family: 'Inter', 'Arial';
+}
+
+input::placeholder {
+    padding: 10px;
+    font-family: 'Poppins', 'Arial';
+}
+
+option {
+    font-family: 'Poppins', 'Arial';
+}
+
+section {
+    margin: 0 400px;
+}
+
+input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+/* Composant header */
+.header {
+    height: 150px;
+    margin: 0 400px;
+    width: 60%;
+    position: fixed;
+}
+
+.customer_survey h1 {
+    padding-top: 50px;
+    font-size: 24px;
+}
+
+/* Composant fil d'ariane */
+.fil_ariane {
+    margin: 0 400px;
+    position: fixed;
+    width: 60%;
+    top: 130px;
+}
+
+/* Page Bienvenue */
+.logo-afrijet {
+    width: 30%;
+}
+
+.logo-flygabon {
+    width: 20%;
+}
+
+.welcome-section {
+    margin-top: -30px;
+}
+
+/* Debut de la page Enquete agence */
+.info-generales-info {
+    margin-top: 140px;
+}
+
+/* PopUP */
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+/* Debut de la page Enquete agence */
+.btn-valider {
+    font-family: 'Poppins', 'Arial';
+}
+
+/* Responsive pour les ecrans de taille max = 1300px (tablette) */
+@media (max-width: 1300px) {
+
+    section {
+        margin: 0 200px;
+    }
+
+    /* Composant header */
+    .header {
+        position: fixed;
+        height: 160px;
+        margin: 0 200px;
+        width: 70%;
+        top: 0;
+        left: 0;
+    }
+
+    .content {
+        padding-top: 3%;
+    }
+
+    .customer_survey h1 {
+        padding-top: 5%;
+        font-size: 30px;
+    }
+
+    /* Composant fil d'ariane */
+    .fil_ariane {
+        margin: 0 200px;
+        width: 70%;
+        position: fixed;
+        top: 160px;
+
+    }
+
+    /* Page Bienvenue */
+    .logo-afrijet {
+        width: 60%;
+    }
+
+    .logo-flygabon {
+        width: 50%;
+        right: 25%;
+    }
+
+    .welcome-section {
+        margin-top: -50px;
+    }
+
+    /* PopUP */
+    .popup {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+    /* Debut de la page Enquete agence */
+    .info-generales-info {
+        margin-top: 170px;
+    }
+}
+
+/* Responsive pour les ecrans de taille max = 850px (tablette) */
+@media (max-width: 850px) {
+
+    section {
+        margin: 0;
+    }
+
+    /* Composant header */
+    .header {
+        position: fixed;
+        height: 180px;
+        width: 100%;
+        margin: 0;
+        top: 0;
+        left: 0;
+    }
+
+    .content {
+        padding-top: 5%;
+    }
+
+    .customer_survey h1 {
+        padding-top: 18px;
+        font-size: 30px;
+    }
+
+    /* Composant fil d'ariane */
+    .fil_ariane {
+        margin: 0;
+        position: fixed;
+        top: 180px;
+        width: 100%;
+    }
+
+    /* Page Bienvenue */
+    .logo-afrijet {
+        width: 60%;
+    }
+
+    .logo-flygabon {
+        width: 50%;
+        right: 25%;
+    }
+
+    .welcome-section {
+        margin-top: -50px;
+    }
+
+    /* PopUP */
+    .popup {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+    /* Debut de la page Enquete agence */
+    .info-generales-info {
+        margin-top: 180px;
+    }
+
+}
+
+/* Responsive pour les telepones */
+@media (max-width: 500px) {
+
+    section {
+        margin: 0;
+    }
+
+    /* Composant header */
+    .header {
+        position: fixed;
+        height: 170px;
+        width: 100%;
+        margin: 0;
+        top: 0;
+        left: 0;
+    }
+
+    .content {
+        padding-top: 8%;
+    }
+
+    .customer_survey h1 {
+        padding-top: 8px;
+        font-size: 24px;
+    }
+
+    /* Composant fil d'ariane */
+    .fil_ariane {
+        margin: 0;
+        position: fixed;
+        top: 150px;
+        width: 100%;
+    }
+
+    /* Page Bienvenue */
+    .logo-afrijet {
+        width: 90%;
+    }
+
+    .logo-flygabon {
+        width: 70%;
+        right: 15%;
+    }
+
+    .welcome-section {
+        margin-top: -60px;
+    }
+
+    /* PopUP */
+    .popup {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+    /* Debut de la page Enquete agence */
+    .info-generales-info {
+        margin-top: 160px;
+    }
+
 }

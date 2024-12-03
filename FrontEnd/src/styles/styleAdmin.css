@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=SUSE:wght@100..800&display=swap');
+
+/* Proprietes generales */
+:root {
+    --color-text-primary: #fff;
+    --bg-principal: red;
+    --bg-secondaire: white;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+button {
+    font-family: 'Poppins', 'Arial';
+}
+
+h1 {
+    font-family: 'SUSE', 'Arial';
+}
+
+h2 {
+    font-family: 'Poppins', 'Arial';
+}
+
+h3 {
+    font-family: "SUSE", "Arial";
+}
+
+h4 {
+    font-family: "SUSE", "Arial";
+}
+
+p {
+    font-family: "SUSE", "Arial";
+}
+
+span {
+    font-family: "SUSE", "Arial";
+}
+
+.login {
+    background: linear-gradient(to top, rgba(0,0,0,0.3)50%, rgba(0,0,0,0.3)50%), url('../assets/images/imageEnAgence2.jpg') no-repeat;
+    background-size: cover;
+    background-position: top;
+}
+
+/* PopUP */
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.react-datepicker {
+    font-size: 14px;
+    border-radius: 8px;
+  }
+
+  /* Responsive pour les telepones */
+@media (max-width: 500px) {
+    /* Page Login */
+    .login-container {
+        width: 350px;
+    }
+    /* Page dashboard */
+    .logo-afrijet {
+        width: 25px
+    }
+    .logo-flygabon {
+        display: none;
+    }
+    .nav{
+        width: 75px;
+        padding-top: 25px;
+    }
+    .nav-text {
+        display: none;
+    }
+    /* Page profil */
+    .input-user {
+        width: 250px;
+    }
+    .users {
+        width:auto
+    }
+    tr th {
+        padding: 0 5px;
+    }
+}

@@ -14,7 +14,3 @@ app.get('/api/data', async (req, res) => {
     res.status(500).json({ error: 'An error occurred' });
   }
 });
-
-app.listen(3000, () => {
-  console.log('Server is running on port 3000');
-});
