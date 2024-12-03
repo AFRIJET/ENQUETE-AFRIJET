@@ -24,7 +24,7 @@ const enqueteCorporate = () => {
     const [isPopVisible, setIsPopVisible] = useState(false)
     const [selectedCheckbox, setSelectedCheckbox] = useState(null)
     const popupRef = useRef(null)
-    const date = new Date().toISOString()
+    const date = new Date().toISOString().split("T")[0];
     const [data, setData] = useState({
         date: date,
     })
@@ -200,7 +200,7 @@ const enqueteCorporate = () => {
                 >
                     <div className='w-full h-full bg-white-500/15'>
                         <div className='content relative text-center z-10'>
-                            <div className='float-left w-1/2 p-[30px_2px]'>
+                            <div className='float-left w-1/2 p-[3vh_2px]'>
                                 <img src={logoAfrijet} alt='logo Afrijet' />
                             </div>
                             <div className='float-right w-1/2 p-[2vh_2px]'>

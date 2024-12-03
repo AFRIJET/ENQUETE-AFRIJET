@@ -33,15 +33,61 @@ h4 {
 }
 
 p {
-    font-family: 'Inter', 'Arial';
+    font-family: "SUSE", "Arial";
 }
 
 span {
-    font-family: 'Poppins', 'Arial';
+    font-family: "SUSE", "Arial";
 }
 
 .login {
     background: linear-gradient(to top, rgba(0,0,0,0.3)50%, rgba(0,0,0,0.3)50%), url('../assets/images/imageEnAgence2.jpg') no-repeat;
     background-size: cover;
     background-position: top;
+}
+
+/* PopUP */
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.react-datepicker {
+    font-size: 14px;
+    border-radius: 8px;
+  }
+
+  /* Responsive pour les telepones */
+@media (max-width: 500px) {
+    /* Page Login */
+    .login-container {
+        width: 350px;
+    }
+    /* Page dashboard */
+    .logo-afrijet {
+        width: 25px
+    }
+    .logo-flygabon {
+        display: none;
+    }
+    .nav{
+        width: 75px;
+        padding-top: 25px;
+    }
+    .nav-text {
+        display: none;
+    }
+    /* Page profil */
+    .input-user {
+        width: 250px;
+    }
+    .users {
+        width:auto
+    }
+    tr th {
+        padding: 0 5px;
+    }
 }

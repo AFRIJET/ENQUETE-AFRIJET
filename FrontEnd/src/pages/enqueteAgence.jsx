@@ -25,7 +25,7 @@ const AgencySurvey = () => {
     ];
     const [isPopVisible, setIsPopVisible] = useState(false); // Declaration de la variable pour la popUp
     const popupRef = useRef(null)
-    const date = new Date().toISOString() // Définition de la variable date
+    const date = new Date().toISOString().split("T")[0]; // Définition de la variable date
     const [selectedCheckbox, setSelectedCheckbox] = useState(null); // État pour la sélection de la checkbox
 
     // Initialisation de l'etat de ma variable data grace au hook UseState pour recuperer les donnees entrees par les utilisateurs
@@ -257,7 +257,7 @@ const AgencySurvey = () => {
                 >
                     <div className='w-full h-full bg-white-500/10'>
                         <div className='content relative text-center z-10'>
-                            <div className='float-left w-1/2 p-[30px_2px]'>
+                            <div className='float-left w-1/2 p-[3vh_2px]'>
                                 <img src={logoAfrijet} alt='logo Afrijet' />
                             </div>
                             <div className='float-right w-1/2 p-[2vh_2px]'>
@@ -425,7 +425,7 @@ const AgencySurvey = () => {
                             <legend className="text-sm font-semibold leading-6 text-gray-900">6. {t('acceuil_agence')} <span className='text-red-500'>*</span></legend>
                             <small className='text-xs text-gray-700'>{t('critere_note')}</small>
                             <div>
-                                <div className="mt-4 grid grid-cols-4">
+                                <div className="mt-4 grid grid-cols-5">
                                     <div className="flex items-center mb-4">
                                         <input ref={fieldRefs.acceuil_agence} type="radio" id="note_acceuil_1" name="acceuil_agence" value="1" className="w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                             onChange={handleChange}
@@ -449,6 +449,12 @@ const AgencySurvey = () => {
                                             onChange={handleChange}
                                         />
                                         <label htmlFor="note_acceuil_4" className="text-gray-700">4</label>
+                                    </div>
+                                    <div className="flex items-center mb-4">
+                                        <input type="radio" ref={fieldRefs.acceuil_agence} id="note_acceuil_5" name="acceuil_agence" value="5" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                            onChange={handleChange}
+                                        />
+                                        <label htmlFor="note_acceuil_5" className="text-gray-700">5</label>
                                     </div>
                                 </div>
                             </div>
@@ -650,7 +656,7 @@ const AgencySurvey = () => {
                             <legend className="text-sm font-semibold leading-6 text-gray-900">
                                 10. {t('satisfaction_client')} <span className='text-red-500'>*</span>
                             </legend>
-                            <small className='text-xs text-gray-700'>{t('type_satisfaction')}</small>
+                            <small className='text-xs text-gray-700'>{t('type_satisfaction')}</small><br />
                             <small className='text-xs text-gray-700'>{t('critere_note')}</small>
                             <div>
                                 <div className="mt-4 grid grid-cols-5">
@@ -713,7 +719,7 @@ const AgencySurvey = () => {
                                 className="p-2 bg-gray-200 block w-full rounded-md font-medium border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:max-w-xl sm:text-sm sm:leading-6"
                                 onChange={handleSelect}
                             >
-                                <option value="" selected disabled>{t("selection")}</option>
+                                <option value="" selected disabled>{t("selection_plus")}</option>
                                 {options.map(option => (
                                     <option
                                         key={option.key}

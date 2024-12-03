@@ -27,7 +27,7 @@ const enqueteSatisfaction = () => {
     const [text, setText] = useState("")
     const [selectedCheckbox, setSelectedCheckbox] = useState()
     const popupRef = useRef(null)
-    const date = new Date().toISOString()
+    const date = new Date().toISOString().split("T")[0];
     const maxLength = 150
     const [data, setData] = useState({
         date: date,
@@ -38,9 +38,6 @@ const enqueteSatisfaction = () => {
         depart: '',
         destination: '',
         type_enregistrement: '',
-        assistance_comptoire: '',
-        clarte_explication: '',
-        rapidite_enregistrement: '',
         experience_comptoire: '',
         courtoisie_personnel_escale: '',
         temps_enregistrement: '',
@@ -67,8 +64,6 @@ const enqueteSatisfaction = () => {
         femme: false,
         en_ligne: false,
         au_comptoire: false,
-        assistance_oui: false,
-        assistance_non: false,
         temps_raisonnable_oui: false,
         temps_raisonnable_non: false,
         difficulte_oui: false,
@@ -277,7 +272,7 @@ const enqueteSatisfaction = () => {
                 >
                     <div className='w-full h-full bg-white-500/10'>
                         <div className='content relative text-center z-10'>
-                            <div className='float-left w-1/2 p-[30px_2px]'>
+                            <div className='float-left w-1/2 p-[3vh_2px]'>
                                 <img src={logoAfrijet} alt='logo Afrijet' />
                             </div>
                             <div className='float-right w-1/2 p-[2vh_2px]'>
@@ -491,100 +486,9 @@ const enqueteSatisfaction = () => {
                         </fieldset>
                     </div>
                     {errors.type_enregistrement && <small className="text-brown-500 text-sm mt-1 mx-5">{"("}{errors.type_enregistrement}{")"}</small>}
-                    <div className={`mt-4 mx-4 border-b border-gray-900/10 pb-5 ${errors.assistance_comptoire ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
-                        <fieldset>
-                            <legend className="text-sm font-semibold leading-6 text-gray-900">7. {t('assistance_comptoire')} <span className='text-red-500'>*</span></legend>
-                            <div className="mt-2 grid grid-cols-2">
-                                <div className="flex gap-x-3 p-3 bg-gray-200 rounded">
-                                    <div className="flex h-6 items-center">
-                                        <input
-                                            ref={fieldRefs.assistance_comptoire}
-                                            checked={CheckedItems.assistance_oui}
-                                            onClick={handleChangeBox}
-                                            disabled={CheckedItems.assistance_non}
-                                            id="assistance_oui"
-                                            value="Oui"
-                                            name="assistance_comptoire"
-                                            type="checkbox"
-                                            className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                                            onChange={handleChange}
-                                        />
-                                    </div>
-                                    <div className="text-sm leading-6">
-                                        <label htmlFor="assistance_oui" className="font-medium text-gray-900">
-                                            {t('oui')}
-                                        </label>
-                                    </div>
-                                </div>
-                                <div className="flex gap-x-3 mx-4 p-3 bg-gray-200 rounded">
-                                    <div className="flex h-6 items-center">
-                                        <input
-                                            ref={fieldRefs.assistance_comptoire}
-                                            checked={CheckedItems.assistance_non}
-                                            onClick={handleChangeBox}
-                                            disabled={CheckedItems.assistance_oui}
-                                            id="assistance_non"
-                                            value="Non"
-                                            name="assistance_comptoire"
-                                            type="checkbox"
-                                            className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                                            onChange={handleChange}
-                                        />
-                                    </div>
-                                    <div className="text-sm leading-6">
-                                        <label htmlFor="assistance_non" className="font-medium text-gray-900">
-                                            {t('non')}
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </fieldset>
-                    </div>
-                    {errors.assistance_comptoire && <small className="text-brown-500 text-sm mt-1 mx-5">{"("}{errors.assistance_comptoire}{")"}</small>}
-                    <div className={`mt-4 mx-4 border-b border-gray-900/10 pb-5 ${errors.clarte_explication ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
-                        <fieldset>
-                            <legend className="text-sm font-semibold leading-6 text-gray-900">8. {t('instruction_enregistrement')} ? <span className='text-red-500'>*</span></legend>
-                            <small className='text-xs text-gray-700'>{t('critere_note')}</small>
-                            <div>
-                                <div className="mt-4 grid grid-cols-5">
-                                    <div className="flex items-center mb-4">
-                                        <input ref={fieldRefs.clarte_explication} type="radio" id="note1" name="clarte_explication" value="1" className="w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                            onChange={handleChange}
-                                        />
-                                        <label htmlFor="note1" className="text-gray-700">1</label>
-                                    </div>
-                                    <div className="flex items-center mb-4">
-                                        <input type="radio" ref={fieldRefs.clarte_explication} id="note2" name="clarte_explication" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                            onChange={handleChange}
-                                        />
-                                        <label htmlFor="note2" className="text-gray-700">2</label>
-                                    </div>
-                                    <div className="flex items-center mb-4">
-                                        <input type="radio" ref={fieldRefs.clarte_explication} id="note3" name="clarte_explication" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                            onChange={handleChange}
-                                        />
-                                        <label htmlFor="note3" className="text-gray-700">3</label>
-                                    </div>
-                                    <div className="flex items-center mb-4">
-                                        <input type="radio" ref={fieldRefs.clarte_explication} id="note4" name="clarte_explication" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                            onChange={handleChange}
-                                        />
-                                        <label htmlFor="note4" className="text-gray-700">4</label>
-                                    </div>
-                                    <div className="flex items-center mb-4">
-                                        <input type="radio" ref={fieldRefs.clarte_explication} id="note5" name="clarte_explication" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                            onChange={handleChange}
-                                        />
-                                        <label htmlFor="note5" className="text-gray-700">5</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </fieldset>
-                    </div>
-                    {errors.clarte_explication && <small className="text-brown-500 text-sm mt-1 mx-5">{"("}{errors.clarte_explication}{")"}</small>}
                     <div className={`mt-4 mx-4 border-b border-gray-900/10 pb-5 ${errors.courtoisie_personnel_escale ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
                         <fieldset>
-                            <legend className="text-sm font-semibold leading-6 text-gray-900">9. {t('courtoisie_personnel')} ? <span className='text-red-500'>*</span></legend>
+                            <legend className="text-sm font-semibold leading-6 text-gray-900">7. {t('courtoisie_personnel')} ? <span className='text-red-500'>*</span></legend>
                             <small className='text-xs text-gray-700'>{t('critere_note')}</small>
                             <div>
                                 <div className="mt-4 grid grid-cols-5">
@@ -623,50 +527,9 @@ const enqueteSatisfaction = () => {
                         </fieldset>
                     </div>
                     {errors.courtoisie_personnel_escale && <small className="text-brown-500 text-sm mt-1 mx-5">{"("}{errors.courtoisie_personnel_escale}{")"}</small>}
-                    <div className={`mt-4 mx-4 border-b border-gray-900/10 pb-5 ${errors.rapidite_enregistrement ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
-                        <fieldset>
-                            <legend className="text-sm font-semibold leading-6 text-gray-900">10. {t('rapidite_enregistrement')} ? <span className='text-red-500'>*</span></legend>
-                            <small className='text-xs text-gray-700'>{t('critere_note')}</small>
-                            <div>
-                                <div className="mt-4 grid grid-cols-5">
-                                    <div className="flex items-center mb-4">
-                                        <input ref={fieldRefs.rapidite_enregistrement} type="radio" id="note1" name="rapidite_enregistrement" value="1" className="w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                            onChange={handleChange}
-                                        />
-                                        <label htmlFor="note1" className="text-gray-700">1</label>
-                                    </div>
-                                    <div className="flex items-center mb-4">
-                                        <input type="radio" ref={fieldRefs.rapidite_enregistrement} id="note2" name="rapidite_enregistrement" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                            onChange={handleChange}
-                                        />
-                                        <label htmlFor="note2" className="text-gray-700">2</label>
-                                    </div>
-                                    <div className="flex items-center mb-4">
-                                        <input type="radio" ref={fieldRefs.rapidite_enregistrement} id="note3" name="rapidite_enregistrement" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                            onChange={handleChange}
-                                        />
-                                        <label htmlFor="note3" className="text-gray-700">3</label>
-                                    </div>
-                                    <div className="flex items-center mb-4">
-                                        <input type="radio" ref={fieldRefs.rapidite_enregistrement} id="note4" name="rapidite_enregistrement" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                            onChange={handleChange}
-                                        />
-                                        <label htmlFor="note4" className="text-gray-700">4</label>
-                                    </div>
-                                    <div className="flex items-center mb-4">
-                                        <input type="radio" ref={fieldRefs.rapidite_enregistrement} id="note5" name="rapidite_enregistrement" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                            onChange={handleChange}
-                                        />
-                                        <label htmlFor="note5" className="text-gray-700">5</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </fieldset>
-                    </div>
-                    {errors.rapidite_enregistrement && <small className="text-brown-500 text-sm mt-1 mx-5">{"("}{errors.rapidite_enregistrement}{")"}</small>}
                     <div className={`mt-4 mx-5 border-b border-gray-900/10 pb-5 ${errors.temps_enregistrement ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
                         <fieldset>
-                            <legend className="text-sm font-semibold leading-6 text-gray-900">11. {t('temps_enregistrement')} ? <span className='text-red-500'>*</span></legend>
+                            <legend className="text-sm font-semibold leading-6 text-gray-900">8. {t('temps_enregistrement')} ? <span className='text-red-500'>*</span></legend>
                             <div className="mt-2 grid grid-cols-2">
                                 <div className="flex gap-x-3 p-2 bg-gray-200 rounded">
                                     <div className="flex h-6 items-center">
@@ -756,7 +619,7 @@ const enqueteSatisfaction = () => {
                     {errors.temps_enregistrement && <small className="text-brown-500 text-sm mt-1 mx-5">{"("}{errors.temps_enregistrement}{")"}</small>}
                     <div className={`mt-4 mx-4 border-b border-gray-900/10 pb-5 ${errors.temps_raisonnable ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
                         <fieldset>
-                            <legend className="text-sm font-semibold leading-6 text-gray-900">12. {t('temps_raisonnable')} ? <span className='text-red-500'>*</span></legend>
+                            <legend className="text-sm font-semibold leading-6 text-gray-900">9. {t('temps_raisonnable')} ? <span className='text-red-500'>*</span></legend>
                             <div className="mt-2 grid grid-cols-2">
                                 <div className="flex gap-x-3 p-3 bg-gray-200 rounded">
                                     <div className="flex h-6 items-center">
@@ -806,7 +669,7 @@ const enqueteSatisfaction = () => {
                     {errors.difficulte && <small className="text-brown-500 text-sm mt-1 mx-5">{"("}{errors.difficulte}{")"}</small>}
                     <div className={`mt-4 mx-4 border-b border-gray-900/10 pb-5 ${errors.difficulte ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
                         <fieldset>
-                            <legend className="text-sm font-semibold leading-6 text-gray-900">13. {t('difficulte')} <span className='text-red-500'>*</span></legend>
+                            <legend className="text-sm font-semibold leading-6 text-gray-900">10. {t('difficulte')} <span className='text-red-500'>*</span></legend>
                             <div className="mt-2 grid grid-cols-2">
                                 <div className="flex gap-x-3 p-3 bg-gray-200 rounded">
                                     <div className="flex h-6 items-center">
@@ -868,7 +731,6 @@ const enqueteSatisfaction = () => {
                                             onChange={handleChange}
                                         >
                                             <option selected disabled>{t('selection')}</option>
-                                            <option>{t('Aimabilite')}</option>
                                             <option>{t('file_attente')}</option>
                                             <option>{t('documentation')}</option>
                                             <option>{t('probleme_technique')}</option>
@@ -888,7 +750,7 @@ const enqueteSatisfaction = () => {
                     }
                     <div className={`mt-4 mx-4 border-b border-gray-900/10 pb-5 ${errors.experience_comptoire ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
                         <fieldset>
-                            <legend className="text-sm font-semibold leading-6 text-gray-900">14. {t('experience_comptoire')} <span className='text-red-500'>*</span></legend>
+                            <legend className="text-sm font-semibold leading-6 text-gray-900">11. {t('experience_comptoire')} <span className='text-red-500'>*</span></legend>
                             <small className='text-xs text-gray-700'>{t('critere_note')}</small>
                             <div>
                                 <div className="mt-4 grid grid-cols-5">
@@ -937,7 +799,7 @@ const enqueteSatisfaction = () => {
                     </div>
                     <div className={`mt-4 mx-4 border-b border-gray-900/10 pb-5 ${errors.ponctualite ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
                         <fieldset>
-                            <legend className="text-sm font-semibold leading-6 text-gray-900">15. {t('horaire')} ? <span className='text-red-500'>*</span></legend>
+                            <legend className="text-sm font-semibold leading-6 text-gray-900">12. {t('horaire')} ? <span className='text-red-500'>*</span></legend>
                             <div className="mt-2 grid grid-cols-2">
                                 <div className="flex gap-x-3 p-3 bg-gray-200 rounded">
                                     <div className="flex h-6 items-center">
@@ -987,7 +849,7 @@ const enqueteSatisfaction = () => {
                     {errors.ponctualite && <small className="text-brown-500 text-sm mt-1 mx-5">{"("}{errors.ponctualite}{")"}</small>}
                     <div className={`mt-4 mx-4 border-b border-gray-900/10 pb-5 ${errors.reactivite_equipage ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
                         <fieldset>
-                            <legend className="text-sm font-semibold leading-6 text-gray-900">16. {t('reactivite_personnel')} ? <span className='text-red-500'>*</span></legend>
+                            <legend className="text-sm font-semibold leading-6 text-gray-900">13. {t('reactivite_personnel')} ? <span className='text-red-500'>*</span></legend>
                             <div className="mt-2 grid grid-cols-2">
                                 <div className="flex gap-x-3 p-3 bg-gray-200 rounded">
                                     <div className="flex h-6 items-center">
@@ -1037,7 +899,7 @@ const enqueteSatisfaction = () => {
                     {errors.ponctualite && <small className="text-brown-500 text-sm mt-1 mx-5">{"("}{errors.ponctualite}{")"}</small>}
                     <div className={`mt-4 mx-4 border-b border-gray-900/10 pb-5 ${errors.courtoisie_personel_envol ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
                         <fieldset>
-                            <legend className="text-sm font-semibold leading-6 text-gray-900 pt-4">17. {t('courtoisie_personnel_envol')} ? <span className='text-red-500'>*</span></legend>
+                            <legend className="text-sm font-semibold leading-6 text-gray-900 pt-4">14. {t('courtoisie_personnel_envol')} ? <span className='text-red-500'>*</span></legend>
                             <small className='text-xs text-gray-700'>{t('critere_note')}</small>
                             <div className="mt-4 grid grid-cols-5">
                                 <div className="flex items-center mb-4">
@@ -1076,7 +938,7 @@ const enqueteSatisfaction = () => {
                     {errors.courtoisie_personel_envol && <small className="text-brown-500 text-sm mt-1 mx-5">{"("}{errors.courtoisie_personel_envol}{")"}</small>}
                     <div className={`mt-4 mx-4 border-b border-gray-900/10 pb-5 ${errors.confort_siege ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
                         <fieldset>
-                            <legend className="text-sm font-semibold leading-6 text-gray-900">18. {t('confort_siege')} ? <span className='text-red-500'>*</span></legend>
+                            <legend className="text-sm font-semibold leading-6 text-gray-900">15. {t('confort_siege')} ? <span className='text-red-500'>*</span></legend>
                             <small className='text-xs text-gray-700'>{t('critere_note')}</small>
                             <div>
                                 <div className="mt-4 grid grid-cols-5">
@@ -1117,7 +979,7 @@ const enqueteSatisfaction = () => {
                     {errors.confort_siege && <small className="text-brown-500 text-sm mt-1 mx-5">{"("}{errors.confort_siege}{")"}</small>}
                     <div className={`mt-4 mx-4 border-b border-gray-900/10 pb-5 ${errors.proprete ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
                         <fieldset>
-                            <legend className="text-sm font-semibold leading-6 text-gray-900">19. {t('proprete_envol')} ? <span className='text-red-500'>*</span></legend>
+                            <legend className="text-sm font-semibold leading-6 text-gray-900">16. {t('proprete_envol')} ? <span className='text-red-500'>*</span></legend>
                             <small className='text-xs text-gray-700'>{t('critere_note')}</small>
                             <div>
                                 <div className="mt-4 grid grid-cols-5">
@@ -1158,7 +1020,7 @@ const enqueteSatisfaction = () => {
                     {errors.proprete && <small className="text-brown-500 text-sm mt-1 mx-5">{"("}{errors.proprete}{")"}</small>}
                     <div className={`mt-4 mx-4 border-b border-gray-900/10 pb-5 ${errors.experience_vol ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
                         <fieldset>
-                            <legend className="text-sm font-semibold leading-6 text-gray-900">20. {t('experience_globale')} <span className='text-red-500'>*</span></legend>
+                            <legend className="text-sm font-semibold leading-6 text-gray-900">17. {t('experience_globale')} <span className='text-red-500'>*</span></legend>
                             <small className='text-xs text-gray-700'>{t('critere_note')}</small>
                             <div>
                                 <div className="mt-4 grid grid-cols-5">
@@ -1207,7 +1069,7 @@ const enqueteSatisfaction = () => {
                     </div>
                     <div className="mt-4 mx-4 border-b border-gray-900/10 pb-5">
                         <legend htmlFor="services" className="text-sm font-semibold leading-6 text-gray-900">
-                            21. {t('note_service_envol')} <span className='text-red-500'>*</span>
+                            18. {t('note_service_envol')} <span className='text-red-500'>*</span>
                         </legend>
                         <small className='text-xs text-gray-700'>{t('critere_note')}</small>
                         <div className="mt-2">
@@ -1292,7 +1154,7 @@ const enqueteSatisfaction = () => {
                     </div>
                     <div className={`mt-4 mx-5 border-b border-gray-900/10 pb-5 ${errors.recommandation ? 'mt-2 p-2 rounded-lg border-2 border-red-500' : ''}`}>
                         <fieldset>
-                            <legend className="text-sm font-semibold leading-6 text-gray-900">22. {t('recommandation_afrijet')} <span className='text-red-500'>*</span></legend>
+                            <legend className="text-sm font-semibold leading-6 text-gray-900">19. {t('recommandation_afrijet')} <span className='text-red-500'>*</span></legend>
                             <div className="mt-2 grid grid-cols-2">
                                 <div className="flex gap-x-3 p-3 bg-gray-200 rounded">
                                     <div className="flex h-6 items-center">
@@ -1403,7 +1265,7 @@ const enqueteSatisfaction = () => {
                     }
                     <div className="mt-4 mx-4 pb-5">
                         <fieldset>
-                            <legend className="text-sm font-semibold leading-6 text-gray-900">23. {t('suggestion_client')} ?</legend>
+                            <legend className="text-sm font-semibold leading-6 text-gray-900">20. {t('suggestion_client')} ?</legend>
                             <div className="mt-2">
                                 <textarea
                                     value={text}

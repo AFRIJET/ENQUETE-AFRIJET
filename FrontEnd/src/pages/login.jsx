@@ -4,11 +4,12 @@ import logoAfrijet from '../assets/images/Logo-SF.png'
 import logoFlygabon from '../assets/images/Logo-FG2.png'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from "../composants/authContext";
 
 const apiUrl = import.meta.env.VITE_API_URL
 
 const login = () => {
-
+    const { login } = useAuth();
     const [values, setValues] = useState({})
     const [error, setError] = useState("")
     const navigate = useNavigate()
@@ -21,8 +22,6 @@ const login = () => {
         })
     }
 
-    console.log(values)
-
     const handleSubmit = (e) => {
         e.preventDefault();
         axios.post(`${apiUrl}/admin/login`, values, {
@@ -31,30 +30,32 @@ const login = () => {
             .then(response => {
                 if (response.data.success) {
                     // Connexion réussie
-                    console.log('Connexion réussie:', response.data);
-                    setError('');
-                    navigate('/admin/dashboard');
+                    const token = response.data.token // Récupère le token de l'utilisateur
+                    sessionStorage.setItem('token', token)
+                    login(token);
+                    const userData = response.data.user; // Récupère les données utilisateur du backend
+                    sessionStorage.setItem('user', JSON.stringify(userData)); // Sauvegarde les données dans le localStorage
+                    // Redirige ou met à jour l'état de l'application
+                    navigate('/admin/dashboard')
                 }
             })
-            .catch (error => {
-            // Vérifie si c'est une erreur HTTP
-            if (error.response) {
-                const { message } = error.response.data;
-                console.error('Erreur:', message);
-
-                // Afficher un message à l'utilisateur
-                setError(message);
-            } else {
-                console.error('Erreur réseau:', error);
-                alert('Erreur de connexion au serveur.');
-            }
-        })
+            .catch(error => {
+                // Vérifie si c'est une erreur HTTP ou de l'utilisateur
+                if (error.response) {
+                    // Afficher un message à l'utilisateur
+                    const { message } = error.response.data;
+                    setError(message);
+                } else {
+                    console.error('Erreur réseau:', error);
+                    alert('Erreur de connexion au serveur.');
+                }
+            })
 
     }
     return (
         <div className='login h-screen'>
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-                <div className='bg-white rounded-2xl w-[500px] mx-auto p-8'>
+                <div className='bg-white rounded-2xl mx-auto p-8 login-container'>
                     <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                         <img
                             alt="Logo Afrijet"
@@ -64,6 +65,7 @@ const login = () => {
                         <h2 className="mt-7 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
                             Bienvenue dans la plateforme d'enquête client
                         </h2>
+                        {/* Affiche l'erreur de l'utilisateur */}
                         {error &&
                             <p className="mt-3 text-center text-sm text-brown-500">
                                 {error}

@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import routesClient from './routes/routesClient.js'
 import routesAdmin from './routes/routesAdmin.js'
+import bodyParser from 'body-parser'
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.use(cors({
     credentials: true // Pour envoyer des cookies et des autorisations
 }));
 app.use(express.json());
+app.use(bodyParser.json()); // Permet de lire le corps des requêtes JSON
 
 // Charger la chaîne de connexion MongoDB depuis .env
 const url = process.env.MONGO_URL || "mongodb+srv://bryan:bryanafrijet@enquete-afrijet.j1yge.mongodb.net/EnqueteAfrijet-db?retryWrites=true&w=majority";
