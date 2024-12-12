@@ -48,18 +48,18 @@ function App() {
                 <Route path='/enquete_satisfaction/enquete' element={<EnqueteSatisfaction />}></Route>
                 <Route path='/enquete_corporate' element={<BienvenueCorporate />}></Route>
                 <Route path='/enquete_corporate/enquete' element={<EnqueteCorporate />}></Route>
-                <Route path='/admin' element={<Login />}></Route>
-                <Route path='/admin/dashboard' element={<Dashboard />}>
+                <Route path='/login' element={<Login />}></Route>
+                <Route path='/login/dashboard' element={<Dashboard />}>
                   <Route path='' element={
                     <ProtectedRoute>
                       <Home />
                     </ProtectedRoute>}>
                   </Route>
-                  <Route path='/admin/dashboard/users' element={<Users />}></Route>
-                  <Route path='/admin/dashboard/profil' element={<Profil />}></Route>
-                  <Route path='/admin/dashboard/enqueteagence' element={<GestEnqueteAgence />}></Route>
-                  <Route path='/admin/dashboard/enquetesatisfaction' element={<GestEnqueteSatisfaction />}></Route>
-                  <Route path='/admin/dashboard/enquetecorporate' element={<GestEnqueteCorporate />}></Route>
+                  <Route path='/login/dashboard/users' element={<Users />}></Route>
+                  <Route path='/login/dashboard/profil' element={<Profil />}></Route>
+                  <Route path='/login/dashboard/enqueteagence' element={<GestEnqueteAgence />}></Route>
+                  <Route path='/login/dashboard/enquetesatisfaction' element={<GestEnqueteSatisfaction />}></Route>
+                  <Route path='/login/dashboard/enquetecorporate' element={<GestEnqueteCorporate />}></Route>
                 </Route>
               </Routes>
             </BrowserRouter>

@@ -1,0 +1,11 @@
+# Étape 1 : Serveur NGINX pour servir l'application
+FROM nginx:alpine
+
+# Copier les fichiers construits dans le dossier 'build' ou 'dist' vers le répertoire NGINX
+COPY ./dist /usr/share/nginx/html
+
+# Exposer le port 80
+EXPOSE 80
+
+# Démarrer NGINX en mode premier plan
+CMD ["nginx", "-g", "daemon off;"]

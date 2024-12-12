@@ -34,15 +34,15 @@ const bienvenueCorporate = () => {
             <PopupBienvenue />
             <div className=''>
                 <div className=''>
-                    <img src={logoAfrijet} alt='logo Afrijet' className='pt-10 mx-auto logo-afrijet' />
+                    <img src={logoAfrijet} alt='logo Afrijet' className='pt-10 mx-auto w-80 h-20' />
                 </div>
                 <div className=''>
-                    <img src={logoFlygabon} alt='logo Afrijet' className='pt-5 pb-8 mx-auto logo-flygabon' />
+                    <img src={logoFlygabon} alt='logo Afrijet' className='pt-3 pb-8 mx-auto w-80 h-[100px]' />
                 </div>
             </div>
             <section className='welcome-section'>
                 <div className=''>
-                    <p className='mt-8 p-5 text-justify'>{t('offre')}</p>
+                    <p className='mt-3 p-5 text-justify'>{t('offre')}</p>
                     <p className='mt-2 text-center'><strong>{t('pourquoi_repondre')} ?</strong></p>
                     <ol className='text-center mt-2'>
                         <li>1. {t('opinion')}</li>

@@ -149,20 +149,20 @@ const users = () => {
 
     }
     return (
-        <div>
+        <div className='sm:ml-[20%] ml-20 mt-[30%] sm:mt-[8%] md:mt-[15%] lg:mt-[12%] h-[83vh] users'>
             <div className="flex justify-between items-center mx-auto sm:px-5 mt-5">
                 <h3 className="flex items-center mx-3 text-lg font-semibold">
                     <i className={`fa-solid fa-user-group text-lg mx-3 text-gray-700`}></i> Gérer les utilisateurs
                 </h3>
                 <button
                     onClick={PopupCreateUser}
-                    className="flex items-center justify-center bg-brown-500 hover:bg-red-700 text-white font-medium rounded-lg px-5 py-2 shadow-md transition duration-200"
+                    className="flex items-center justify-center bg-brown-500 hover:bg-red-700 text-white font-medium rounded-lg px-5 py-2 shadow-md transition duration-200 add-user"
                 >
                     <i className="fa-solid fa-plus mr-2"></i> <span className='nav-text'>Nouveau utilisateur</span>
                 </button>
             </div>
 
-            <div className="mt-5 sm:mx-5 users">
+            <div className="mt-5 sm:mx-5 users-table">
                 <table className="shadow-md rounded-lg overflow-hidden w-full">
                     <thead className="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
                         <tr>
@@ -198,7 +198,8 @@ const users = () => {
                                             onClick={() => PopupUpdateUser(user._id)}
                                             className='mt-1'
                                         >
-                                            <span className='text-sm text-blue-500'>Modifier</span>
+                                            <span className='text-sm text-blue-500 edit-user-big mt-1'><i class="fa-regular fa-pen-to-square"></i></span>
+                                            <span className='text-sm text-blue-500 edit-user'>Modifier</span>
                                         </Link>
                                         <button
                                             type="button"
@@ -221,13 +222,14 @@ const users = () => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onSubmit={handleSubmit}
+                        className='fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50'
                     >
                         <motion.div
                             initial={{ y: -30 }}
                             animate={{ y: 0 }}
                             exit={{ y: -30 }}
                             transition={{ duration: 0.3 }}
-                            className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50"
+                            className=""
                         >
                             <div className="bg-white w-[360px] p-4 rounded-lg shadow-lg">
                                 <h3 className="text-lg font-semibold mb-4 mx-2 mt-2"><i className="fa-solid fa-circle-user mr-2"></i>Créer un utilisateur</h3>
@@ -336,13 +338,15 @@ const users = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        onSubmit={handleUpdate}>
+                        onSubmit={handleUpdate}
+                        className='fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50'
+                        >
                         <motion.div
                             initial={{ y: -30 }}
                             animate={{ y: 0 }}
                             exit={{ y: -30 }}
                             transition={{ duration: 0.3 }}
-                            className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+                            >
                             <div className="bg-white w-[375px] p-4 rounded-lg shadow-lg">
                                 <h3 className="text-lg font-semibold mb-4 mx-2 mt-2"><i className="fa-solid fa-circle-user mr-2"></i>Modifier un utilisateur</h3>
                                 <div className='col'>

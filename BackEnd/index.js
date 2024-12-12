@@ -14,6 +14,8 @@ const port = process.env.PORT || 5000;
 // Configuration CORS
 // Configurez les origines autorisées
 const allowedOrigins = [
+    'http://localhost:3000', // Local pour développement
+    'http://localhost:5000',
     'http://localhost:5173', // Local pour développement
     'http://185.158.107.39', // Adresse IP directe de mon serveur VPS
     'http://enquete-afrijet-flygabon.com',

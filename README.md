@@ -18,7 +18,7 @@ Caractéristiques du projet :
 - Frontend: React (Vite), Tailwind CSS, Framer Motion
 - Backend: Node JS, Express JS
 - Database: MongoDB (NoSQL)
-- Hébergement du projet: Render pour le deploiment
+- Hébergement du projet: Serveur VPS KVM2 de chez Hostinger
 - Solution Cloud: MongoDB Atlas pour stocker la BD
 - Authentication: MongoDB authentification pour accéder au cloud
 
@@ -54,7 +54,9 @@ Contribuer
 Pour participer au projet ! Veuillez cloner le référentiel et créer une pull request avec vos modifications sur la branche test. Assurez-vous que votre code suit le guide de style et est bien documenté.
 
 Licence
-Ce projet est sous licence MIT - voir le fichier LICENSE pour plus de détails.
+
+Ce projet est sous licence Afrijey Business Services - voir le fichier LICENSE pour plus de détails.
 
 Contact
-Pour toute informations complémentaires, n'hésitez pas à me contacter via mon mail afrijetcamit@gmail.com.
+
+Pour toute informations complémentaires, n'hésitez pas à me contacter via mon mail tchajipchrist23@gmail.com.

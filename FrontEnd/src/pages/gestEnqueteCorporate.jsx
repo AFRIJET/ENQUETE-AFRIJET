@@ -119,9 +119,9 @@ const gestEnqueteCorporate = () => {
         {isAdmin && (
           <div
             onClick={toggleModal}
-            className="fixed top-3 right-[200px] items-center justify-center border rounded-lg px-5 py-2 cursor-pointer"
+            className="fixed top-2 sm:top-3 right-[200px] items-center justify-center sm:border rounded-lg sm:px-5 py-2 cursor-pointer z-20"
           >
-            <span className='text-sm'><i className="fa-solid fa-download mr-2"></i> Télécharger un rapport</span>
+            <span className='text-sm'><i className="fa-solid fa-download mr-2 text-gray-700 sm:text-black"></i> <span className='hidden sm:inline'>Télécharger un rapport</span></span>
           </div>
         )}
 

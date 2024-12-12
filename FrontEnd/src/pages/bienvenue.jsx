@@ -32,12 +32,12 @@ const bienvenue = () => {
         >
             <div className=''>
                 <div className=''>
-                    <img src={logoAfrijet} alt='logo Afrijet' className='p-10 mx-auto logo-afrijet' />
+                    <img src={logoAfrijet} alt='logo Afrijet' className='m-10 mx-auto w-80 h-10' />
                 </div>
             </div>
             <section className='welcome-section'>
                 <div className=''>
-                    <h3 className='mt-10 p-3 text-center text-xl'>Plateforme d'enquête client AFRIJET</h3>
+                    <h3 className='mt-20 p-3 text-center text-xl'>Plateforme d'enquête client AFRIJET</h3>
                 </div>
                 <ul className='mt-8 ml-[15%] options'>
                     <li className='p-3 bg-brown-500 rounded-md w-4/5'>
@@ -58,11 +58,17 @@ const bienvenue = () => {
                             <i className="fa-solid fa-arrow-right text-xl text-white ml-auto"></i>
                         </Link>
                     </li>
+                    <li className='mt-3 p-3 bg-brown-500 rounded-md w-4/5'>
+                        <Link className='flex items-center w-full h-full' to="/login">
+                            <span className='mx-3 text-xl text-white'>Administrateur</span>
+                            <i className="fa-solid fa-arrow-right text-xl text-white ml-auto"></i>
+                        </Link>
+                    </li>
                 </ul>
             </section>
             <div className=''>
                 <div className=''>
-                    <img src={logoFlygabon} alt='logo Afrijet' className='fixed bottom-8 mx-auto logo-flygabon' />
+                    <img src={logoFlygabon} alt='logo Afrijet' className='m-20 mx-auto w-80 h-20' />
                 </div>
             </div>
         </motion.div>

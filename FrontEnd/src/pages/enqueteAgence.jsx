@@ -2,12 +2,11 @@ import React, { useEffect, useRef, useState } from 'react'
 import '../styles/style.css'
 import logoAfrijet from '../assets/images/logo.png';
 import logoFlygabon from '../assets/images/Logo-FG1.png'
-import imageAgence from '../assets/images/imageEnAgence.jpg'
+import imageAgence from '../assets/images/afrijet-agence.jpg'
 import axios from 'axios'
 import country from '../composants/country.json';
 import destination from '../composants/destination.json'
 import agence from '../composants/agence.json'
-import Fildariane from '../composants/fildariane';
 import { motion } from 'framer-motion'
 import { AnimatePresence } from 'framer-motion'
 import { useTranslation } from 'react-i18next';
@@ -257,10 +256,10 @@ const AgencySurvey = () => {
                 >
                     <div className='w-full h-full bg-white-500/10'>
                         <div className='content relative text-center z-10'>
-                            <div className='float-left w-1/2 p-[3vh_2px]'>
+                            <div className='float-left w-1/2 p-[5vh_2px]'>
                                 <img src={logoAfrijet} alt='logo Afrijet' />
                             </div>
-                            <div className='float-right w-1/2 p-[2vh_2px]'>
+                            <div className='float-right w-1/2 p-[3vh_2px]'>
                                 <img src={logoFlygabon} alt='logo Afrijet' />
                             </div>
                         </div>

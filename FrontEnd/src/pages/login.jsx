@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react'
 import '../styles/styleAdmin.css'
 import logoAfrijet from '../assets/images/Logo-SF.png'
 import logoFlygabon from '../assets/images/Logo-FG2.png'
+import imageLogin from '../assets/images/imagelogin.jpg'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from "../composants/authContext";
@@ -36,7 +37,7 @@ const login = () => {
                     const userData = response.data.user; // Récupère les données utilisateur du backend
                     sessionStorage.setItem('user', JSON.stringify(userData)); // Sauvegarde les données dans le localStorage
                     // Redirige ou met à jour l'état de l'application
-                    navigate('/admin/dashboard')
+                    navigate('/login/dashboard')
                 }
             })
             .catch(error => {
@@ -53,7 +54,14 @@ const login = () => {
 
     }
     return (
-        <div className='login h-screen'>
+        <div
+            className="h-screen login"
+            style={{
+                background: `linear-gradient(to top, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.3) 50%), url(${imageLogin}) no-repeat`,
+                backgroundSize: 'cover',
+            }}
+        >
+
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                 <div className='bg-white rounded-2xl mx-auto p-8 login-container'>
                     <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -87,7 +95,7 @@ const login = () => {
                                         type="text"
                                         required
                                         autoComplete="text"
-                                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brown-500 sm:text-sm/6"
+                                        className="w-full border-b-2 border-gray-300 focus:outline-none focus:border-gray-700 transition duration-300"
                                     />
                                 </div>
                             </div>
@@ -105,7 +113,7 @@ const login = () => {
                                         type="password"
                                         required
                                         autoComplete="current-password"
-                                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brown-500 sm:text-sm/6"
+                                        className="w-full border-b-2 border-gray-300 focus:outline-none focus:border-gray-700 transition duration-300"
                                     />
                                 </div>
                             </div>

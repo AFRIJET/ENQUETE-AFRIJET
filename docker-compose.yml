@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  backend:
+    build:
+      context: ./BackEnd
+    ports:
+      - "5000:5000" # Expose le backend en local sur le port 5000
+    environment:
+      - MONGO_URL=mongodb+srv://bryan:bryanafrijet@enquete-afrijet.j1yge.mongodb.net/EnqueteAfrijet-db?retryWrites=true&w=majority
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./FrontEnd
+    ports:
+      - "3000:80" # Expose le frontend en local sur le port 3000
+    environment:
+      - VITE_API_URL=https://enquete-afrijet-flygabon.com
+    networks:
+      - app-network
+
+networks:
+  app-network:

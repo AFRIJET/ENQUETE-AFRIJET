@@ -86,7 +86,6 @@ router.get('/admin', async (req, res) => {
 
         // Vérifie si l'utilisateur est un administrateur
         const isAdmin = user.role === 'admin';
-        const password = user.password;
 
         // Ferme la connexion à la base de données
         await client.close();
@@ -100,7 +99,6 @@ router.get('/admin', async (req, res) => {
                 role: user.role
             },
             isAdmin,
-            password
         });
     } catch (error) {
         console.error('Erreur serveur:', error);
@@ -235,7 +233,7 @@ router.put('/update_profil', async (req, res) => {
 
         // Remplace le mot de passe dans les données par le mot de passe haché
         data.password = hashedPassword;
-        
+
         // Connexion à MongoDB
         const client = new MongoClient(url);
         await client.connect();
@@ -274,18 +272,6 @@ router.get('/generate_excel_report', async (req, res) => {
         await client.connect();
         const db = client.db('EnqueteAfrijet-db');
         const collection = db.collection(enquete);
-
-        // Convertir la date en objet Date dans MongoDB pour filtrer les données
-        db.collection.updateMany(
-            {},
-            [
-                {
-                    $set: {
-                        date: { $toDate: "$date" } // Convertit le champ date en type Date
-                    }
-                }
-            ]
-        );
 
         // Construire la requête de filtrage
         const query = {};
@@ -348,6 +334,68 @@ router.get('/generate_excel_report', async (req, res) => {
     }
 });
 
+router.get('/generate_excel_report_global', async (req, res) => {
+    const { enquete } = req.query;
+
+    try {
+        // Connexion à la base de données MongoDB
+        const client = new MongoClient(url);
+        await client.connect();
+        const db = client.db('EnqueteAfrijet-db');
+        const collection = db.collection(enquete);
+
+        // Recherche des données dans la base de données
+        const users = await collection.find({}, { projection: { _id: 0 } }).toArray();
+
+        // Si des utilisateurs sont trouvés, générer le rapport Excel
+        if (users.length === 0) {
+            return res.status(404).send({ success: false, message: "Aucune donnée trouvée pour le rapport" });
+        }
+
+        // Déterminer dynamiquement les colonnes nécessaires
+        const columns = new Set();
+        users.forEach(user => {
+            Object.keys(user).forEach(key => columns.add(key));
+        });
+
+        // Convertir le Set en tableau trié pour les colonnes
+        const columnsArray = Array.from(columns);
+
+        // Construire les données dans le format des colonnes
+        const data = users.map(user => {
+            return columnsArray.map(col => user[col] || ''); // Ajouter une valeur vide si la colonne est absente
+        });
+
+        // Créer un nouveau classeur Excel
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet(enquete);
+
+        // Ajouter les en-têtes des colonnes
+        worksheet.addRow(columnsArray)
+
+        // Ajouter les données des utilisateurs
+        data.forEach(row => worksheet.addRow(row));
+
+        // Ajustement automatique des colonnes
+        worksheet.columns.forEach(column => {
+            column.width = 30
+        });
+
+        // Convertir le classeur en fichier Excel
+        const buffer = await workbook.xlsx.writeBuffer();
+
+        await client.close(); // Fermer la connexion
+
+        // Définir le type de contenu pour un fichier Excel
+        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        res.setHeader('Content-Disposition', `attachment; filename=rapport_${enquete}.xlsx`);
+        res.status(200).send(buffer);
+    } catch (error) {
+        console.error('Erreur serveur:', error);
+        return res.status(500).send({ success: false, message: "Erreur serveur lors de la génération du rapport Excel" });
+    }
+});
+
 // Route pour générer les rapports des enquetes aux formats CSV
 router.get('/generate_csv_report', async (req, res) => {
     const { enquete, StartDate, EndDate } = req.query;
@@ -358,18 +406,6 @@ router.get('/generate_csv_report', async (req, res) => {
         await client.connect();
         const db = client.db('EnqueteAfrijet-db');
         const collection = db.collection(enquete);
-
-        // Convertir la date en objet Date dans MongoDB pour filtrer les données
-        db.collection.updateMany(
-            {},
-            [
-                {
-                    $set: {
-                        date: { $toDate: "$date" } // Convertit le champ date en type Date
-                    }
-                }
-            ]
-        );
 
         // Construire la requête de filtrage
         const query = {};
@@ -419,5 +455,223 @@ router.get('/generate_csv_report', async (req, res) => {
         res.status(500).send({ success: false, message: "Erreur serveur lors de la génération du rapport CSV" });
     }
 });
+
+router.get('/generate_csv_report_global', async (req, res) => {
+    const { enquete } = req.query;
+
+    try {
+        // Connexion à la base de données MongoDB
+        const client = new MongoClient(url);
+        await client.connect();
+        const db = client.db('EnqueteAfrijet-db');
+        const collection = db.collection(enquete);
+
+        // Recherche des données dans la base de données
+        const users = await collection.find({}, { projection: { _id: 0 } }).toArray();
+
+        if (users.length === 0) {
+            return res.status(404).send({ success: false, message: "Aucune donnée trouvée pour le rapport" });
+        }
+
+        // Générer dynamiquement les colonnes
+        const columns = Array.from(
+            new Set(users.flatMap(user => Object.keys(user)))
+        );
+
+        // Construire les données en CSV
+        const rows = users.map(user => {
+            return columns.map(col => user[col] || ''); // Ajoute une valeur vide si la colonne est absente
+        });
+
+        // Ajouter les en-têtes de colonnes en première ligne
+        rows.unshift(columns);
+
+
+        // Configuration pour le fichier CSV
+        res.setHeader('Content-Type', 'text/csv');
+        res.setHeader('Content-Disposition', `attachment; filename=rapport_${enquete}.csv`);
+
+        // Création et envoi du flux CSV
+        const stringifier = stringify({ header: false }); // Pas besoin de redéfinir les en-têtes, déjà inclus dans `rows`
+        stringifier.pipe(res); // Rediriger les données vers la réponse HTTP
+        rows.forEach(row => stringifier.write(row)); // Ajouter chaque ligne au CSV
+        stringifier.end(); // Terminer le flux
+        res.status(200)
+
+        await client.close();
+
+    } catch (error) {
+        console.error('Erreur serveur:', error);
+        res.status(500).send({ success: false, message: "Erreur serveur lors de la génération du rapport CSV" });
+    }
+});
+
+// Route pour recupérer le nombre d'enquete en agence
+router.get('/enquete_agence', async (req, res) => {
+    const { StartDate, EndDate } = req.query;
+    try {
+        // Connexion à MongoDB
+        const client = new MongoClient(url);
+        await client.connect();
+        const db = client.db('EnqueteAfrijet-db');
+        const collection = db.collection('Enquete_Agence');
+
+        // Construire la requête de filtrage
+        const query = {};
+        if (StartDate && EndDate) {
+            query.date = {
+                $gte: new Date(StartDate),
+                $lte: new Date(EndDate),
+            };
+        }
+
+        // Compter le nombre total d'enquêtes
+        const totalEnquetes = await collection.countDocuments(query);
+
+        // Fermer la connexion à la base de données
+        await client.close();
+
+        // Retourner le résultat au client
+        res.status(200).send({ success: true, total: totalEnquetes });
+    } catch (error) {
+        console.error('Erreur serveur:', error);
+        res.status(500).send({ success: false, message: "Erreur serveur lors de la récupération des enquêtes" });
+    }
+})
+
+// Route pour recupérer le nombre d'enquete en agence
+router.get('/enquete_agence_global', async (req, res) => {
+    try {
+        // Connexion à MongoDB
+        const client = new MongoClient(url);
+        await client.connect();
+        const db = client.db('EnqueteAfrijet-db');
+        const collection = db.collection('Enquete_Agence');
+
+        // Compter le nombre total d'enquêtes
+        const totalEnquetes = await collection.countDocuments();
+
+        // Fermer la connexion à la base de données
+        await client.close();
+
+        // Retourner le résultat au client
+        res.status(200).send({ success: true, total: totalEnquetes });
+    } catch (error) {
+        console.error('Erreur serveur:', error);
+        res.status(500).send({ success: false, message: "Erreur serveur lors de la récupération des enquêtes" });
+    }
+})
+
+// Route pour recupérer le nombre d'enquete de satisfaction
+router.get('/enquete_satisfaction', async (req, res) => {
+    const { StartDate, EndDate } = req.query;
+    try {
+        // Connexion à MongoDB
+        const client = new MongoClient(url);
+        await client.connect();
+        const db = client.db('EnqueteAfrijet-db');
+        const collection = db.collection('Enquete_Satisfaction');
+
+        // Construire la requête de filtrage
+        const query = {};
+        if (StartDate && EndDate) {
+            query.date = {
+                $gte: new Date(StartDate),
+                $lte: new Date(EndDate),
+            };
+        }
+
+        // Compter le nombre total d'enquêtes
+        const totalEnquetes = await collection.countDocuments(query);
+
+        // Fermer la connexion à la base de données
+        await client.close();
+
+        // Retourner le résultat au client
+        res.status(200).send({ success: true, total: totalEnquetes });
+    } catch (error) {
+        console.error('Erreur serveur:', error);
+        res.status(500).send({ success: false, message: "Erreur serveur lors de la récupération des enquêtes" });
+    }
+})
+
+// Route pour recupérer le nombre d'enquete de satisfaction
+router.get('/enquete_satisfaction_global', async (req, res) => {
+    try {
+        // Connexion à MongoDB
+        const client = new MongoClient(url);
+        await client.connect();
+        const db = client.db('EnqueteAfrijet-db');
+        const collection = db.collection('Enquete_Satisfaction');
+
+        // Compter le nombre total d'enquêtes
+        const totalEnquetes = await collection.countDocuments();
+
+        // Fermer la connexion à la base de données
+        await client.close();
+
+        // Retourner le résultat au client
+        res.status(200).send({ success: true, total: totalEnquetes });
+    } catch (error) {
+        console.error('Erreur serveur:', error);
+        res.status(500).send({ success: false, message: "Erreur serveur lors de la récupération des enquêtes" });
+    }
+})
+
+// Route pour recupérer le nombre d'enquete corporate
+router.get('/enquete_entreprise', async (req, res) => {
+    const { StartDate, EndDate } = req.query;
+    try {
+        // Connexion à MongoDB
+        const client = new MongoClient(url);
+        await client.connect();
+        const db = client.db('EnqueteAfrijet-db');
+        const collection = db.collection('Enquete_Entreprise');
+
+        // Construire la requête de filtrage
+        const query = {};
+        if (StartDate && EndDate) {
+            query.date = {
+                $gte: new Date(StartDate),
+                $lte: new Date(EndDate),
+            };
+        }
+
+        // Compter le nombre total d'enquêtes
+        const totalEnquetes = await collection.countDocuments(query);
+
+        // Fermer la connexion à la base de données
+        await client.close();
+
+        // Retourner le résultat au client
+        res.status(200).send({ success: true, total: totalEnquetes });
+    } catch (error) {
+        console.error('Erreur serveur:', error);
+        res.status(500).send({ success: false, message: "Erreur serveur lors de la récupération des enquêtes" });
+    }
+})
+
+// Route pour recupérer le nombre d'enquete corporate
+router.get('/enquete_entreprise_global', async (req, res) => {
+    try {
+        // Connexion à MongoDB
+        const client = new MongoClient(url);
+        await client.connect();
+        const db = client.db('EnqueteAfrijet-db');
+        const collection = db.collection('Enquete_Entreprise');
+
+        // Compter le nombre total d'enquêtes
+        const totalEnquetes = await collection.countDocuments();
+
+        // Fermer la connexion à la base de données
+        await client.close();
+
+        // Retourner le résultat au client
+        res.status(200).send({ success: true, total: totalEnquetes });
+    } catch (error) {
+        console.error('Erreur serveur:', error);
+        res.status(500).send({ success: false, message: "Erreur serveur lors de la récupération des enquêtes" });
+    }
+})
 
 export default router;
