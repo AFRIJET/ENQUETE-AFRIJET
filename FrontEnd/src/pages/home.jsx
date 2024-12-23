@@ -7,9 +7,10 @@ import { useAuth } from "../composants/authContext";
 const apiUrl = import.meta.env.VITE_API_URL
 
 const Home = () => {
-
+    const { renewSession } = useAuth()
     const { startDate } = useAuth();
     const { endDate } = useAuth();
+    const { isHidden } = useAuth();
     const [nbreEnqueteAgence, setNbreEnqueteAgence] = useState(null)
     const [nbreEnqueteSatisfaction, setNbreEnqueteSatisfaction] = useState(null)
     const [nbreEnqueteEntreprise, setNbreEnqueteEntreprise] = useState(null)
@@ -24,7 +25,7 @@ const Home = () => {
             const params = { StartDate: startDate, EndDate: endDate };
 
             axios
-                .get(`${apiUrl}/admin/enquete_agence`, { params })
+                .get(`${apiUrl}/admin/enquete_agence`, { params, withCredentials: true })
                 .then((response) => {
                     if (response.status === 200 && response.data) {
                         setNbreEnqueteAgence(response.data.total);
@@ -38,7 +39,7 @@ const Home = () => {
                 });
         } else {
             axios
-                .get(`${apiUrl}/admin/enquete_agence_global`)
+                .get(`${apiUrl}/admin/enquete_agence_global`, { withCredentials: true })
                 .then((response) => {
                     if (response.status === 200 && response.data) {
                         setNbreEnqueteAgence(response.data.total);
@@ -58,7 +59,7 @@ const Home = () => {
         if (startDate && endDate) {
             const params = { StartDate: startDate, EndDate: endDate };
             axios
-                .get(`${apiUrl}/admin/enquete_satisfaction`, { params })
+                .get(`${apiUrl}/admin/enquete_satisfaction`, { params, withCredentials: true })
                 .then((response) => {
                     if (response.status === 200 && response.data) {
                         setNbreEnqueteSatisfaction(response.data.total);
@@ -72,7 +73,7 @@ const Home = () => {
                 });
         } else {
             axios
-                .get(`${apiUrl}/admin/enquete_satisfaction_global`)
+                .get(`${apiUrl}/admin/enquete_satisfaction_global`, { withCredentials: true })
                 .then((response) => {
                     if (response.status === 200 && response.data) {
                         setNbreEnqueteSatisfaction(response.data.total);
@@ -92,7 +93,7 @@ const Home = () => {
         if (startDate && endDate) {
             const params = { StartDate: startDate, EndDate: endDate };
             axios
-                .get(`${apiUrl}/admin/enquete_entreprise`, { params })
+                .get(`${apiUrl}/admin/enquete_entreprise`, { params, withCredentials: true })
                 .then((response) => {
                     if (response.status === 200 && response.data) {
                         setNbreEnqueteEntreprise(response.data.total || 0);
@@ -106,7 +107,7 @@ const Home = () => {
                 });
         } else {
             axios
-                .get(`${apiUrl}/admin/enquete_entreprise_global`)
+                .get(`${apiUrl}/admin/enquete_entreprise_global`, { withCredentials: true })
                 .then((response) => {
                     if (response.status === 200 && response.data) {
                         setNbreEnqueteEntreprise(response.data.total || 0);
@@ -127,8 +128,10 @@ const Home = () => {
         totalEnqueteEntreprise();
     }, [startDate, endDate]);
 
+    renewSession();
+
     return (
-        <div className="pb-5 sm:ml-[20%] ml-20 mt-20">
+        <div className={`${isHidden ? "pb-5 sm:ml-[20%] ml-3 mt-10 sm:mt-20 w-100" : "pb-5 sm:ml-[20%] ml-[70px] mt-10 sm:mt-20 w-100"}`}>
             <h3 className="flex items-center mx-8 pt-7 pb-5 text-lg font-semibold">
                 <i className="fa-solid fa-gauge text-lg mx-3 text-gray-700" aria-hidden="true"></i>
                 Tableau de bord
@@ -200,15 +203,19 @@ const Home = () => {
                     </div>
                 </div>
             </div>
-            <div className='iframe-container mt-4'>
-                <iframe
-                    src="https://charts.mongodb.com/charts-afrijet-enquete-client-sykledh/embed/charts?id=c57b81ab-7d69-48e3-b5e6-1d54b805e145&maxDataAge=3600&theme=light&autoRefresh=true"
-                    width="100%"
-                    height="665"
-                    className='custom-iframe'
-                    frameBorder="0"
-                ></iframe>
-            </div>
+            {isLoadingAgence && isLoadingSatisfaction && isLoadingCorporate ? (
+                <div></div>
+            ) : (
+                <div className='iframe-container mt-4'>
+                    <iframe
+                        src="https://charts.mongodb.com/charts-afrijet-enquete-client-sykledh/embed/charts?id=c57b81ab-7d69-48e3-b5e6-1d54b805e145&maxDataAge=3600&theme=light&autoRefresh=true"
+                        width="100%"
+                        height="665"
+                        className='custom-iframe'
+                        frameBorder="0"
+                    ></iframe>
+                </div>
+            )}
         </div>
     );
 };

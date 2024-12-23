@@ -2,10 +2,13 @@ import axios from 'axios'
 import { AnimatePresence, motion } from 'framer-motion'
 import React, { useEffect, useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import { useAuth } from "../composants/authContext";
 
 const apiUrl = import.meta.env.VITE_API_URL
 
 const users = () => {
+    const { renewSession } = useAuth()
+    const { isHidden } = useAuth();
     const popupRef = useRef(null)
     const [isLoading, setIsLoading] = useState(true); // État de chargement
     const [users, setUsers] = useState([])
@@ -67,7 +70,7 @@ const users = () => {
         }
     }, [showPopup, setShowPopup]);
     useEffect(() => {
-        axios.get(`${apiUrl}/admin/users`)
+        axios.get(`${apiUrl}/admin/users`, { withCredentials: true })
             .then((response) => {
                 setUsers(response.data.users || []);
                 setIsLoading(false); // Désactiver le chargement
@@ -115,7 +118,8 @@ const users = () => {
         e.preventDefault();
         // Envoi des données s'il n'y a pas d'erreurs
         axios.post(`${apiUrl}/admin/add_users`, data, {
-            headers: { 'Content-Type': 'application/json' }
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true
         })
             .then(response => {
                 console.log(response);
@@ -127,6 +131,7 @@ const users = () => {
 
         axios.delete(`${apiUrl}/admin/delete_user`, {
             data: { id: selectUser },
+            withCredentials: true
         })
             .then((response) => {
                 console.log(response)
@@ -138,7 +143,8 @@ const users = () => {
         e.preventDefault();
         axios.put(`${apiUrl}/admin/update_profil`, {
             id: selectUser, // Identifiant utilisateur
-            ...data // Nouvelles données à mettre à jour
+            ...data, // Nouvelles données à mettre à jour
+            withCredentials: true
         })
             .then((response) => {
                 setUpdateUserPopup(false)
@@ -148,8 +154,11 @@ const users = () => {
             .catch(error => console.log('Erreur:', error))
 
     }
+
+    renewSession();
+
     return (
-        <div className='sm:ml-[20%] ml-20 mt-[30%] sm:mt-[8%] md:mt-[15%] lg:mt-[12%] h-[83vh] users'>
+        <div className={`${isHidden ? 'ml-1 sm:ml-[20%] ml-1 mt-[20%] sm:mt-[4%] md:mt-[12%] lg:mt-[7%] h-[83vh] users' : 'sm:ml-[20%] ml-20 mt-[20%] sm:mt-[4%] md:mt-[12%] lg:mt-[7%] h-[83vh] users'}`}>
             <div className="flex justify-between items-center mx-auto sm:px-5 mt-5">
                 <h3 className="flex items-center mx-3 text-lg font-semibold">
                     <i className={`fa-solid fa-user-group text-lg mx-3 text-gray-700`}></i> Gérer les utilisateurs
@@ -158,7 +167,7 @@ const users = () => {
                     onClick={PopupCreateUser}
                     className="flex items-center justify-center bg-brown-500 hover:bg-red-700 text-white font-medium rounded-lg px-5 py-2 shadow-md transition duration-200 add-user"
                 >
-                    <i className="fa-solid fa-plus mr-2"></i> <span className='nav-text'>Nouveau utilisateur</span>
+                    <i className="fa-solid fa-plus mr-2"></i> <span className='hidden sm:inline'>Nouveau utilisateur</span>
                 </button>
             </div>
 
@@ -340,13 +349,13 @@ const users = () => {
                         exit={{ opacity: 0 }}
                         onSubmit={handleUpdate}
                         className='fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50'
-                        >
+                    >
                         <motion.div
                             initial={{ y: -30 }}
                             animate={{ y: 0 }}
                             exit={{ y: -30 }}
                             transition={{ duration: 0.3 }}
-                            >
+                        >
                             <div className="bg-white w-[375px] p-4 rounded-lg shadow-lg">
                                 <h3 className="text-lg font-semibold mb-4 mx-2 mt-2"><i className="fa-solid fa-circle-user mr-2"></i>Modifier un utilisateur</h3>
                                 <div className='col'>
@@ -371,7 +380,6 @@ const users = () => {
                                         <input type={isPasswordVisible ? "text" : "password"}
                                             id='inputPassword'
                                             name="password"
-                                            defaultValue={user?.password}
                                             required
                                             className='border p-1 mt-2 w-80 rounded-lg'
                                             onChange={handleChange}

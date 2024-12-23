@@ -1,3 +1,4 @@
+import axios from "axios";
 import { createContext, useContext, useState } from "react";
 
 const AuthContext = createContext();
@@ -6,20 +7,26 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(
     !!localStorage.getItem("token") // Vérifie si un token est déjà stocké
   );
-  const [startDate, setStartDate] = useState(null) 
-  const [endDate, setEndDate] = useState(null) 
+  const [startDate, setStartDate] = useState(null)
+  const [endDate, setEndDate] = useState(null)
+  const [isHidden, setIsHidden] = useState(true)
 
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const login = (token) => {
-    localStorage.setItem("token", token); // Stocke le token
     setIsAuthenticated(true);
   };
 
   const logout = () => {
-    localStorage.removeItem("token"); // Supprime le token
-    setIsAuthenticated(false);
-    setStartDate(null);
-    setEndDate(null)
+    axios.post(`${apiUrl}/admin/logout`, {}, { withCredentials: true })
+      .then((response) => {
+        setIsAuthenticated(false);
+        setStartDate(null);
+        setEndDate(null)
+      })
+      .catch(error => {
+        console.error('Erreur:', error);
+      });
   };
 
   const changeDate = (StartDate, EndDate) => {
@@ -27,10 +34,33 @@ export const AuthProvider = ({ children }) => {
     setEndDate(EndDate || null)
   }
 
-  
+  const renewSession = () => {
+    const refreshInterval = 45 * 60 * 1000; // 45 minutes en millisecondes
+    setInterval(() => {
+      axios.post(`${apiUrl}/admin/renew`, {}, { withCredentials: true })
+        .then((response) => {})
+        .catch((error) => {
+          logout();
+        });
+    }, refreshInterval);
+  }
+
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, changeDate, startDate, endDate }}>
+    <AuthContext.Provider
+      value={{
+        isAuthenticated,
+        login,
+        logout,
+        changeDate,
+        startDate,
+        endDate,
+        isHidden,
+        setIsHidden,
+        renewSession,
+      }}
+
+    >
       {children}
     </AuthContext.Provider>
   );

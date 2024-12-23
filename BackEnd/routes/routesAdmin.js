@@ -5,18 +5,60 @@ import ExcelJS from 'exceljs';
 import { stringify } from 'csv-stringify/browser/esm';
 import { ObjectId } from 'mongodb';
 import dotenv from 'dotenv';
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcrypt';
+import Joi from 'joi';
 
 dotenv.config();
 
 const router = express.Router();
-const SECRET_KEY = "enquete-afrijet";
+const url = process.env.MONGO_URL;
+const SECRET_KEY = process.env.JWT_SECRET;
 
-const url = process.env.MONGO_URL || "mongodb+srv://bryan:bryanafrijet@enquete-afrijet.j1yge.mongodb.net/EnqueteAfrijet-db?retryWrites=true&w=majority";
+// Middleware JWT
+const authenticateToken = (req, res, next) => {
+    const token = req.cookies.auth_token;
+
+    if (!token) {
+        return res.status(401).json({ message: 'Token manquant' });
+    }
+
+    try {
+        const decoded = jwt.verify(token, SECRET_KEY);
+        req.user = decoded;
+        next();
+    } catch (err) {
+        return res.status(403).json({ message: 'Token invalide ou expiré' });
+    }
+};
+
+const isAuthenticated = (req, res, next) => {
+    if (req.session.user) {
+        next();
+    } else {
+        res.status(401).send({ message: 'Non autorisé' });
+    }
+}
 
 // Route le login
 router.post('/login', async (req, res) => {
+
+    const schema = Joi.object({
+        utilisateur: Joi.string().required(),
+        password: Joi.string().required()
+    });
+
+    // Validation des données d'entrée
+    const { error } = schema.validate(req.body);
+    if (error) {
+        return res.status(400).send({
+            success: false,
+            message: "Données de connexion invalides",
+            details: error.details
+        });
+    }
+
     const { utilisateur, password } = req.body;
+
 
     try {
         // Vérifie si les champs sont fournis
@@ -46,10 +88,22 @@ router.post('/login', async (req, res) => {
 
         // Génère un token JWT
         const token = jwt.sign(
-            { id: user._id, role: user.role }, // Payload
+            { id: user._id, user: user.utilisateur, role: user.role }, // Payload
             SECRET_KEY, // Clé secrète
-            { expiresIn: '2h' } // Expiration
+            { expiresIn: '1h' } // Expiration
         );
+
+        req.session.user = { id: user._id, name: user.utilisateur, role: user.role };
+        req.session.save();
+
+
+        // Définition du cookie avec des options sécurisées
+        res.cookie('auth_token', token, {
+            httpOnly: true,      // Inaccessible au JavaScript client
+            secure: false,        // Transmis uniquement via HTTPS
+            sameSite: 'Strict',  // Protéger contre les requêtes CSRF
+            maxAge: 3600000,     // Durée de vie : 1 heure
+        });
 
         // Ferme la connexion à la base de données après la génération du token
         await client.close();
@@ -65,6 +119,7 @@ router.post('/login', async (req, res) => {
                 role: user.role
             }
         });
+
     } catch (err) {
         console.error('Erreur serveur:', err);
         return res.status(500).send({ success: false, message: "Erreur serveur" });
@@ -72,8 +127,10 @@ router.post('/login', async (req, res) => {
 });
 
 //Route pour vérifier l'administrateur
-router.get('/admin', async (req, res) => {
-    const { utilisateur } = req.query;
+router.get('/admin', isAuthenticated, authenticateToken, async (req, res) => {
+
+    const utilisateur = req.session.user
+
     try {
         // Connexion à la base de données MongoDB
         const client = new MongoClient(url);
@@ -82,7 +139,7 @@ router.get('/admin', async (req, res) => {
         const collection = db.collection('Utilisateur');
 
         // Recherche l'utilisateur dans la base de données
-        const user = await collection.findOne({ utilisateur: utilisateur });
+        const user = await collection.findOne({ utilisateur: utilisateur.name });
 
         // Vérifie si l'utilisateur est un administrateur
         const isAdmin = user.role === 'admin';
@@ -93,21 +150,18 @@ router.get('/admin', async (req, res) => {
         // Renvoie le résultat
         return res.status(200).send({
             success: true,
-            user: {
-                id: user._id,
-                utilisateur: user.utilisateur,
-                role: user.role
-            },
             isAdmin,
+            utilisateur
         });
     } catch (error) {
         console.error('Erreur serveur:', error);
         return res.status(500).send({ success: false, message: "Erreur serveur" });
     }
+
 });
 
 //Route pour récupérer tout les utilisateurs
-router.get('/users', async (req, res) => {
+router.get('/users', isAuthenticated, authenticateToken, async (req, res) => {
     try {
         // Connexion à la base de données MongoDB
         const client = new MongoClient(url);
@@ -133,7 +187,7 @@ router.get('/users', async (req, res) => {
 });
 
 //Route pour créer un utilisateur
-router.post('/add_users', async (req, res) => {
+router.post('/add_users', isAuthenticated, authenticateToken, async (req, res) => {
     const data = req.body;
 
     try {
@@ -165,7 +219,7 @@ router.post('/add_users', async (req, res) => {
 });
 
 //Route pour recupérer un utilisateur
-router.get('/user_update', async (req, res) => {
+router.get('/user_update', isAuthenticated, authenticateToken, async (req, res) => {
     const { id } = req.query;
 
     try {
@@ -193,7 +247,7 @@ router.get('/user_update', async (req, res) => {
 })
 
 //Route pour supprimer un utilisateur
-router.delete('/delete_user', async (req, res) => {
+router.delete('/delete_user', isAuthenticated, authenticateToken, async (req, res) => {
     const { id } = req.body;
 
     try {
@@ -219,7 +273,7 @@ router.delete('/delete_user', async (req, res) => {
 })
 
 // Route pour mettre à jour un profil
-router.put('/update_profil', async (req, res) => {
+router.put('/update_profil', isAuthenticated, authenticateToken, async (req, res) => {
     const { id, ...data } = req.body; // Récupère l'utilisateur et les données à mettre à jour
 
     if (!id) {
@@ -263,7 +317,7 @@ router.put('/update_profil', async (req, res) => {
 });
 
 //Route pour générer un rapport excel des enquetes
-router.get('/generate_excel_report', async (req, res) => {
+router.get('/generate_excel_report', isAuthenticated, authenticateToken, async (req, res) => {
     const { enquete, StartDate, EndDate } = req.query;
 
     try {
@@ -334,7 +388,7 @@ router.get('/generate_excel_report', async (req, res) => {
     }
 });
 
-router.get('/generate_excel_report_global', async (req, res) => {
+router.get('/generate_excel_report_global', isAuthenticated, authenticateToken, async (req, res) => {
     const { enquete } = req.query;
 
     try {
@@ -397,7 +451,7 @@ router.get('/generate_excel_report_global', async (req, res) => {
 });
 
 // Route pour générer les rapports des enquetes aux formats CSV
-router.get('/generate_csv_report', async (req, res) => {
+router.get('/generate_csv_report', isAuthenticated, authenticateToken, async (req, res) => {
     const { enquete, StartDate, EndDate } = req.query;
 
     try {
@@ -456,7 +510,7 @@ router.get('/generate_csv_report', async (req, res) => {
     }
 });
 
-router.get('/generate_csv_report_global', async (req, res) => {
+router.get('/generate_csv_report_global', isAuthenticated, authenticateToken, async (req, res) => {
     const { enquete } = req.query;
 
     try {
@@ -507,7 +561,7 @@ router.get('/generate_csv_report_global', async (req, res) => {
 });
 
 // Route pour recupérer le nombre d'enquete en agence
-router.get('/enquete_agence', async (req, res) => {
+router.get('/enquete_agence', isAuthenticated, authenticateToken, async (req, res) => {
     const { StartDate, EndDate } = req.query;
     try {
         // Connexion à MongoDB
@@ -540,7 +594,7 @@ router.get('/enquete_agence', async (req, res) => {
 })
 
 // Route pour recupérer le nombre d'enquete en agence
-router.get('/enquete_agence_global', async (req, res) => {
+router.get('/enquete_agence_global', isAuthenticated, authenticateToken, async (req, res) => {
     try {
         // Connexion à MongoDB
         const client = new MongoClient(url);
@@ -563,7 +617,7 @@ router.get('/enquete_agence_global', async (req, res) => {
 })
 
 // Route pour recupérer le nombre d'enquete de satisfaction
-router.get('/enquete_satisfaction', async (req, res) => {
+router.get('/enquete_satisfaction', isAuthenticated, authenticateToken, async (req, res) => {
     const { StartDate, EndDate } = req.query;
     try {
         // Connexion à MongoDB
@@ -596,7 +650,7 @@ router.get('/enquete_satisfaction', async (req, res) => {
 })
 
 // Route pour recupérer le nombre d'enquete de satisfaction
-router.get('/enquete_satisfaction_global', async (req, res) => {
+router.get('/enquete_satisfaction_global', isAuthenticated, authenticateToken, async (req, res) => {
     try {
         // Connexion à MongoDB
         const client = new MongoClient(url);
@@ -619,7 +673,7 @@ router.get('/enquete_satisfaction_global', async (req, res) => {
 })
 
 // Route pour recupérer le nombre d'enquete corporate
-router.get('/enquete_entreprise', async (req, res) => {
+router.get('/enquete_entreprise', isAuthenticated, authenticateToken, async (req, res) => {
     const { StartDate, EndDate } = req.query;
     try {
         // Connexion à MongoDB
@@ -652,7 +706,7 @@ router.get('/enquete_entreprise', async (req, res) => {
 })
 
 // Route pour recupérer le nombre d'enquete corporate
-router.get('/enquete_entreprise_global', async (req, res) => {
+router.get('/enquete_entreprise_global', isAuthenticated, authenticateToken, async (req, res) => {
     try {
         // Connexion à MongoDB
         const client = new MongoClient(url);
@@ -671,6 +725,67 @@ router.get('/enquete_entreprise_global', async (req, res) => {
     } catch (error) {
         console.error('Erreur serveur:', error);
         res.status(500).send({ success: false, message: "Erreur serveur lors de la récupération des enquêtes" });
+    }
+})
+
+router.post('/logout', isAuthenticated, (req, res) => {
+
+    // Supprimer le cookie de session
+    res.clearCookie('connect.sid', {
+        path: '/',
+        httpOnly: true,
+        secure: false // Mettez `true` si vous utilisez HTTPS
+    });
+    // Supprimer le cookie de session
+    res.clearCookie('auth_token', {
+        path: '/',
+        httpOnly: true,
+        secure: false // Mettez `true` si vous utilisez HTTPS
+    });
+
+    return res.status(200).send({ success: true, message: "Déconnexion réussie" });
+
+});
+
+//Renouvellement de la session utilisateur
+router.post('/renew', isAuthenticated, authenticateToken, (req, res) => {
+    const token = req.cookies.auth_token; // Récupérer le token depuis les cookies
+
+    if (!token) {
+        return res.status(401).send({ success: false, message: 'Utilisateur non authentifié.' });
+    }
+
+    try {
+        // Vérification et décodage du token
+        const utilisateur = jwt.verify(token, SECRET_KEY);
+
+        // Renouveler le token
+        const newToken = jwt.sign(
+            { id: utilisateur.id, user: utilisateur.user, role: utilisateur.role },
+            SECRET_KEY,
+            { expiresIn: '1h' } // Expiration : 1 heure
+        );
+
+        // Mettre à jour la session
+        req.session.user = { id: utilisateur._id, name: utilisateur.utilisateur, role: utilisateur.role };
+        req.session.save()
+
+        // Définir le nouveau cookie
+        res.cookie('auth_token', newToken, {
+            httpOnly: true,
+            secure: true, // Mettre à true en production si HTTPS est utilisé
+            sameSite: 'Strict',
+            maxAge: 3600000, // Durée de vie : 1 heure
+        });
+
+        return res.status(200).send({
+            success: true,
+            message: 'Token et session renouvelés avec succès.',
+            token: newToken,
+        });
+    } catch (err) {
+        console.error('Erreur lors du renouvellement du token:', err);
+        return res.status(403).send({ success: false, message: 'Token invalide ou expiré.' });
     }
 })
 

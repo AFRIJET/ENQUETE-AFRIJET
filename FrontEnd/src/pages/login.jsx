@@ -26,16 +26,14 @@ const login = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         axios.post(`${apiUrl}/admin/login`, values, {
-            headers: { 'Content-Type': 'application/json' }
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true
         })
             .then(response => {
                 if (response.data.success) {
                     // Connexion réussie
                     const token = response.data.token // Récupère le token de l'utilisateur
-                    sessionStorage.setItem('token', token)
                     login(token);
-                    const userData = response.data.user; // Récupère les données utilisateur du backend
-                    sessionStorage.setItem('user', JSON.stringify(userData)); // Sauvegarde les données dans le localStorage
                     // Redirige ou met à jour l'état de l'application
                     navigate('/login/dashboard')
                 }

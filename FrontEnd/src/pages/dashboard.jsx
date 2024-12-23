@@ -12,12 +12,13 @@ import { AnimatePresence, motion } from 'framer-motion'
 const apiUrl = import.meta.env.VITE_API_URL;
 
 const dashboard = () => {
+  const { renewSession } = useAuth()
   const { changeDate } = useAuth()
   const { logout } = useAuth(); //Fonction de déconnexion
   const popupRefProfil = useRef(null)
   const popupRef = useRef(null)
   const popupDate = useRef(null)
-  const [user, setUser] = useState(null); // État pour l'utilisateur
+  const [utilisateur, setUtilisateur] = useState(null); // État pour l'utilisateur
   const [isProfilOpen, setIsProfilOpen] = useState(false)
   const [profil, setProfil] = useState(false)
   const [showPopup, setShowPopup] = useState(false)
@@ -41,38 +42,21 @@ const dashboard = () => {
       );
     }
   };
-  useEffect(() => {
-    // Récupère l'utilisateur sauvegardé dans le localStorage
-    const savedUser = sessionStorage.getItem('user');
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-    } else {
-      console.warn("Aucun utilisateur connecté.");
-    }
-  }, []); // Exécuté une seule fois après le montage du composant
   // Fonction qui permet de faire la vérification de l
   useEffect(() => {
-    if (!user) {
-      console.warn("Le nom d'utilisateur n'est pas défini.");
-      return; // Stoppe l'exécution si nameUser est undefined
-    }
-    axios.get(`${apiUrl}/admin/admin`, {
-      params: {
-        utilisateur: user.utilisateur // Nom d'utilisateur à vérifier
-      }
-    })
+    axios.get(`${apiUrl}/admin/admin`, { withCredentials: true })
       .then((response) => {
+        setUtilisateur(response.data.utilisateur)
         if (response.data.isAdmin) {
           setIsAdmin(true)
         } else {
           setIsAdmin(false)
         }
-
       })
       .catch(error => {
         console.error('Erreur:', error.response?.data?.message || error.message);
       });
-  })
+  }, [])
   const [activeIndex, setActiveIndex] = useState(null); // Stocke l'index de l'élément actif
   const [expandedIndex, setExpandedIndex] = useState(null); // Stocke l'index des éléments à agrandir
 
@@ -147,13 +131,10 @@ const dashboard = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!user) {
-      console.log("Erreur : ID utilisateur introuvable dans sessionStorage");
-      return;
-    }
     axios.put(`${apiUrl}/admin/update_profil`, {
-      id: user.id, // Identifiant utilisateur
-      ...data // Nouvelles données à mettre à jour
+      id: utilisateur.id, // Identifiant utilisateur
+      ...data, // Nouvelles données à mettre à jour
+      withCredentials: true
     })
       .then((response) => {
         setShowPopup(true)
@@ -171,11 +152,18 @@ const dashboard = () => {
   const handleLogout = () => {
     logout();
   }
+  const { isHidden, setIsHidden } = useAuth();
+
+  const handleClick = () => {
+    setIsHidden(!isHidden);
+  };
+
+  renewSession();
 
   return (
     <div className='bg-gray-100'>
       <div className='flex row'>
-        <div className='bg-white sm:w-[20%] border h-screen nav fixed z-10'>
+        <div className={`${isHidden ? 'bg-white sm:w-[20%] border h-screen nav fixed z-10 hidden sm:block' : 'bg-white sm:w-[20%] border h-screen nav fixed z-10'}`}>
           {/*Image d'entete */}
           <div className='inline-flex border-b border-b-4 border-brown-500 sm:w-full'>
             <img
@@ -225,10 +213,11 @@ const dashboard = () => {
           </ul>
         </div>
         <div className='w-screen h-screen'>
-          <div className='inline-flex items-center bg-white border-b border-b-4 border-brown-500 h-[85px] w-[82%] sm:w-[80%] right-0 fixed z-10'>
-            <div className='flex justify-between items-center w-full px-5 mb-3'>
+          <div className={`${isHidden ? "inline-flex items-center bg-gray-100 pt-8 sm:pt-0 sm:bg-white sm:border-b sm:border-b-4 sm:border-brown-500 h-[50px] sm:h-[85px] w-[100%] sm:w-[80%] right-0 fixed z-10" : "inline-flex items-center bg-gray-100 pt-8 sm:pt-0 sm:bg-white sm:border-b sm:border-b-4 sm:border-brown-500 h-[50px] sm:h-[85px] w-[80%] sm:w-[80%] right-0 fixed z-10"}`}>
+            <div className='flex justify-end sm:justify-between items-center w-full px-5 mb-3'>
+              <i className="text-xl fa-solid fa-bars fixed top-4 left-8 z-10 sm:hidden" onClick={handleClick}></i>
               {/* Filtre Section */}
-              <div className="cursor-pointer" onClick={() => setIsCalendarOpen(!isCalendarOpen)}>
+              <div className="cursor-pointer mb-2" onClick={() => setIsCalendarOpen(!isCalendarOpen)}>
                 {startDate && endDate ? (
                   <div className='flex'>
                     <div className='flex items-center border rounded px-2 py-2 sm:space-x-3'>
@@ -243,7 +232,7 @@ const dashboard = () => {
                     <span className='m-4' onClick={initializeDate}><i class="fa-regular fa-circle-xmark"></i></span>
                   </div>
                 ) : (
-                  <div className='flex items-center border rounded px-2 py-2 space-x-3'>
+                  <div className='flex items-center  rounded mr-4 px-2 py-2 space-x-3'>
                     <i class="fa-solid fa-calendar-days text-gray-700 sm:text-black text-sm"></i>
                     <span className='text-sm hidden sm:flex'>
                       Sélectionnez un intervalle de temps pour filtrer
@@ -269,11 +258,11 @@ const dashboard = () => {
               {/* User Section */}
               <div className='flex align-items-center space-x-3 mb-2'>
                 <div className=''>
-                  <i class="fa-solid fa-lock mr-3 text-lg text-gray-700 cursor-pointer" onClick={handleLogout}></i>
-                  <i class="fa-regular fa-circle-question mx-2 text-lg text-green-700"></i>
+                  <i className="fa-solid fa-lock mr-3 text-lg text-gray-700 cursor-pointer" onClick={handleLogout}></i>
+                  <i className="fa-regular fa-circle-question mx-2 text-lg text-green-700"></i>
                 </div>
                 <div className='flex items-center cursor-pointer' onClick={() => setIsProfilOpen(true)}>
-                  <span className='text-lg mr-4'>{user?.utilisateur}</span>
+                  <span className='text-lg mr-4'>{utilisateur?.name}</span>
                   <i className='fa-solid fa-circle-user text-2xl text-gray-700'></i>
                 </div>
               </div>
@@ -284,8 +273,8 @@ const dashboard = () => {
                       <i className='fa-solid fa-circle-user text-3xl mt-2 text-gray-700'></i>
                     </div>
                     <div className='grid-cols-2 mx-2'>
-                      <p>{user?.utilisateur}</p>
-                      <p className='text-gray-400'>{user?.role}</p>
+                      <p>{utilisateur?.name}</p>
+                      <p className='text-gray-400'>{utilisateur?.role}</p>
                     </div>
                   </div>
                   <div className='flex space-x-4'>
@@ -326,7 +315,7 @@ const dashboard = () => {
                         <input type='text'
                           id='inputUser'
                           name='utilisateur'
-                          defaultValue={user?.utilisateur}
+                          defaultValue={utilisateur?.name}
                           required
                           className='border p-1 mt-2.5 w-80 rounded-lg'
                           onChange={handleChange}

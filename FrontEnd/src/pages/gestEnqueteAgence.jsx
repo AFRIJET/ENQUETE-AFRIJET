@@ -1,44 +1,27 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { useAuth } from "../composants/authContext";
 
 const apiUrl = import.meta.env.VITE_API_URL
 
 const gestEnqueteAgence = () => {
+  const { renewSession } = useAuth()
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [date, setDate] = useState(null)
+  const { isHidden } = useAuth();
+  const [isLoading, setisLoading] = useState(true)
   const toggleModal = () => {
     setIsModalOpen((prev) => !prev);
   };
-
-  const [user, setUser] = useState(null); // État pour l'utilisateur
   const [isAdmin, setIsAdmin] = useState(false)
   useEffect(() => {
-    // Récupère l'utilisateur sauvegardé dans le localStorage
-    const savedUser = sessionStorage.getItem('user');
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-    } else {
-      console.warn("Aucun utilisateur connecté.");
-    }
-  }, []); // Exécuté une seule fois après le montage du composant
-  useEffect(() => {
-    if (!user) {
-      return; // Stoppe l'exécution si nameUser est undefined
-    }
-    axios.get(`${apiUrl}/admin/admin`, {
-      params: {
-        utilisateur: user.utilisateur // Nom d'utilisateur à vérifier
-      }
-    })
+    axios.get(`${apiUrl}/admin/admin`, { withCredentials: true })
       .then((response) => {
-        console.log('Résultat:', response.data);
+        setisLoading(false)
         if (response.data.isAdmin) {
           setIsAdmin(true)
         } else {
           setIsAdmin(false)
         }
-
       })
       .catch(error => {
         console.error('Erreur:', error.response?.data?.message || error.message);
@@ -64,6 +47,7 @@ const gestEnqueteAgence = () => {
       .get(apiEndpoint, {
         params,
         responseType: 'blob', // Traiter la réponse comme un fichier
+        withCredentials: true
       })
       .then(response => {
         // Vérifie si la réponse contient des données valides
@@ -105,7 +89,8 @@ const gestEnqueteAgence = () => {
       axios
         .get(apiEndpoint, {
           params,
-          responseType: 'blob', // Traiter la réponse comme un fichier
+          responseType: 'blob',
+          withCredentials: true // Traiter la réponse comme un fichier
         })
         .then(response => {
           // Vérifie si la réponse contient des données valides
@@ -130,13 +115,16 @@ const gestEnqueteAgence = () => {
       console.error("Erreur dans handleDownloadCsv :", error);
     }
   };
+
+  renewSession();
+
   return (
-    <div className='sm:ml-[20%] ml-20 mt-20'>
+    <div className={`${isHidden ? "sm:ml-[20%] ml-1 mt-20" : "sm:ml-[20%] ml-20 mt-20"}`}>
       <div className="flex justify-between items-center mx-auto px-5">
         {isAdmin && (
           <div
             onClick={toggleModal}
-            className="fixed top-2 sm:top-3 right-[200px] items-center justify-center sm:border rounded-lg sm:px-5 py-2 cursor-pointer z-20"
+            className="fixed top-2 sm:top-3 right-[260px] sm:right-[200px] items-center justify-center sm:border rounded-lg sm:px-5 py-2 cursor-pointer z-20"
           >
             <span className='text-sm'><i className="fa-solid fa-download mr-2 text-gray-700 sm:text-black"></i> <span className='hidden sm:inline'>Télécharger un rapport</span></span>
           </div>
@@ -174,15 +162,19 @@ const gestEnqueteAgence = () => {
         )}
       </div>
       {/* Dashboard Enquete Agence */}
-      <div className='iframe-container w-100 h-100'>
-        <iframe
-          src="https://charts.mongodb.com/charts-afrijet-enquete-client-sykledh/public/dashboards/672c69d2-5cd9-4b0d-83d5-5d92bd59e80f"
-          width="100%"
-          height="755 sm:665"
-          className='custom-iframe'
-          frameBorder="0"
-        ></iframe>
-      </div>
+      {isLoading ? (
+        <div></div>
+      ) : (
+        <div className='iframe-container w-100 h-100'>
+          <iframe
+            src="https://charts.mongodb.com/charts-afrijet-enquete-client-sykledh/public/dashboards/672c69d2-5cd9-4b0d-83d5-5d92bd59e80f"
+            width="100%"
+            height="755 sm:665"
+            className='custom-iframe'
+            frameBorder="0"
+          ></iframe>
+        </div>
+      )}
     </div>
   )
 }
