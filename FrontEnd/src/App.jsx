@@ -49,23 +49,46 @@ function App() {
                 <Route path='/enquete_corporate' element={<BienvenueCorporate />}></Route>
                 <Route path='/enquete_corporate/enquete' element={<EnqueteCorporate />}></Route>
                 <Route path='/login' element={<Login />}></Route>
-                <Route path='/login/dashboard' element={<Dashboard />}>
+                <Route path='/login/dashboard' element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>}>
                   <Route path='' element={
                     <ProtectedRoute>
                       <Home />
                     </ProtectedRoute>}>
                   </Route>
-                  <Route path='/login/dashboard/users' element={<Users />}></Route>
-                  <Route path='/login/dashboard/profil' element={<Profil />}></Route>
-                  <Route path='/login/dashboard/enqueteagence' element={<GestEnqueteAgence />}></Route>
-                  <Route path='/login/dashboard/enquetesatisfaction' element={<GestEnqueteSatisfaction />}></Route>
-                  <Route path='/login/dashboard/enquetecorporate' element={<GestEnqueteCorporate />}></Route>
-                </Route>
-              </Routes>
-            </BrowserRouter>
+                  <Route path='/login/dashboard/users' element={
+                    <ProtectedRoute>
+                      <Users />
+                    </ProtectedRoute>}>
+                  </Route>
+                  <Route path='/login/dashboard/profil' element={
+                    <ProtectedRoute>
+                      <Profil />
+                    </ProtectedRoute>}>
+                  </Route>
+                  <Route path='/login/dashboard/enqueteagence' element={
+                    <ProtectedRoute>
+                      <GestEnqueteAgence />
+                    </ProtectedRoute>}>
+                  </Route>
+                  <Route path='/login/dashboard/enquetesatisfaction' element={
+                    <ProtectedRoute>
+                      <GestEnqueteSatisfaction />
+                    </ProtectedRoute>}>
+                  </Route>
+                  <Route path='/login/dashboard/enquetecorporate' element={
+                    <ProtectedRoute>
+                      <GestEnqueteCorporate />
+                    </ProtectedRoute>}>                 
+                  </Route>
+              </Route>
+            </Routes>
+          </BrowserRouter>
           </Animation>
         )}
-      </AuthProvider>
+    </AuthProvider >
     </>
   )
 }

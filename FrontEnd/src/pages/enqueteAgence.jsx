@@ -209,7 +209,6 @@ const AgencySurvey = () => {
             })
                 .then(response => {
                     setIsPopVisible(true);
-                    console.log(response);
                 })
                 .catch(err => console.log("Erreur lors de la sauvegarde des données:", err));
         }

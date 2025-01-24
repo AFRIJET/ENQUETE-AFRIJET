@@ -19,7 +19,7 @@ const port = process.env.PORT || 5000;
 const allowedOrigins = [
     'http://localhost:5000',
     'http://localhost:5173', // Local pour développement
-    'https://enquete-afrijet-flygabon.com', // Nom de domaine
+    'https://secure.enquete-afrijet-flygabon.com', // Nom de domaine
 ];
 app.use(cors({
     origin: allowedOrigins, // Remplacez par l'URL de votre frontend

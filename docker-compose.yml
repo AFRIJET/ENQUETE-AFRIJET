@@ -1,23 +1,16 @@
 services:
-  backend:
-    build:
-      context: ./BackEnd
+  frontend:
+    image: ghcr.io/afrijet/enquete_afrijet/frontend:test
+    container_name: frontend
     ports:
-      - "5000:5000" # Expose le backend en local sur le port 5000
+      - "3000:80" # Serveur NGINX servant le frontend
+    environment:
+      - VITE_API_URL=https://secure.enquete-afrijet-flygabon.com
+
+  backend:
+    image: ghcr.io/afrijet/enquete_afrijet/backend:test
+    container_name: backend
+    ports:
+      - "5000:5000"
     environment:
       - MONGO_URL=mongodb+srv://bryan:bryanafrijet@enquete-afrijet.j1yge.mongodb.net/EnqueteAfrijet-db?retryWrites=true&w=majority
-    networks:
-      - app-network
-
-  frontend:
-    build:
-      context: ./FrontEnd
-    ports:
-      - "3000:80" # Expose le frontend en local sur le port 3000
-    environment:
-      - VITE_API_URL=https://enquete-afrijet-flygabon.com
-    networks:
-      - app-network
-
-networks:
-  app-network:
