@@ -22,6 +22,7 @@ const Home = () => {
     const totalEnqueteAgence = () => {
         setIsLoadingAgence(true)
         if (startDate && endDate) {
+            console.log(startDate, endDate)
             const params = { StartDate: startDate, EndDate: endDate };
 
             axios

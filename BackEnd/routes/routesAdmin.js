@@ -570,6 +570,8 @@ router.get('/enquete_agence', isAuthenticated, authenticateToken, async (req, re
         const db = client.db('EnqueteAfrijet-db');
         const collection = db.collection('Enquete_Agence');
 
+        console.log(StartDate, EndDate)
+
         // Construire la requête de filtrage
         const query = {};
         if (StartDate && EndDate) {

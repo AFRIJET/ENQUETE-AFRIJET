@@ -18,6 +18,8 @@ const dashboard = () => {
   const popupRefProfil = useRef(null)
   const popupRef = useRef(null)
   const popupDate = useRef(null)
+  const navRef = useRef(null)
+  const navBar = useRef(null)
   const [utilisateur, setUtilisateur] = useState(null); // État pour l'utilisateur
   const [isProfilOpen, setIsProfilOpen] = useState(false)
   const [profil, setProfil] = useState(false)
@@ -30,6 +32,7 @@ const dashboard = () => {
   const [endDate, setEndDate] = useState(null);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const handleDateChange = (dates) => {
+    console.log(dates)  
     const [start, end] = dates;
     changeDate(start, end)
     setStartDate(start);
@@ -154,9 +157,26 @@ const dashboard = () => {
   }
   const { isHidden, setIsHidden } = useAuth();
 
-  const handleClick = () => {
-    setIsHidden(!isHidden);
-  };
+  useEffect(() => {
+    const handleClick = (event) => {
+      if (!navRef.current || !navRef.current.contains(event.target)) {
+        if (navBar.current && !navBar.current.contains(event.target)) {
+          setIsHidden(true);
+        } else {
+          setIsHidden(false);
+        }
+        
+      } else {
+        // Si on clique à l'intérieur de navRef
+        setIsHidden((prev) => !prev);
+        console.log("Bon")
+      }
+    };
+
+    document.addEventListener("mousedown", handleClick);
+
+   
+  }, []);
 
   renewSession();
 
@@ -179,7 +199,7 @@ const dashboard = () => {
           </div>
 
           {/* Nav Bar Section */}
-          <ul className="mt-6 nav">
+          <ul className="mt-6 nav" ref={navBar}>
             {menuItems.map((item, index) => (
               <li key={index} className="mx-4 mt-6">
                 <Link to={item.to} className={`p-2 w-full block hover:bg-red-100 hover:rounded-lg ${activeIndex === index ? "bg-red-200 rounded-lg" : ""
@@ -213,31 +233,31 @@ const dashboard = () => {
           </ul>
         </div>
         <div className='w-screen h-screen'>
-          <div className={`${isHidden ? "inline-flex items-center bg-gray-100 pt-8 sm:pt-0 sm:bg-white sm:border-b sm:border-b-4 sm:border-brown-500 h-[50px] sm:h-[85px] w-[100%] sm:w-[80%] right-0 fixed z-10" : "inline-flex items-center bg-gray-100 pt-8 sm:pt-0 sm:bg-white sm:border-b sm:border-b-4 sm:border-brown-500 h-[50px] sm:h-[85px] w-[80%] sm:w-[80%] right-0 fixed z-10"}`}>
+          <div className={`${isHidden ? "inline-flex items-center bg-gray-100 pt-8 sm:pt-0 sm:bg-white sm:border-b sm:border-b-4 sm:border-brown-500 h-[50px] sm:h-[84px] w-[100%] sm:w-[80%] right-0 fixed z-10" : "inline-flex items-center bg-gray-100 pt-8 sm:pt-0 sm:bg-white sm:border-b sm:border-b-4 sm:border-brown-500 h-[50px] sm:h-[85px] w-[80%] sm:w-[80%] right-0 fixed z-10"}`}>
             <div className='flex justify-end sm:justify-between items-center w-full px-5 mb-3'>
-              <i className="text-xl fa-solid fa-bars fixed top-4 left-8 z-10 sm:hidden" onClick={handleClick}></i>
+              <i className="text-xl fa-solid fa-bars fixed top-4 left-8 z-10 sm:hidden" ref={navRef} onClick={() => setIsHidden((prev) => !prev)}></i>
               {/* Filtre Section */}
               <div className="cursor-pointer mb-2" onClick={() => setIsCalendarOpen(!isCalendarOpen)}>
                 {startDate && endDate ? (
-                  <div className='flex'>
-                    <div className='flex items-center border rounded px-2 py-2 sm:space-x-3'>
-                      <i class="fa-solid fa-calendar-days text-gray-700 sm:text-black text-sm sm:hidden"></i>
-                      <span className='text-sm space-x-2'>
+                  <div className='flex sm:mt-4'>
+                    <div className='flex items-center sm:border rounded px-3 py-1 sm:py-2 sm:space-x-3'>
+                      <i class="fa-solid fa-calendar-days text-gray-700 sm:text-black text-lg sm:text-sm sm:hidden"></i>
+                      <span className='flex text-sm space-x-2'>
                         <span className='hidden sm:flex'>Du {" "}</span>
                         <span className="text-sm hidden sm:flex">{startDate.toLocaleDateString()}</span> <span className='hidden sm:flex'>-{" "}</span>
                         <span className="text-sm hidden sm:flex">{endDate.toLocaleDateString()}</span>
-                        <i class="fa-solid fa-angle-down text-sm"></i>
+                        <i className="fa-solid fa-angle-down hidden sm:flex text-sm"></i>
                       </span>
                     </div>
-                    <span className='m-4' onClick={initializeDate}><i class="fa-regular fa-circle-xmark"></i></span>
+                    <span className='pt-2 sm:pt-0 mr-4 sm:m-4 text-brown-500' onClick={initializeDate}><i class="fa-regular fa-circle-xmark"></i></span>
                   </div>
                 ) : (
-                  <div className='flex items-center  rounded mr-4 px-2 py-2 space-x-3'>
-                    <i class="fa-solid fa-calendar-days text-gray-700 sm:text-black text-sm"></i>
+                  <div className='flex items-center rounded mr-4 sm:mt-3 px-2 py-2 space-x-3'>
+                    <i class="fa-solid fa-calendar-days text-gray-700 sm:text-black text-lg sm:text-sm"></i>
                     <span className='text-sm hidden sm:flex'>
                       Sélectionnez un intervalle de temps pour filtrer
                     </span>
-                    <i class="fa-solid fa-angle-down text-sm"></i>
+                    <i className="fa-solid fa-angle-down hidden sm:flex text-sm"></i>
                   </div>
                 )}
               </div>
@@ -257,7 +277,7 @@ const dashboard = () => {
 
               {/* User Section */}
               <div className='flex align-items-center space-x-3 mb-2'>
-                <div className=''>
+                <div className='mt-1'>
                   <i className="fa-solid fa-lock mr-3 text-lg text-gray-700 cursor-pointer" onClick={handleLogout}></i>
                   <i className="fa-regular fa-circle-question mx-2 text-lg text-green-700"></i>
                 </div>

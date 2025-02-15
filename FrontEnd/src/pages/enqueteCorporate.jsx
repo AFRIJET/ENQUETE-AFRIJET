@@ -24,7 +24,7 @@ const enqueteCorporate = () => {
     const [isPopVisible, setIsPopVisible] = useState(false)
     const [selectedCheckbox, setSelectedCheckbox] = useState(null)
     const popupRef = useRef(null)
-    const date = new Date().toISOString().split("T")[0];
+    const date = new Date();
     const [data, setData] = useState({
         date: date,
     })

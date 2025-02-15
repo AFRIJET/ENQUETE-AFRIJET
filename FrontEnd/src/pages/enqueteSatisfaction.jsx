@@ -27,7 +27,7 @@ const enqueteSatisfaction = () => {
     const [text, setText] = useState("")
     const [selectedCheckbox, setSelectedCheckbox] = useState()
     const popupRef = useRef(null)
-    const date = new Date().toISOString().split("T")[0];
+    const date = new Date();
     const maxLength = 150
     const [data, setData] = useState({
         date: date,

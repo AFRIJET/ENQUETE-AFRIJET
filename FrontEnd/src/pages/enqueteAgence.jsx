@@ -24,12 +24,13 @@ const AgencySurvey = () => {
     ];
     const [isPopVisible, setIsPopVisible] = useState(false); // Declaration de la variable pour la popUp
     const popupRef = useRef(null)
-    const date = new Date().toISOString().split("T")[0]; // Définition de la variable date
+    const date = new Date();
     const [selectedCheckbox, setSelectedCheckbox] = useState(null); // État pour la sélection de la checkbox
 
     // Initialisation de l'etat de ma variable data grace au hook UseState pour recuperer les donnees entrees par les utilisateurs
     const [data, setData] = useState({
         date: date,
+        pays: "",
     })
     const initialErrors = {
         sexe: "",
@@ -175,6 +176,11 @@ const AgencySurvey = () => {
             updatedErrors(name, value);
         } else {
             // Mettre à jour l'état des données
+            if (name === 'agence') {
+                const agenceTrouvee = agence.find((item) => item.agence === value);
+                const paysTrouvee = agenceTrouvee ? agenceTrouvee.country : '';  // Récupère le pays associé
+                data.pays = paysTrouvee
+            }
             setData({
                 ...data,
                 [name]: value
@@ -238,6 +244,8 @@ const AgencySurvey = () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [isPopVisible]);
+
+    console.log(data)
 
     return (
         <motion.div
