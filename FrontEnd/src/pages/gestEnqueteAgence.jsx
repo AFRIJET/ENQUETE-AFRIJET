@@ -26,7 +26,7 @@ const gestEnqueteAgence = () => {
       .catch(error => {
         console.error('Erreur:', error.response?.data?.message || error.message);
       });
-  })
+  }, [])
 
   const handleDownloadReportExcel = () => {
     // Récupérer et parser l'intervalle de dates depuis sessionStorage
@@ -116,7 +116,9 @@ const gestEnqueteAgence = () => {
     }
   };
 
-  renewSession();
+  useEffect(() => {
+    renewSession();
+  }, [])
 
   return (
     <div className={`${isHidden ? "sm:ml-[20%] ml-1 mt-20" : "sm:ml-[20%] ml-20 mt-20"}`}>

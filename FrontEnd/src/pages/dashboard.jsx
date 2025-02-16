@@ -32,7 +32,7 @@ const dashboard = () => {
   const [endDate, setEndDate] = useState(null);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const handleDateChange = (dates) => {
-    console.log(dates)  
+    console.log(dates)
     const [start, end] = dates;
     changeDate(start, end)
     setStartDate(start);
@@ -165,20 +165,21 @@ const dashboard = () => {
         } else {
           setIsHidden(false);
         }
-        
+
       } else {
         // Si on clique à l'intérieur de navRef
         setIsHidden((prev) => !prev);
-        console.log("Bon")
       }
     };
 
     document.addEventListener("mousedown", handleClick);
 
-   
+
   }, []);
 
-  renewSession();
+  useEffect(() => {
+    renewSession();
+  }, [])
 
   return (
     <div className='bg-gray-100'>

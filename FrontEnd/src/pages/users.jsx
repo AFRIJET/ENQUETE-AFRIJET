@@ -40,6 +40,7 @@ const users = () => {
         setSelectUser(userId)
         axios.get(`${apiUrl}/admin/user_update`, {
             params: { id: userId },
+            withCredentials: true 
         })
             .then((response) => {
                 console.log(response)
@@ -73,10 +74,10 @@ const users = () => {
         axios.get(`${apiUrl}/admin/users`, { withCredentials: true })
             .then((response) => {
                 setUsers(response.data.users || []);
-                setIsLoading(false); // Désactiver le chargement
+                setIsLoading(false);
             })
             .catch(error => console.log("Erreur:", error))
-    })
+    }, [])
     const handleChangeBox = (event) => {
         const { id, checked } = event.target;
         setCheckedItems({

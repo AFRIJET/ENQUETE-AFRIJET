@@ -129,7 +129,9 @@ const Home = () => {
         totalEnqueteEntreprise();
     }, [startDate, endDate]);
 
-    renewSession();
+    useEffect(() => {
+        renewSession();
+    }, [])
 
     return (
         <div className={`${isHidden ? "pb-5 sm:ml-[20%] ml-3 mt-10 sm:mt-20 w-100" : "pb-5 sm:ml-[20%] ml-[70px] mt-10 sm:mt-20 w-100"}`}>

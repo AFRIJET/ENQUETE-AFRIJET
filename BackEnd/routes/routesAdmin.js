@@ -130,6 +130,7 @@ router.post('/login', async (req, res) => {
 router.get('/admin', isAuthenticated, authenticateToken, async (req, res) => {
 
     const utilisateur = req.session.user
+    console.log(utilisateur)
 
     try {
         // Connexion à la base de données MongoDB
@@ -142,7 +143,7 @@ router.get('/admin', isAuthenticated, authenticateToken, async (req, res) => {
         const user = await collection.findOne({ utilisateur: utilisateur.name });
 
         // Vérifie si l'utilisateur est un administrateur
-        const isAdmin = user.role === 'admin';
+        const isAdmin = utilisateur.role === 'admin';
 
         // Ferme la connexion à la base de données
         await client.close();
@@ -769,7 +770,7 @@ router.post('/renew', isAuthenticated, authenticateToken, (req, res) => {
         );
 
         // Mettre à jour la session
-        req.session.user = { id: utilisateur._id, name: utilisateur.utilisateur, role: utilisateur.role };
+        req.session.user = { id: utilisateur.id, name: utilisateur.user, role: utilisateur.role };
         req.session.save()
 
         // Définir le nouveau cookie
