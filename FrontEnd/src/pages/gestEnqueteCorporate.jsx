@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react'
 import { useAuth } from "../composants/authContext";
+import Loader from '../composants/loader';
 
 const apiUrl = import.meta.env.VITE_API_URL
 
@@ -23,9 +24,7 @@ const gestEnqueteCorporate = () => {
           setIsAdmin(false)
         }
       })
-      .catch(error => {
-        console.error('Erreur:', error.response?.data?.message || error.message);
-      });
+      .catch();
   }, [])
 
   const handleDownloadReportExcel = () => {
@@ -62,12 +61,10 @@ const gestEnqueteCorporate = () => {
           link.remove();
           setIsModalOpen((prev) => !prev);
         } else {
-          console.error('Aucune donnée valide reçue du serveur');
+          
         }
       })
-      .catch((error) => {
-        console.log("Erreur lors du téléchargement :", error);
-      });
+      .catch();
   };
   const handleDownloadCsv = () => {
     try {
@@ -105,16 +102,23 @@ const gestEnqueteCorporate = () => {
             link.remove();
             setIsModalOpen((prev) => !prev);
           } else {
-            console.error('Aucune donnée valide reçue du serveur');
+            //Aucune données recues su serveur
           }
         })
-        .catch(error => {
-          console.error("Erreur lors du téléchargement :", error);
-        });
+        .catch();
     } catch (error) {
-      console.error("Erreur dans handleDownloadCsv :", error);
+      
     }
   };
+
+  useEffect(() => {
+    const handleClickFrame = () => {
+      window.parent.postMessage("closePopup", "https://secure.enquete-afrijet-flygabon.com/login/dashboard");
+    };
+
+    window.addEventListener("blur", handleClickFrame);
+
+  }, []);
 
   useEffect(() => {
     renewSession();
@@ -165,9 +169,12 @@ const gestEnqueteCorporate = () => {
       </div>
       {/* Dashboard Enquete Agence */}
       {isLoading ? (
-        <div></div>
+        <Loader />
       ) : (
-        <div className='iframe-container w-100 h-100'>
+        <div className='flex mt-60 justify-center'>
+          <h3 className=''>Pas de données</h3>
+        </div>
+        /* <div className='iframe-container w-100 h-100'>
           <iframe
             src="https://charts.mongodb.com/charts-afrijet-enquete-client-sykledh/public/dashboards/d76219ca-d205-43e4-a8b0-67ee4f42e037"
             width="100%"
@@ -175,7 +182,7 @@ const gestEnqueteCorporate = () => {
             className='custom-iframe'
             frameBorder="0"
           ></iframe>
-        </div>
+        </div> */
       )}
 
     </div>

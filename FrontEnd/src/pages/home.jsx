@@ -22,7 +22,6 @@ const Home = () => {
     const totalEnqueteAgence = () => {
         setIsLoadingAgence(true)
         if (startDate && endDate) {
-            console.log(startDate, endDate)
             const params = { StartDate: startDate, EndDate: endDate };
 
             axios
@@ -35,9 +34,7 @@ const Home = () => {
                         setNbreEnqueteAgence(0);
                     }
                 })
-                .catch((error) => {
-                    console.error("Erreur lors du téléchargement:", error);
-                });
+                .catch();
         } else {
             axios
                 .get(`${apiUrl}/admin/enquete_agence_global`, { withCredentials: true })
@@ -49,9 +46,7 @@ const Home = () => {
                         setNbreEnqueteAgence(0);
                     }
                 })
-                .catch((error) => {
-                    console.error("Erreur lors du téléchargement:", error);
-                });
+                .catch();
         }
     };
 
@@ -69,9 +64,7 @@ const Home = () => {
                         setNbreEnqueteSatisfaction(0);
                     }
                 })
-                .catch((error) => {
-                    console.error("Erreur lors du téléchargement:", error);
-                });
+                .catch();
         } else {
             axios
                 .get(`${apiUrl}/admin/enquete_satisfaction_global`, { withCredentials: true })
@@ -83,9 +76,7 @@ const Home = () => {
                         setNbreEnqueteSatisfaction(0);
                     }
                 })
-                .catch((error) => {
-                    console.error("Erreur lors du téléchargement:", error);
-                });
+                .catch();
         }
     };
 
@@ -103,9 +94,7 @@ const Home = () => {
                         setNbreEnqueteEntreprise(0);
                     }
                 })
-                .catch((error) => {
-                    console.error("Erreur lors du téléchargement:", error);
-                });
+                .catch();
         } else {
             axios
                 .get(`${apiUrl}/admin/enquete_entreprise_global`, { withCredentials: true })
@@ -117,9 +106,7 @@ const Home = () => {
                         setNbreEnqueteEntreprise(0);
                     }
                 })
-                .catch((error) => {
-                    console.error("Erreur lors du téléchargement:", error);
-                });
+                .catch();
         }
     };
 
@@ -130,11 +117,20 @@ const Home = () => {
     }, [startDate, endDate]);
 
     useEffect(() => {
+        const handleClickFrame = () => {
+            window.parent.postMessage("closePopup", "*");
+        };
+
+        window.addEventListener("blur", handleClickFrame);
+
+    }, []);
+
+    useEffect(() => {
         renewSession();
     }, [])
 
     return (
-        <div className={`${isHidden ? "pb-5 sm:ml-[20%] ml-3 mt-10 sm:mt-20 w-100" : "pb-5 sm:ml-[20%] ml-[70px] mt-10 sm:mt-20 w-100"}`}>
+        <div className={`${isHidden ? "pb-5 sm:ml-[20%] ml-3 mt-10 sm:mt-20 w-100 bg-gray-100" : "pb-5 sm:ml-[20%] ml-[70px] mt-10 sm:mt-20 w-100 bg-gray-100"}`}>
             <h3 className="flex items-center mx-8 pt-7 pb-5 text-lg font-semibold">
                 <i className="fa-solid fa-gauge text-lg mx-3 text-gray-700" aria-hidden="true"></i>
                 Tableau de bord
@@ -209,14 +205,25 @@ const Home = () => {
             {isLoadingAgence && isLoadingSatisfaction && isLoadingCorporate ? (
                 <div></div>
             ) : (
-                <div className='iframe-container mt-4'>
-                    <iframe
-                        src="https://charts.mongodb.com/charts-afrijet-enquete-client-sykledh/embed/charts?id=c57b81ab-7d69-48e3-b5e6-1d54b805e145&maxDataAge=3600&theme=light&autoRefresh=true"
-                        width="100%"
-                        height="665"
-                        className='custom-iframe'
-                        frameBorder="0"
-                    ></iframe>
+                <div className='bg-gray-100'>
+                    <div className='iframe-container mt-4'>
+                        <iframe
+                            src="https://charts.mongodb.com/charts-afrijet-enquete-client-sykledh/embed/charts?id=c57b81ab-7d69-48e3-b5e6-1d54b805e145&maxDataAge=60&theme=light&autoRefresh=true"
+                            width="100%"
+                            height="500"
+                            className='custom-iframe'
+                            frameBorder="0"
+                        ></iframe>
+                    </div>
+                    <div className='iframe-container mt-4'>
+                        <iframe
+                            src="https://charts.mongodb.com/charts-afrijet-enquete-client-sykledh/embed/charts?id=fdb30928-3d09-409e-8cc2-d94e8dee9348&maxDataAge=60&theme=light&autoRefresh=true"
+                            width="80%"
+                            height="400"
+                            className='custom-iframe'
+                            frameBorder="0"
+                        ></iframe>
+                    </div>
                 </div>
             )}
         </div>

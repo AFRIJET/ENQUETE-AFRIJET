@@ -226,7 +226,7 @@ const enqueteSatisfaction = () => {
                 .then(response => {
                     setIsPopVisible(true);
                 })
-                .catch(err => console.log("Erreur lors de la sauvegarde des données:", err));
+                .catch();
         }
     }
 

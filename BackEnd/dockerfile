@@ -1,21 +1,8 @@
-# Étape 1: Utiliser l'image de base Node.js
-FROM node:20
-
-# Définir le répertoire de travail dans le conteneur
+#Etape2 : Utiliser une image de base légère pour l'éxécution
+FROM node:20-alpine 
 WORKDIR /app
-
-# Copier les fichiers package.json et package-lock.json
-# (Cela permet de réduire les étapes de re-construction de dépendances si le package.json n'a pas changé)
 COPY package.json package-lock.json ./
-
-# Installer les dépendances
-RUN npm install
-
-# Copier tout le code source dans le conteneur
+RUN npm install --production
 COPY . .
-
-# Exposer le port 5000 pour accéder à l'API
 EXPOSE 5000
-
-# Démarrer l'application avec Node.js
-CMD ["node", "index.js"]
+CMD [ "node", "index.js" ]

@@ -130,7 +130,6 @@ router.post('/login', async (req, res) => {
 router.get('/admin', isAuthenticated, authenticateToken, async (req, res) => {
 
     const utilisateur = req.session.user
-    console.log(utilisateur)
 
     try {
         // Connexion à la base de données MongoDB
@@ -787,7 +786,6 @@ router.post('/renew', isAuthenticated, authenticateToken, (req, res) => {
             token: newToken,
         });
     } catch (err) {
-        console.error('Erreur lors du renouvellement du token:', err);
         return res.status(403).send({ success: false, message: 'Token invalide ou expiré.' });
     }
 })

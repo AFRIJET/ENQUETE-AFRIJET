@@ -93,11 +93,12 @@ const enqueteCorporate = () => {
     const generateId = (label) => {
         return label.toLowerCase()
     }
-
+    /*
     const closePopUp = () => {
         setIsPopVisible(false);
         window.location.reload()
     }
+    */
 
     const updatedErrors = (name, value) => {
         // Annuler l'erreur pour le champ sexe
@@ -142,6 +143,7 @@ const enqueteCorporate = () => {
         }
     };
 
+    /*
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (popupRef.current && !popupRef.current.contains(event.target)) {
@@ -159,6 +161,7 @@ const enqueteCorporate = () => {
             document.removeEventListener('mousedown', handleClickOutside)
         }
     }, [isPopVisible]);
+    */
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -179,7 +182,7 @@ const enqueteCorporate = () => {
                 .then(response => {
                     setIsPopVisible(true);
                 })
-                .catch(err => console.log("Erreur lors de la sauvegarde des données: ", err))
+                .catch()
         }
     }
 
@@ -290,7 +293,7 @@ const enqueteCorporate = () => {
                     {errors.anciennete && <small className="text-brown-500 text-sm mt-1 mx-5">{"("}{errors.anciennete}{")"}</small>}
                     <div className={`mx-5 mt-4 border-b border-gray-900/10 pb-5 ${errors.localisation ? 'p-2 rounded-lg border-2 border-red-500' : ''}`}>
                         <legend htmlFor="country" className="text-sm font-semibold leading-6 text-gray-900">
-                           2. {t('localisation')} <span className='text-red-500'>*</span>
+                            2. {t('localisation')} <span className='text-red-500'>*</span>
                         </legend>
                         <div className="w-full mt-2">
                             <select

@@ -24,7 +24,6 @@ router.post('/enquete_agence', async (req, res) => {
         const result = await collection.insertOne(data);
         res.status(201).json(result);
     } catch (error) {
-        console.error('Erreur lors de l\'insertion:', error);
         res.status(500).send('Erreur lors de l\'insertion des données');
     }
 });
@@ -43,7 +42,6 @@ router.post('/enquete_satisfaction', async (req, res) => {
         const result = await collection.insertOne(data);
         res.status(201).json(result);
     } catch (error) {
-        console.error("Error lors de l\'insertion:", error);
         res.status(500).send("Errreur lors de l'insertion des données");
     }
 })
@@ -61,7 +59,6 @@ router.post('/enquete_entreprise', async (req, res) => {
         const result = await collection.insertOne(data);
         res.status(201).json(result);
     } catch (error) {
-        console.error("Erreur lors de l\'insertion des données", error)
         res.status(500).send("Erreur lors de l\'insertion");
     }
 })

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useAuth } from "../composants/authContext";
 
 const apiUrl = import.meta.env.VITE_API_URL
@@ -23,9 +23,7 @@ const gestEnqueteAgence = () => {
           setIsAdmin(false)
         }
       })
-      .catch(error => {
-        console.error('Erreur:', error.response?.data?.message || error.message);
-      });
+      .catch();
   }, [])
 
   const handleDownloadReportExcel = () => {
@@ -62,12 +60,10 @@ const gestEnqueteAgence = () => {
           link.remove();
           setIsModalOpen((prev) => !prev);
         } else {
-          console.error('Aucune donnée valide reçue du serveur');
+          
         }
       })
-      .catch((error) => {
-        console.log("Erreur lors du téléchargement :", error);
-      });
+      .catch();
   };
   const handleDownloadCsv = () => {
     try {
@@ -105,16 +101,23 @@ const gestEnqueteAgence = () => {
             link.remove();
             setIsModalOpen((prev) => !prev);
           } else {
-            console.error('Aucune donnée valide reçue du serveur');
+            //Erreur aucune donnée recues du serveur
           }
         })
-        .catch(error => {
-          console.error("Erreur lors du téléchargement :", error);
-        });
+        .catch();
     } catch (error) {
-      console.error("Erreur dans handleDownloadCsv :", error);
+      
     }
   };
+
+  useEffect(() => {
+    const handleClickFrame = () => {
+      window.parent.postMessage("closePopup", "https://secure.enquete-afrijet-flygabon.com/login/dashboard");
+    };
+  
+    window.addEventListener("blur", handleClickFrame);
+  
+  }, []);
 
   useEffect(() => {
     renewSession();
@@ -173,7 +176,6 @@ const gestEnqueteAgence = () => {
             width="100%"
             height="755 sm:665"
             className='custom-iframe'
-            frameBorder="0"
           ></iframe>
         </div>
       )}

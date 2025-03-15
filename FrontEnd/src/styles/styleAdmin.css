@@ -44,6 +44,10 @@ small {
     font-family: "SUSE", "Arial";
 }
 
+ol li {
+    font-family: "SUSE", "Arial";
+}
+
 ::-webkit-scrollbar {
     width: 1px;
 }
@@ -87,12 +91,12 @@ small {
 
 iframe {
     font-family: inherit;
-    /* Hérite la police de l'application principale */
+    
 }
 
 .custom-iframe {
     border: none;
-    /* Suppression de la bordure par défaut */
+    
 }
 
 

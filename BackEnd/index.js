@@ -14,30 +14,29 @@ const app = express();
 app.use(cookieParser());
 const port = process.env.PORT || 5000;
 
-// Configuration CORS
-// Configurez les origines autorisées
+
 const allowedOrigins = [
+    'http://localhost:3000',
     'http://localhost:5000',
     'http://localhost:5173', // Local pour développement
     'https://secure.enquete-afrijet-flygabon.com', // Nom de domaine
 ];
 app.use(cors({
-    origin: allowedOrigins, // Remplacez par l'URL de votre frontend
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Méthodes autorisées
-    credentials: true // Pour envoyer des cookies et des autorisations
+    origin: allowedOrigins,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
 }));
 
 app.use(session({
-    secret: process.env.JWT_SECRET,  // Clé secrète pour sécuriser les sessions
+    secret: process.env.JWT_SECRET, 
     resave: false,
     saveUninitialized: true,
-    cookie: {httpOnly: true, secure: false, sameSite: 'Strict', maxAge: 3600000 } // Durée de vie du cookie de session (1h)
+    cookie: {httpOnly: true, secure: false, sameSite: 'Strict', maxAge: 3600000 } 
 }));
 
 app.use(express.json());
-app.use(bodyParser.json()); // Permet de lire le corps des requêtes JSON
+app.use(bodyParser.json());
 
-// Charger la chaîne de connexion MongoDB depuis .env
 const url = process.env.MONGO_URL;
 let db;
 
@@ -52,10 +51,8 @@ async function connectToDatabase() {
     }
 }
 
-
-// Utilisation des routes
-app.use('/api', routesClient); // Préfixez toutes les routes client par /api
-app.use('/admin', routesAdmin); // Préfixez toutes les routes administrateur par /admin
+app.use('/api', routesClient); 
+app.use('/admin', routesAdmin); 
 
 connectToDatabase();
 

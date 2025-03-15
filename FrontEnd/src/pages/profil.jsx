@@ -24,12 +24,10 @@ const profil = () => {
         if (savedUser) {
             setUser(JSON.parse(savedUser));
         } else {
-            console.warn("Aucun utilisateur connecté.");
         }
     }, []); // Exécuté une seule fois après le montage du composant
     useEffect(() => {
         if (!user) {
-            console.warn("Le nom d'utilisateur n'est pas défini.");
             return; // Stoppe l'exécution si nameUser est undefined
         }
         axios.get(`${apiUrl}/admin/admin`, {
@@ -42,7 +40,6 @@ const profil = () => {
                 setIsLoading(false)
             })
             .catch(error => {
-                console.error('Erreur:', error.response?.data?.message || error.message);
                 setIsLoading(false)
             });
     })
@@ -56,7 +53,6 @@ const profil = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!user) {
-            console.log("Erreur : ID utilisateur introuvable dans sessionStorage");
             return;
         }
         axios.put(`${apiUrl}/admin/update_profil`, {
@@ -67,7 +63,7 @@ const profil = () => {
                 setShowPopup(true)
                 SetUpdate(response.data.message)
             })
-            .catch(error => console.log('Erreur:', error))
+            .catch()
     }
     // fonction pour fermer la popup
     const closePopUp = () => {

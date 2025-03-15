@@ -16,8 +16,10 @@ const dashboard = () => {
   const { changeDate } = useAuth()
   const { logout } = useAuth(); //Fonction de déconnexion
   const popupRefProfil = useRef(null)
+  const btnRefProfil = useRef(null)
   const popupRef = useRef(null)
   const popupDate = useRef(null)
+  const selectDate = useRef(null)
   const navRef = useRef(null)
   const navBar = useRef(null)
   const [utilisateur, setUtilisateur] = useState(null); // État pour l'utilisateur
@@ -32,7 +34,6 @@ const dashboard = () => {
   const [endDate, setEndDate] = useState(null);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const handleDateChange = (dates) => {
-    console.log(dates)
     const [start, end] = dates;
     changeDate(start, end)
     setStartDate(start);
@@ -56,11 +57,10 @@ const dashboard = () => {
           setIsAdmin(false)
         }
       })
-      .catch(error => {
-        console.error('Erreur:', error.response?.data?.message || error.message);
-      });
+      .catch();
   }, [])
   const [activeIndex, setActiveIndex] = useState(null); // Stocke l'index de l'élément actif
+  const [subactiveIndex, setSubActiveIndex] = useState(null);
   const [expandedIndex, setExpandedIndex] = useState(null); // Stocke l'index des éléments à agrandir
 
   const menuItems = [
@@ -88,6 +88,10 @@ const dashboard = () => {
     }
   };
 
+  const handleSubItemClick = (subIndex) => {
+    setSubActiveIndex(subIndex)
+  }
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData({
@@ -98,8 +102,8 @@ const dashboard = () => {
   // Ferme la popup si on clique en dehors
   useEffect(() => {
     const handleClickOutsidePopup = (event) => {
-      if (popupRefProfil.current && !popupRefProfil.current.contains(event.target)) {
-        setIsProfilOpen(!isProfilOpen)
+      if (popupRefProfil.current && !popupRefProfil.current.contains(event.target) && btnRefProfil.current && !btnRefProfil.current.contains(event.target)) {
+        setIsProfilOpen(false)
       }
     };
 
@@ -120,9 +124,7 @@ const dashboard = () => {
       document.removeEventListener('mousedown', handleClickOutsidePopupDate);
     }
 
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutsidePopup, handleClickOutsidePopupDate);
-    };
+    
   }, [isProfilOpen, isCalendarOpen]);
 
   const initializeDate = () => {
@@ -144,7 +146,7 @@ const dashboard = () => {
         setProfil(false)
         setUpdate(response.data.message)
       })
-      .catch(error => console.log('Erreur:', error))
+      .catch()
   }
   // fonction pour fermer la popup
   const closePopUp = () => {
@@ -172,9 +174,17 @@ const dashboard = () => {
       }
     };
 
+    const handleMessage = (event) => {
+      if (event.data === "closePopup") {
+        setIsProfilOpen(false)
+        setIsCalendarOpen(false)
+        setIsHidden(true)
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
     document.addEventListener("mousedown", handleClick);
-
-
+    document.addEventListener("touchstart", handleClick);
   }, []);
 
   useEffect(() => {
@@ -203,8 +213,7 @@ const dashboard = () => {
           <ul className="mt-6 nav" ref={navBar}>
             {menuItems.map((item, index) => (
               <li key={index} className="mx-4 mt-6">
-                <Link to={item.to} className={`p-2 w-full block hover:bg-red-100 hover:rounded-lg ${activeIndex === index ? "bg-red-200 rounded-lg" : ""
-                  }`}
+                <Link to={item.to} className={`p-2 w-full block hover:bg-red-100 hover:rounded-lg ${activeIndex === index ? "bg-red-200 rounded-lg" : ""}`}
                   onClick={() => handleItemClick(index)}>
                   <i className={`fa-solid ${item.icon || ""} px-1 sm:px-0 text-lg text-gray-700`}></i>
                   <span className="text-lg mx-2 hidden sm:inline">{item.label}</span>
@@ -221,7 +230,8 @@ const dashboard = () => {
                   <ul className="mt-2 sm:ml-6 space-y-2">
                     {item.subItems.map((subItem, subIndex) => (
                       <li key={subIndex} className="">
-                        <Link to={subItem.to} className='p-2 w-full block hover:bg-red-100 hover:rounded-lg'>
+                        <Link to={subItem.to} className={`p-2 w-full block hover:bg-red-100 hover:rounded-lg ${subactiveIndex === subIndex ? "bg-red-200 rounded-lg" : ""}`}
+                          onClick={() => handleSubItemClick(subIndex)}>
                           <span className="text-sm hidden sm:inline">{subItem.label}</span>
                           <i className={`fa-solid ${subItem.icon || ""} sm:hidden px-1 sm:px-0 text-lg text-gray-700`}></i>
                         </Link>
@@ -234,7 +244,7 @@ const dashboard = () => {
           </ul>
         </div>
         <div className='w-screen h-screen'>
-          <div className={`${isHidden ? "inline-flex items-center bg-gray-100 pt-8 sm:pt-0 sm:bg-white sm:border-b sm:border-b-4 sm:border-brown-500 h-[50px] sm:h-[84px] w-[100%] sm:w-[80%] right-0 fixed z-10" : "inline-flex items-center bg-gray-100 pt-8 sm:pt-0 sm:bg-white sm:border-b sm:border-b-4 sm:border-brown-500 h-[50px] sm:h-[85px] w-[80%] sm:w-[80%] right-0 fixed z-10"}`}>
+          <div className={`${isHidden ? "inline-flex items-center bg-gray-100 pt-8 sm:pt-0 sm:bg-white sm:border-b sm:border-b-4 sm:border-brown-500 h-[50px] sm:h-[84px] w-[100%] sm:w-[80%] right-0 fixed z-10" : "inline-flex items-center bg-gray-100 pt-8 sm:pt-0 sm:bg-white sm:border-b sm:border-b-4 sm:border-brown-500 h-[50px] sm:h-[84px] w-[80%] sm:w-[80%] right-0 fixed z-10"}`}>
             <div className='flex justify-end sm:justify-between items-center w-full px-5 mb-3'>
               <i className="text-xl fa-solid fa-bars fixed top-4 left-8 z-10 sm:hidden" ref={navRef} onClick={() => setIsHidden((prev) => !prev)}></i>
               {/* Filtre Section */}
@@ -253,7 +263,7 @@ const dashboard = () => {
                     <span className='pt-2 sm:pt-0 mr-4 sm:m-4 text-brown-500' onClick={initializeDate}><i class="fa-regular fa-circle-xmark"></i></span>
                   </div>
                 ) : (
-                  <div className='flex items-center rounded mr-4 sm:mt-3 px-2 py-2 space-x-3'>
+                  <div className='flex items-center rounded mr-4 sm:mt-3 px-2 py-2 space-x-3' ref={selectDate}>
                     <i class="fa-solid fa-calendar-days text-gray-700 sm:text-black text-lg sm:text-sm"></i>
                     <span className='text-sm hidden sm:flex'>
                       Sélectionnez un intervalle de temps pour filtrer
@@ -280,9 +290,11 @@ const dashboard = () => {
               <div className='flex align-items-center space-x-3 mb-2'>
                 <div className='mt-1'>
                   <i className="fa-solid fa-lock mr-3 text-lg text-gray-700 cursor-pointer" onClick={handleLogout}></i>
-                  <i className="fa-regular fa-circle-question mx-2 text-lg text-green-700"></i>
+                  {isAdmin && (
+                  <Link to="/login/dashboard/help"><i className="fa-regular fa-circle-question mx-2 text-lg text-green-700 cursor-pointer"></i></Link>
+                  )}
                 </div>
-                <div className='flex items-center cursor-pointer' onClick={() => setIsProfilOpen(true)}>
+                <div className='flex items-center cursor-pointer' ref={btnRefProfil} onClick={() => setIsProfilOpen((prev) => !prev)}>
                   <span className='text-lg mr-4'>{utilisateur?.name}</span>
                   <i className='fa-solid fa-circle-user text-2xl text-gray-700'></i>
                 </div>

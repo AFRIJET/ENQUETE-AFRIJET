@@ -20,6 +20,7 @@ import Profil from './pages/profil';
 import GestEnqueteAgence from './pages/gestEnqueteAgence'
 import GestEnqueteSatisfaction from './pages/gestEnqueteSatisfaction'
 import GestEnqueteCorporate from './pages/gestEnqueteCorporate'
+import HelpCenter from './pages/helpCenter';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -61,6 +62,11 @@ function App() {
                   <Route path='/login/dashboard/users' element={
                     <ProtectedRoute>
                       <Users />
+                    </ProtectedRoute>}>
+                  </Route>
+                  <Route path='/login/dashboard/help' element={
+                    <ProtectedRoute>
+                      <HelpCenter />
                     </ProtectedRoute>}>
                   </Route>
                   <Route path='/login/dashboard/profil' element={

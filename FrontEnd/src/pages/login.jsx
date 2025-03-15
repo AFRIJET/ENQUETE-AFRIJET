@@ -45,7 +45,6 @@ const login = () => {
                     const { message } = error.response.data;
                     setError(message);
                 } else {
-                    console.error('Erreur réseau:', error);
                     alert('Erreur de connexion au serveur.');
                 }
             })

@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   const renewSession = () => {
-    const refreshInterval = 45 * 60 * 1000; // 45 minutes en millisecondes
+    const refreshInterval = 30 * 60 * 1000; // 30 minutes en millisecondes
     setInterval(() => {
       axios.post(`${apiUrl}/admin/renew`, {}, { withCredentials: true })
         .then((response) => {})

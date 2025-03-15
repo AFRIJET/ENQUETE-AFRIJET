@@ -165,7 +165,7 @@ const AgencySurvey = () => {
         if (type === 'checkbox') {
             setCheckedItems((prev) => ({
                 ...prev,
-                [value]: checked // Met à jour l'état pour le sexe
+                [value]: checked
             }));
 
             // Mettre à jour l'état des données
@@ -216,18 +216,18 @@ const AgencySurvey = () => {
                 .then(response => {
                     setIsPopVisible(true);
                 })
-                .catch(err => console.log("Erreur lors de la sauvegarde des données:", err));
+                .catch();
         }
     }
 
-    // fonction pour fermer la popup
+    /* fonction pour fermer la popup
     const closePopUp = () => {
         setIsPopVisible(false);
         window.location.reload(); // Recharge la page
     }
+    */
 
-    // Ferme la popup si on clique en dehors
-    useEffect(() => {
+    /* useEffect(() => {
         const handleClickOutside = (event) => {
             if (popupRef.current && !popupRef.current.contains(event.target)) {
                 closePopUp();
@@ -244,8 +244,7 @@ const AgencySurvey = () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [isPopVisible]);
-
-    console.log(data)
+    */
 
     return (
         <motion.div
@@ -440,7 +439,7 @@ const AgencySurvey = () => {
                                     </div>
                                     <div className="flex items-center mb-4">
                                         <input type="radio" ref={fieldRefs.acceuil_agence} id="note_acceuil_2" name="acceuil_agence" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
-                                            onChange={handleChange}
+                                            onChange={handleChange} onClick={(e) => {const value = e.target.checked ? 2 : 0}}
                                         />
                                         <label htmlFor="note_acceuil_2" className="text-gray-700">2</label>
                                     </div>

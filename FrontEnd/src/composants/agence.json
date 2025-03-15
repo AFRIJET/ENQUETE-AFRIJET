@@ -6,6 +6,9 @@
         "agence": "Brazzaville-Airport", "country": "Congo"
     },
     {
+        "agence": "Bangui-BGF", "country": "Centrafrique"
+    },
+    {
         "agence": "Cotonou-COO", "country": "Benin"
     },
     {
@@ -18,6 +21,9 @@
         "agence": "Douala-Airport", "country": "Cameroon"
     },
     {
+        "agence": "Johannesburg-JNB", "country": "Afrique du Sud"
+    },
+    {
         "agence": "Libreville-ADL-GSEZ", "country": "Gabon"
     },
     {
@@ -28,9 +34,6 @@
     },
     {
         "agence": "Libreville-Owendo", "country": "Gabon"
-    },
-    {
-        "agence": "Libreville-Parasolier", "country": "Gabon"
     },
     {
         "agence": "Libreville-Terminal 2", "country": "Gabon"
@@ -61,6 +64,9 @@
     },
     {
         "agence": "Port Gentil-POG", "country": "Gabon"
+    },
+    {
+        "agence": "Port Harcourt-Airport", "country": "Nigeria"
     },
     {
         "agence": "Port Gentil-Airport", "country": "Gabon"
