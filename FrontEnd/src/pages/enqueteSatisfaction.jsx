@@ -230,6 +230,7 @@ const enqueteSatisfaction = () => {
         }
     }
 
+    /*
     // fonction pour fermer la popup
     const closePopUp = () => {
         setIsPopVisible(false);
@@ -254,6 +255,7 @@ const enqueteSatisfaction = () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [isPopVisible]);
+    */
 
     return (
         <motion.div

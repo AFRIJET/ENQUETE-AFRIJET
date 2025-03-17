@@ -7,6 +7,7 @@ import routesAdmin from './routes/routesAdmin.js'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import session from 'express-session';
+import promClient from 'prom-client'
 
 dotenv.config();
 
@@ -50,6 +51,94 @@ async function connectToDatabase() {
         console.error('Error connecting to MongoDB:', error);
     }
 }
+
+promClient.collectDefaultMetrics({ timeout: 5000 });
+
+// Métriques
+const pageLoadTime = new promClient.Gauge({
+    name: 'page_load_time',
+    help: 'Temps de chargement de la page en millisecondes',
+})
+
+const requestTime = new promClient.Gauge({
+    name: 'request_time',
+    help: 'Temps d\'éxécution des requetes en millisecondes',
+    labelNames: ['url'],
+})
+
+const concurrentRequests = new promClient.Gauge({
+    name: 'concurrent_requests_time',
+    help: 'Scalabilité des requetes',
+})
+
+const errorCount = new promClient.Counter({
+    name: 'erreur_javascript',
+    help: 'Nombre total d\'erreurs JavaScript',
+})
+
+const httpRequestCounter = new promClient.Counter({
+    name: 'http_requests_total',
+    help: 'Nombre Total de requetes HTTP',
+    labelNames: ['method', 'route', 'status'],
+});
+
+const httpRequestDuration = new promClient.Histogram({
+    name: 'http_request_duration_seconds',
+    help: 'Durée total d\'une requete HTTP',
+    labelNames: ['method', 'route'],
+    buckets: [0.1, 0.5, 1, 2, 5],
+});
+
+const metricsMiddleware = (req, res, next) => {
+    const end = httpRequestDuration.startTimer();
+    res.on('finish', () => {
+        httpRequestCounter.inc({
+            method: req.method,
+            route: req.route ? req.route.path : req.path,
+            status: res.statusCode,
+        });
+        end({ method: req.method, route: req.route ? req.route.path : req.path });
+    });
+    next();
+};
+
+app.use(metricsMiddleware);
+
+app.post('/metrics', express.json(), (req, res) => {
+    try {
+        const {
+            pageLoadTime: plTime,
+            requestTime: reqTime,
+            concurrentRequests: concReq,
+            countErrors: errCount,
+        } = req.body
+
+        if (typeof plTime !== 'number' || !Array.isArray(reqTime) ||
+            typeof concReq !== 'number' || typeof errCount !== 'number') {
+            res.status(400).send('Données métriques invalides')
+        }
+        pageLoadTime.set(plTime);
+        reqTime.forEach(({ url, time }) => {
+            requestTime.set({ url }, time);
+        })
+        concurrentRequests.set(concReq);
+        errorCount.inc(errCount);
+        res.status(200).send('Métriques mises à jour');
+    } catch (error) {
+        res.status(500).send('Erreur interne du serveur')
+    }
+
+})
+
+app.get('/metrics', async (req, res) => {
+    try {
+        res.set('Content-Type', promClient.register.contentType);
+        res.end(await promClient.register.metrics());
+    } catch (error) {
+        res.status(500).send('Erreur interne au serveur')
+    }
+
+});
 
 app.use('/api', routesClient); 
 app.use('/admin', routesAdmin); 
