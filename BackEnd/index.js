@@ -12,7 +12,8 @@ import promClient from 'prom-client'
 dotenv.config();
 
 const app = express();
-app.use(cookieParser());
+app.set('trust proxy', 1);
+
 const port = process.env.PORT || 5000;
 
 const allowedOrigins = [
@@ -30,7 +31,7 @@ app.use(cors({
         }
         return callback(null, true);
     },
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     credentials: true
 }));
 
@@ -41,6 +42,7 @@ app.use(session({
     cookie: {httpOnly: true, secure: true, sameSite: 'none', maxAge: 3600000 } 
 }));
 
+app.use(cookieParser());
 app.use(express.json());
 app.use(bodyParser.json());
 
