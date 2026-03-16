@@ -100,9 +100,10 @@ router.post('/login', async (req, res) => {
         // Définition du cookie avec des options sécurisées
         res.cookie('auth_token', token, {
             httpOnly: true,      // Inaccessible au JavaScript client
-            secure: false,        // Transmis uniquement via HTTPS
-            sameSite: 'Strict',  // Protéger contre les requêtes CSRF
+            secure: true,        // Transmis uniquement via HTTPS
+            sameSite: 'none',  // Protéger contre les requêtes CSRF
             maxAge: 3600000,     // Durée de vie : 1 heure
+            path: '/'             // Disponible sur tout le site
         });
 
         // Ferme la connexion à la base de données après la génération du token
