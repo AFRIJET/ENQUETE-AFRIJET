@@ -3,10 +3,16 @@
         "agence": "Bata-BSG", "country": "Equatorial Guinea"
     },
     {
-        "agence": "Brazzaville-Airport", "country": "Congo"
+        "agence": "Bangui-ATO", "country": "Centrafrique"
     },
     {
-        "agence": "Bangui-BGF", "country": "Centrafrique"
+        "agence": "Bangui-CTO", "country": "Centrafrique"
+    },
+    {
+        "agence": "Brazzaville-ATO", "country": "Congo"
+    },
+    {
+        "agence": "Brazzaville-CTO", "country": "Congo"
     },
     {
         "agence": "Cotonou-COO", "country": "Benin"
@@ -45,6 +51,9 @@
         "agence": "Malabo-Airport", "country": "Equatorial Guinea"
     },
     {
+        "agence": "Moanda-CTO", "country": "Gabon"
+    },
+    {
         "agence": "Mvengue-FCV", "country": "Gabon"
     },
     {
@@ -57,19 +66,22 @@
         "agence": "Oyem-Airport", "country": "Gabon"
     },
     {
-        "agence": "Pointe Noire-Elais", "country": "Congo"
+        "agence": "Pointe-Noire-Elais", "country": "Congo"
     },
     {
-        "agence": "Pointe Noire-Airport", "country": "Congo"
+        "agence": "Pointe-Noire-Airport", "country": "Congo"
     },
     {
-        "agence": "Port Gentil-POG", "country": "Gabon"
+        "agence": "Port-Gentil-POG", "country": "Gabon"
     },
     {
-        "agence": "Port Harcourt-Airport", "country": "Nigeria"
+        "agence": "Port-Harcourt-ATO", "country": "Nigeria"
     },
     {
-        "agence": "Port Gentil-Airport", "country": "Gabon"
+        "agence": "Port-Harcourt-CTO", "country": "Nigeria"
+    },
+    {
+        "agence": "Port-Gentil-Airport", "country": "Gabon"
     },
     {
         "agence": "Principe-Airport", "country": "Sao Tome and Principe"

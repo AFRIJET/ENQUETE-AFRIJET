@@ -15,12 +15,12 @@ const app = express();
 app.use(cookieParser());
 const port = process.env.PORT || 5000;
 
-
 const allowedOrigins = [
     'http://localhost:3000',
     'http://localhost:5000',
     'http://localhost:5173', // Local pour développement
     'https://secure.enquete-afrijet-flygabon.com', // Nom de domaine
+    'https://enquete-afrijet-flygabon.netlify.app' // UAT sur Netlify
 ];
 app.use(cors({
     origin: allowedOrigins,
