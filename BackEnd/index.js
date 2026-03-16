@@ -23,7 +23,13 @@ const allowedOrigins = [
     'https://enquete-afrijet-flygabon.netlify.app' // UAT sur Netlify
 ];
 app.use(cors({
-    origin: allowedOrigins,
+    origin: function (origin, callback) {
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.indexOf(origin) === -1) {
+            return callback(new Error('CORS Policy: Origin not allowed'), false);
+        }
+        return callback(null, true);
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
 }));
@@ -32,7 +38,7 @@ app.use(session({
     secret: process.env.JWT_SECRET, 
     resave: false,
     saveUninitialized: true,
-    cookie: {httpOnly: true, secure: false, sameSite: 'Strict', maxAge: 3600000 } 
+    cookie: {httpOnly: true, secure: false, sameSite: 'none', maxAge: 3600000 } 
 }));
 
 app.use(express.json());
@@ -145,6 +151,6 @@ app.use('/admin', routesAdmin);
 
 connectToDatabase();
 
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
     console.log(`Server is running on port : ${port}`);
 });
