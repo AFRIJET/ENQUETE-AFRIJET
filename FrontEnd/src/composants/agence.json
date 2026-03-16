@@ -1,86 +1,101 @@
 [
     {
-        "agence": "Bata-BSG"
+        "agence": "Bata-BSG", "country": "Equatorial Guinea"
     },
     {
-        "agence": "Brazzaville-Airport"
+        "agence": "Bangui-ATO", "country": "Centrafrique"
     },
     {
-        "agence": "Cotonou-COO"
+        "agence": "Bangui-CTO", "country": "Centrafrique"
     },
     {
-        "agence": "Cotonou-Airport"
+        "agence": "Brazzaville-ATO", "country": "Congo"
     },
     {
-        "agence": "Douala-Akwa"
+        "agence": "Brazzaville-CTO", "country": "Congo"
     },
     {
-        "agence": "Douala-Airport"
+        "agence": "Cotonou-COO", "country": "Benin"
     },
     {
-        "agence": "Libreville-ADL-GSEZ"
+        "agence": "Cotonou-Airport", "country": "Benin"
     },
     {
-        "agence": "Libreville-Casino"
+        "agence": "Douala-Akwa", "country": "Cameroon"
     },
     {
-        "agence": "Libreville-Lotus"
+        "agence": "Douala-Airport", "country": "Cameroon"
     },
     {
-        "agence": "Libreville-Owendo"
+        "agence": "Johannesburg-JNB", "country": "Afrique du Sud"
     },
     {
-        "agence": "Libreville-Parasolier"
+        "agence": "Libreville-ADL-GSEZ", "country": "Gabon"
     },
     {
-        "agence": "Libreville-Terminal 2"
+        "agence": "Libreville-Casino", "country": "Gabon"
     },
     {
-        "agence": "Malabo-SSG"
+        "agence": "Libreville-Lotus", "country": "Gabon"
     },
     {
-        "agence": "Malabo-Airport"
+        "agence": "Libreville-Owendo", "country": "Gabon"
     },
     {
-        "agence": "Mvengue-FCV"
+        "agence": "Libreville-Terminal 2", "country": "Gabon"
     },
     {
-        "agence": "Mvengue-Airport"
+        "agence": "Malabo-SSG", "country": "Equatorial Guinea"
     },
     {
-        "agence": "Oyem-OYE"
+        "agence": "Malabo-Airport", "country": "Equatorial Guinea"
     },
     {
-        "agence": "Oyem-Airport"
+        "agence": "Moanda-CTO", "country": "Gabon"
     },
     {
-        "agence": "Pointe Noire-Elais"
+        "agence": "Mvengue-FCV", "country": "Gabon"
     },
     {
-        "agence": "Pointe Noire-Airport"
+        "agence": "Mvengue-Airport", "country": "Gabon"
     },
     {
-        "agence": "Pointe-Noire"
+        "agence": "Oyem-OYE", "country": "Gabon"
     },
     {
-        "agence": "Port Gentil-POG"
+        "agence": "Oyem-Airport", "country": "Gabon"
     },
     {
-        "agence": "Port Gentil-Airport"
+        "agence": "Pointe-Noire-Elais", "country": "Congo"
     },
     {
-        "agence": "Principe-Airport"
+        "agence": "Pointe-Noire-Airport", "country": "Congo"
     },
     {
-        "agence": "Sao Tomé-TMS"
+        "agence": "Port-Gentil-POG", "country": "Gabon"
     },
     {
-        "agence": "Sao Tomé-Airport"
+        "agence": "Port-Harcourt-ATO", "country": "Nigeria"
     },
     {
-        "agence": "Yaoundé-Elysée"
+        "agence": "Port-Harcourt-CTO", "country": "Nigeria"
     },
     {
-        "agence": "Yaoundé-Airport"
+        "agence": "Port-Gentil-Airport", "country": "Gabon"
+    },
+    {
+        "agence": "Principe-Airport", "country": "Sao Tome and Principe"
+    },
+    {
+        "agence": "Sao Tomé-TMS", "country": "Sao Tome and Principe"
+    },
+    {
+        "agence": "Sao Tomé-Airport", "country": "Sao Tome and Principe"
+    },
+    {
+        "agence": "Yaoundé-Elysée", "country": "Cameroon"
+    },
+    {
+        "agence": "Yaoundé-Airport", "country": "Cameroon"
     }
 ]

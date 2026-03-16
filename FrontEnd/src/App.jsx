@@ -6,9 +6,6 @@ import { AuthProvider } from "./composants/authContext";
 import Loader from './composants/loader'
 import Animation from './composants/animation';
 import Bienvenue from './pages/bienvenue';
-import BienvenueAgence from './composants/bienvenueAgence';
-import BienvenueCorporate from './composants/bienvenueCorporate';
-import BienvenueSatisfaction from './composants/bienvenueSatisfaction'
 import EnqueteAgence from './pages/enqueteAgence'
 import EnqueteSatisfaction from './pages/enqueteSatisfaction';
 import EnqueteCorporate from './pages/enqueteCorporate';
@@ -20,6 +17,9 @@ import Profil from './pages/profil';
 import GestEnqueteAgence from './pages/gestEnqueteAgence'
 import GestEnqueteSatisfaction from './pages/gestEnqueteSatisfaction'
 import GestEnqueteCorporate from './pages/gestEnqueteCorporate'
+import HelpCenter from './pages/helpCenter';
+import { MetricsProvider } from './composants/metricsContext'
+import BienvenueEnquete from './composants/bienvenueEnquete';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -38,34 +38,64 @@ function App() {
         {isLoading ? (
           <Loader />
         ) : (
-          <Animation>
-            <BrowserRouter>
-              <Routes>
-                <Route path='/' element={<Bienvenue />}></Route>
-                <Route path='/enquete_agence' element={<BienvenueAgence />}></Route>
-                <Route path='/enquete_agence/enquete' element={<EnqueteAgence />}></Route>
-                <Route path='/enquete_satisfaction' element={<BienvenueSatisfaction />}></Route>
-                <Route path='/enquete_satisfaction/enquete' element={<EnqueteSatisfaction />}></Route>
-                <Route path='/enquete_corporate' element={<BienvenueCorporate />}></Route>
-                <Route path='/enquete_corporate/enquete' element={<EnqueteCorporate />}></Route>
-                <Route path='/admin' element={<Login />}></Route>
-                <Route path='/admin/dashboard' element={<Dashboard />}>
-                  <Route path='' element={
+          <MetricsProvider>
+            <Animation>
+              <BrowserRouter>
+                <Routes>
+                  <Route path='/' element={<Bienvenue />}></Route>
+                  <Route path='/enquete_agence' element={<BienvenueEnquete link={'/enquete_agence/enquete'} />}></Route>
+                  <Route path='/enquete_agence/enquete' element={<EnqueteAgence />}></Route>
+                  <Route path='/enquete_satisfaction' element={<BienvenueEnquete link={'/enquete_satisfaction/enquete'} />}></Route>
+                  <Route path='/enquete_satisfaction/enquete' element={<EnqueteSatisfaction />}></Route>
+                  <Route path='/enquete_corporate' element={<BienvenueEnquete link={'/enquete_corporate/enquete'} />}></Route>
+                  <Route path='/enquete_corporate/enquete' element={<EnqueteCorporate />}></Route>
+                  <Route path='/login' element={<Login />}></Route>
+                  <Route path='/login/dashboard' element={
                     <ProtectedRoute>
-                      <Home />
+                      <Dashboard />
                     </ProtectedRoute>}>
+                    <Route path='' element={
+                      <ProtectedRoute>
+                        <Home />
+                      </ProtectedRoute>}>
+                    </Route>
+                    <Route path='/login/dashboard/users' element={
+                      <ProtectedRoute>
+                        <Users />
+                      </ProtectedRoute>}>
+                    </Route>
+                    <Route path='/login/dashboard/help' element={
+                      <ProtectedRoute>
+                        <HelpCenter />
+                      </ProtectedRoute>}>
+                    </Route>
+                    <Route path='/login/dashboard/profil' element={
+                      <ProtectedRoute>
+                        <Profil />
+                      </ProtectedRoute>}>
+                    </Route>
+                    <Route path='/login/dashboard/enqueteagence' element={
+                      <ProtectedRoute>
+                        <GestEnqueteAgence />
+                      </ProtectedRoute>}>
+                    </Route>
+                    <Route path='/login/dashboard/enquetesatisfaction' element={
+                      <ProtectedRoute>
+                        <GestEnqueteSatisfaction />
+                      </ProtectedRoute>}>
+                    </Route>
+                    <Route path='/login/dashboard/enquetecorporate' element={
+                      <ProtectedRoute>
+                        <GestEnqueteCorporate />
+                      </ProtectedRoute>}>
+                    </Route>
                   </Route>
-                  <Route path='/admin/dashboard/users' element={<Users />}></Route>
-                  <Route path='/admin/dashboard/profil' element={<Profil />}></Route>
-                  <Route path='/admin/dashboard/enqueteagence' element={<GestEnqueteAgence />}></Route>
-                  <Route path='/admin/dashboard/enquetesatisfaction' element={<GestEnqueteSatisfaction />}></Route>
-                  <Route path='/admin/dashboard/enquetecorporate' element={<GestEnqueteCorporate />}></Route>
-                </Route>
-              </Routes>
-            </BrowserRouter>
-          </Animation>
+                </Routes>
+              </BrowserRouter>
+            </Animation>
+          </MetricsProvider>
         )}
-      </AuthProvider>
+      </AuthProvider >
     </>
   )
 }

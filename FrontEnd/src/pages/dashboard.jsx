@@ -12,10 +12,17 @@ import { AnimatePresence, motion } from 'framer-motion'
 const apiUrl = import.meta.env.VITE_API_URL;
 
 const dashboard = () => {
+  const { renewSession } = useAuth()
+  const { changeDate } = useAuth()
   const { logout } = useAuth(); //Fonction de déconnexion
   const popupRefProfil = useRef(null)
+  const btnRefProfil = useRef(null)
   const popupRef = useRef(null)
-  const [user, setUser] = useState(null); // État pour l'utilisateur
+  const popupDate = useRef(null)
+  const selectDate = useRef(null)
+  const navRef = useRef(null)
+  const navBar = useRef(null)
+  const [utilisateur, setUtilisateur] = useState(null); // État pour l'utilisateur
   const [isProfilOpen, setIsProfilOpen] = useState(false)
   const [profil, setProfil] = useState(false)
   const [showPopup, setShowPopup] = useState(false)
@@ -28,6 +35,7 @@ const dashboard = () => {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const handleDateChange = (dates) => {
     const [start, end] = dates;
+    changeDate(start, end)
     setStartDate(start);
     setEndDate(end);
     // Enregistrer les dates dans sessionStorage
@@ -38,39 +46,21 @@ const dashboard = () => {
       );
     }
   };
-  useEffect(() => {
-    // Récupère l'utilisateur sauvegardé dans le localStorage
-    const savedUser = sessionStorage.getItem('user');
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-    } else {
-      console.warn("Aucun utilisateur connecté.");
-    }
-  }, []); // Exécuté une seule fois après le montage du composant
   // Fonction qui permet de faire la vérification de l
   useEffect(() => {
-    if (!user) {
-      console.warn("Le nom d'utilisateur n'est pas défini.");
-      return; // Stoppe l'exécution si nameUser est undefined
-    }
-    axios.get(`${apiUrl}/admin/admin`, {
-      params: {
-        utilisateur: user.utilisateur // Nom d'utilisateur à vérifier
-      }
-    })
+    axios.get(`${apiUrl}/admin/admin`, { withCredentials: true })
       .then((response) => {
+        setUtilisateur(response.data.utilisateur)
         if (response.data.isAdmin) {
           setIsAdmin(true)
         } else {
           setIsAdmin(false)
         }
-
       })
-      .catch(error => {
-        console.error('Erreur:', error.response?.data?.message || error.message);
-      });
-  })
+      .catch();
+  }, [])
   const [activeIndex, setActiveIndex] = useState(null); // Stocke l'index de l'élément actif
+  const [subactiveIndex, setSubActiveIndex] = useState(null);
   const [expandedIndex, setExpandedIndex] = useState(null); // Stocke l'index des éléments à agrandir
 
   const menuItems = [
@@ -79,13 +69,13 @@ const dashboard = () => {
       icon: "fa-square-poll-vertical",
       label: "Gestion des enquêtes",
       subItems: [
-        { to: "/admin/dashboard/enqueteagence", label: "Enquête en Agence" },
-        { to: "/admin/dashboard/enquetesatisfaction", label: "Enquête de Satisfaction" },
-        { to: "/admin/dashboard/enquetecorporate", label: "Enquête Corporate" },
+        { to: "/login/dashboard/enqueteagence", icon: "fa-house", label: "Enquête en Agence" },
+        { to: "/login/dashboard/enquetesatisfaction", icon: "fa-plane-departure", label: "Enquête de Satisfaction" },
+        { to: "/login/dashboard/enquetecorporate", icon: "fa-building", label: "Enquête Corporate" },
       ],
     },
     ...(isAdmin
-      ? [{ to: "/admin/dashboard/users", icon: "fa-users", label: "Utilisateurs" }]
+      ? [{ to: "/login/dashboard/users", icon: "fa-users", label: "Utilisateurs" }]
       : []),
   ];
 
@@ -98,6 +88,10 @@ const dashboard = () => {
     }
   };
 
+  const handleSubItemClick = (subIndex) => {
+    setSubActiveIndex(subIndex)
+  }
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData({
@@ -107,39 +101,52 @@ const dashboard = () => {
   }
   // Ferme la popup si on clique en dehors
   useEffect(() => {
-    const handleClickOutside = (event) => {
-        if (popupRefProfil.current && !popupRefProfil.current.contains(event.target)) {
-          setIsProfilOpen(!isProfilOpen)
-        }
+    const handleClickOutsidePopup = (event) => {
+      if (popupRefProfil.current && !popupRefProfil.current.contains(event.target) && btnRefProfil.current && !btnRefProfil.current.contains(event.target)) {
+        setIsProfilOpen(false)
+      }
+    };
+
+    const handleClickOutsidePopupDate = (event) => {
+      if (popupDate.current && !popupDate.current.contains(event.target)) {
+        setIsCalendarOpen(!isCalendarOpen)
+      }
     };
 
     if (isProfilOpen) {
-        document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutsidePopup);
     } else {
-        document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutsidePopup);
+    }
+    if (isCalendarOpen) {
+      document.addEventListener('mousedown', handleClickOutsidePopupDate);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutsidePopupDate);
     }
 
-    return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
-    };
-}, [isProfilOpen]);
+    
+  }, [isProfilOpen, isCalendarOpen]);
+
+  const initializeDate = () => {
+    setStartDate(null)
+    setEndDate(null)
+    changeDate(null, null)
+    sessionStorage.removeItem("selectedDateRange")
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!user) {
-      console.log("Erreur : ID utilisateur introuvable dans sessionStorage");
-      return;
-    }
     axios.put(`${apiUrl}/admin/update_profil`, {
-      id: user.id, // Identifiant utilisateur
-      ...data // Nouvelles données à mettre à jour
+      id: utilisateur.id, // Identifiant utilisateur
+      ...data, // Nouvelles données à mettre à jour
+      withCredentials: true
     })
       .then((response) => {
         setShowPopup(true)
         setProfil(false)
         setUpdate(response.data.message)
       })
-      .catch(error => console.log('Erreur:', error))
+      .catch()
   }
   // fonction pour fermer la popup
   const closePopUp = () => {
@@ -150,37 +157,69 @@ const dashboard = () => {
   const handleLogout = () => {
     logout();
   }
+  const { isHidden, setIsHidden } = useAuth();
+
+  useEffect(() => {
+    const handleClick = (event) => {
+      if (!navRef.current || !navRef.current.contains(event.target)) {
+        if (navBar.current && !navBar.current.contains(event.target)) {
+          setIsHidden(true);
+        } else {
+          setIsHidden(false);
+        }
+
+      } else {
+        // Si on clique à l'intérieur de navRef
+        setIsHidden((prev) => !prev);
+      }
+    };
+
+    const handleMessage = (event) => {
+      if (event.data === "closePopup") {
+        setIsProfilOpen(false)
+        setIsCalendarOpen(false)
+        setIsHidden(true)
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
+    document.addEventListener("mousedown", handleClick);
+    document.addEventListener("touchstart", handleClick);
+  }, []);
+
+  useEffect(() => {
+    renewSession();
+  }, [])
 
   return (
     <div className='bg-gray-100'>
       <div className='flex row'>
-        <div className='bg-white sm:w-[370px] border h-screen nav'>
+        <div className={`${isHidden ? 'bg-white sm:w-[20%] border h-screen nav fixed z-10 hidden sm:block' : 'bg-white sm:w-[20%] border h-screen nav fixed z-10'}`}>
           {/*Image d'entete */}
-          <div className='inline-flex border-b border-b-4 border-brown-500'>
+          <div className='inline-flex border-b border-b-4 border-brown-500 sm:w-full'>
             <img
               src={logoAfrijet}
               alt='Logo afrijet'
-              className='pb-8 pt-5 w-40 h-20 logo-flygabon'
+              className='pb-8 pt-5 w-[150px] h-20 logo-flygabon hidden sm:flex'
             />
             <img
               src={logoFlygabon}
               alt='Logo flygabon'
-              className='pb-8 pt-3 w-40 h-20 logo-flygabon'
+              className='pb-8 pt-4 pr-3 w-60 h-20 logo-flygabon hidden xl:flex'
             />
           </div>
 
           {/* Nav Bar Section */}
-          <ul className="mt-6">
+          <ul className="mt-6 nav" ref={navBar}>
             {menuItems.map((item, index) => (
               <li key={index} className="mx-4 mt-6">
-                <Link to={item.to} className={`p-2 w-full block hover:bg-red-100 hover:rounded-lg ${activeIndex === index ? "bg-red-200 rounded-lg" : ""
-                  }`}
+                <Link to={item.to} className={`p-2 w-full block hover:bg-red-100 hover:rounded-lg ${activeIndex === index ? "bg-red-200 rounded-lg" : ""}`}
                   onClick={() => handleItemClick(index)}>
-                  <i className={`fa-solid ${item.icon || ""} text-lg text-gray-700`}></i>
-                  <span className="text-lg mx-2 nav-text">{item.label}</span>
+                  <i className={`fa-solid ${item.icon || ""} px-1 sm:px-0 text-lg text-gray-700`}></i>
+                  <span className="text-lg mx-2 hidden sm:inline">{item.label}</span>
                   {item.subItems && (
                     <i
-                      className={`fa-solid nav-text ${expandedIndex === index ? "fa-caret-up" : "fa-caret-down"
+                      className={`fa-solid hidden sm:inline ${expandedIndex === index ? "fa-caret-up" : "fa-caret-down"
                         } text-lg text-gray-700 mx-2`}
                     ></i>
                   )}
@@ -190,9 +229,11 @@ const dashboard = () => {
                 {item.subItems && expandedIndex === index && (
                   <ul className="mt-2 sm:ml-6 space-y-2">
                     {item.subItems.map((subItem, subIndex) => (
-                      <li key={subIndex} className="p-2 hover:bg-red-100 hover:rounded-lg">
-                        <Link to={subItem.to} className="text-gray-700 text-sm">
-                          <span className="text-sm sm:mx-2">{subItem.label}</span>
+                      <li key={subIndex} className="">
+                        <Link to={subItem.to} className={`p-2 w-full block hover:bg-red-100 hover:rounded-lg ${subactiveIndex === subIndex ? "bg-red-200 rounded-lg" : ""}`}
+                          onClick={() => handleSubItemClick(subIndex)}>
+                          <span className="text-sm hidden sm:inline">{subItem.label}</span>
+                          <i className={`fa-solid ${subItem.icon || ""} sm:hidden px-1 sm:px-0 text-lg text-gray-700`}></i>
                         </Link>
                       </li>
                     ))}
@@ -202,31 +243,38 @@ const dashboard = () => {
             ))}
           </ul>
         </div>
-        <div className='w-screen'>
-          <div className='inline-flex bg-white border-b border-b-4 border-brown-500 h-[85px] w-full'>
-            <div className='flex justify-between items-center w-full px-5 mb-3'>
+        <div className='w-screen h-screen'>
+          <div className={`${isHidden ? "inline-flex items-center bg-gray-100 pt-8 sm:pt-0 sm:bg-white sm:border-b sm:border-b-4 sm:border-brown-500 h-[50px] sm:h-[84px] w-[100%] sm:w-[80%] right-0 fixed z-10" : "inline-flex items-center bg-gray-100 pt-8 sm:pt-0 sm:bg-white sm:border-b sm:border-b-4 sm:border-brown-500 h-[50px] sm:h-[84px] w-[80%] sm:w-[80%] right-0 fixed z-10"}`}>
+            <div className='flex justify-end sm:justify-between items-center w-full px-5 mb-3'>
+              <i className="text-xl fa-solid fa-bars fixed top-4 left-8 z-10 sm:hidden" ref={navRef} onClick={() => setIsHidden((prev) => !prev)}></i>
               {/* Filtre Section */}
-              <div className='flex items-center border rounded px-2 py-2 space-x-3' onClick={() => setIsCalendarOpen(!isCalendarOpen)}>
+              <div className="cursor-pointer mb-2" onClick={() => setIsCalendarOpen(!isCalendarOpen)}>
                 {startDate && endDate ? (
-                  <span className='text-sm space-x-2'>
-                    Du {" "}
-                    <span className="text-sm">{startDate.toLocaleDateString()}</span> -{" "}
-                    <span className="text-sm">{endDate.toLocaleDateString()}</span>
-                    <i class="fa-solid fa-angle-down text-sm"></i>
-                  </span>
+                  <div className='flex sm:mt-4'>
+                    <div className='flex items-center sm:border rounded px-3 py-1 sm:py-2 sm:space-x-3'>
+                      <i class="fa-solid fa-calendar-days text-gray-700 sm:text-black text-lg sm:text-sm sm:hidden"></i>
+                      <span className='flex text-sm space-x-2'>
+                        <span className='hidden sm:flex'>Du {" "}</span>
+                        <span className="text-sm hidden sm:flex">{startDate.toLocaleDateString()}</span> <span className='hidden sm:flex'>-{" "}</span>
+                        <span className="text-sm hidden sm:flex">{endDate.toLocaleDateString()}</span>
+                        <i className="fa-solid fa-angle-down hidden sm:flex text-sm"></i>
+                      </span>
+                    </div>
+                    <span className='pt-2 sm:pt-0 mr-4 sm:m-4 text-brown-500' onClick={initializeDate}><i class="fa-regular fa-circle-xmark"></i></span>
+                  </div>
                 ) : (
-                  <div className='space-x-3'>
-                    <i class="fa-solid fa-calendar-days text-sm"></i>
-                    <span className='text-sm nav-text'>
+                  <div className='flex items-center rounded mr-4 sm:mt-3 px-2 py-2 space-x-3' ref={selectDate}>
+                    <i class="fa-solid fa-calendar-days text-gray-700 sm:text-black text-lg sm:text-sm"></i>
+                    <span className='text-sm hidden sm:flex'>
                       Sélectionnez un intervalle de temps pour filtrer
                     </span>
-                    <i class="fa-solid fa-angle-down text-sm nav-text"></i>
+                    <i className="fa-solid fa-angle-down hidden sm:flex text-sm"></i>
                   </div>
                 )}
               </div>
               {/* Calendrier */}
               {isCalendarOpen && (
-                <div className="fixed top-[60px] mt-2 bg-white border rounded shadow-lg z-10">
+                <div className="fixed top-[60px] mt-2 bg-white border rounded shadow-lg z-10" ref={popupDate}>
                   <DatePicker
                     selected={startDate}
                     onChange={handleDateChange}
@@ -239,13 +287,15 @@ const dashboard = () => {
               )}
 
               {/* User Section */}
-              <div className='flex items-center space-x-3 mb-2'>
-                <div className=''>
-                  <i class="fa-solid fa-lock mr-3 text-lg text-gray-700 cursor-pointer" onClick={handleLogout}></i>
-                  <i class="fa-regular fa-circle-question mx-2 text-lg text-green-700"></i>
+              <div className='flex align-items-center space-x-3 mb-2'>
+                <div className='mt-1'>
+                  <i className="fa-solid fa-lock mr-3 text-lg text-gray-700 cursor-pointer" onClick={handleLogout}></i>
+                  {isAdmin && (
+                  <Link to="/login/dashboard/help"><i className="fa-regular fa-circle-question mx-2 text-lg text-green-700 cursor-pointer"></i></Link>
+                  )}
                 </div>
-                <div className='flex cursor-pointer' onClick={() => setIsProfilOpen(!isProfilOpen)}>
-                  <p className='text-lg mr-4'>{user?.utilisateur}</p>
+                <div className='flex items-center cursor-pointer' ref={btnRefProfil} onClick={() => setIsProfilOpen((prev) => !prev)}>
+                  <span className='text-lg mr-4'>{utilisateur?.name}</span>
                   <i className='fa-solid fa-circle-user text-2xl text-gray-700'></i>
                 </div>
               </div>
@@ -256,8 +306,8 @@ const dashboard = () => {
                       <i className='fa-solid fa-circle-user text-3xl mt-2 text-gray-700'></i>
                     </div>
                     <div className='grid-cols-2 mx-2'>
-                      <p>{user?.utilisateur}</p>
-                      <p className='text-gray-400'>{user?.role}</p>
+                      <p>{utilisateur?.name}</p>
+                      <p className='text-gray-400'>{utilisateur?.role}</p>
                     </div>
                   </div>
                   <div className='flex space-x-4'>
@@ -280,13 +330,15 @@ const dashboard = () => {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  onSubmit={handleSubmit}>
+                  onSubmit={handleSubmit}
+                  className='fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50'
+                >
                   <motion.div
                     initial={{ y: -30 }}
                     animate={{ y: 0 }}
                     exit={{ y: -30 }}
                     transition={{ duration: 0.3 }}
-                    className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+                    className="">
                     <div className="bg-white w-[375px] p-4 rounded-lg shadow-lg">
                       <h3 className="text-lg font-semibold mb-4 mx-2 mt-2"><i className="fa-solid fa-circle-user mr-2"></i>Modifier mon profil</h3>
                       <div className='col'>
@@ -296,7 +348,7 @@ const dashboard = () => {
                         <input type='text'
                           id='inputUser'
                           name='utilisateur'
-                          defaultValue={user?.utilisateur}
+                          defaultValue={utilisateur?.name}
                           required
                           className='border p-1 mt-2.5 w-80 rounded-lg'
                           onChange={handleChange}

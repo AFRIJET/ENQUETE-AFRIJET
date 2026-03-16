@@ -2,10 +2,13 @@ import axios from 'axios'
 import { AnimatePresence, motion } from 'framer-motion'
 import React, { useEffect, useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import { useAuth } from "../composants/authContext";
 
 const apiUrl = import.meta.env.VITE_API_URL
 
 const users = () => {
+    const { renewSession } = useAuth()
+    const { isHidden } = useAuth();
     const popupRef = useRef(null)
     const [isLoading, setIsLoading] = useState(true); // État de chargement
     const [users, setUsers] = useState([])
@@ -37,9 +40,9 @@ const users = () => {
         setSelectUser(userId)
         axios.get(`${apiUrl}/admin/user_update`, {
             params: { id: userId },
+            withCredentials: true
         })
             .then((response) => {
-                console.log(response)
                 if (response.data.user) {
                     setUser(response.data.user)
                     const role = response.data.user.role; // Supposons que le rôle soit défini dans `user.role`
@@ -51,7 +54,7 @@ const users = () => {
                     setUser([])
                 }
             })
-            .catch(err => console.log("Erreur :", err))
+            .catch()
     }
     const ClosePopupUpdateUser = () => {
         setUpdateUserPopup((prev) => (!prev))
@@ -67,13 +70,13 @@ const users = () => {
         }
     }, [showPopup, setShowPopup]);
     useEffect(() => {
-        axios.get(`${apiUrl}/admin/users`)
+        axios.get(`${apiUrl}/admin/users`, { withCredentials: true })
             .then((response) => {
                 setUsers(response.data.users || []);
-                setIsLoading(false); // Désactiver le chargement
+                setIsLoading(false);
             })
-            .catch(error => console.log("Erreur:", error))
-    })
+            .catch()
+    }, [])
     const handleChangeBox = (event) => {
         const { id, checked } = event.target;
         setCheckedItems({
@@ -115,57 +118,62 @@ const users = () => {
         e.preventDefault();
         // Envoi des données s'il n'y a pas d'erreurs
         axios.post(`${apiUrl}/admin/add_users`, data, {
-            headers: { 'Content-Type': 'application/json' }
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true
         })
             .then(response => {
-                console.log(response);
                 setCreateUserPopup(false)
             })
-            .catch(err => console.log("Erreur lors de la sauvegarde des données:", err));
+            .catch();
     }
     const handleDelete = () => {
 
         axios.delete(`${apiUrl}/admin/delete_user`, {
             data: { id: selectUser },
+            withCredentials: true
         })
             .then((response) => {
-                console.log(response)
                 setDeleteUserPopup(false)
             })
-            .catch(err => console.log("Erreur d'éxécution:", err))
+            .catch()
     }
     const handleUpdate = (e) => {
         e.preventDefault();
         axios.put(`${apiUrl}/admin/update_profil`, {
             id: selectUser, // Identifiant utilisateur
-            ...data // Nouvelles données à mettre à jour
+            ...data, // Nouvelles données à mettre à jour
+            withCredentials: true
         })
             .then((response) => {
                 setUpdateUserPopup(false)
                 setShowPopup(true)
                 SetUpdate("Utilisateur modifié avec succès !")
             })
-            .catch(error => console.log('Erreur:', error))
+            .catch()
 
     }
+
+    renewSession();
+
     return (
-        <div>
+        <div className={`${isHidden ? 'ml-1 sm:ml-[20%] ml-1 mt-[20%] sm:mt-[4%] md:mt-[12%] lg:mt-[7%] h-[83vh] users' : 'sm:ml-[20%] ml-20 mt-[20%] sm:mt-[4%] md:mt-[12%] lg:mt-[7%] h-[83vh] users'}`}>
             <div className="flex justify-between items-center mx-auto sm:px-5 mt-5">
                 <h3 className="flex items-center mx-3 text-lg font-semibold">
                     <i className={`fa-solid fa-user-group text-lg mx-3 text-gray-700`}></i> Gérer les utilisateurs
                 </h3>
                 <button
                     onClick={PopupCreateUser}
-                    className="flex items-center justify-center bg-brown-500 hover:bg-red-700 text-white font-medium rounded-lg px-5 py-2 shadow-md transition duration-200"
+                    className="flex items-center justify-center bg-brown-500 hover:bg-red-700 text-white font-medium rounded-lg px-5 py-2 shadow-md transition duration-200 add-user"
                 >
-                    <i className="fa-solid fa-plus mr-2"></i> <span className='nav-text'>Nouveau utilisateur</span>
+                    <i className="fa-solid fa-user-plus mr-2"></i> <span className='hidden sm:inline'>Nouveau utilisateur</span>
                 </button>
             </div>
 
-            <div className="mt-5 sm:mx-5 users">
+            <div className="mt-5 sm:mx-5 users-table">
                 <table className="shadow-md rounded-lg overflow-hidden w-full">
-                    <thead className="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
+                    <thead className="bg-gray-300 text-gray-800 rounded-lg uppercase text-sm leading-normal">
                         <tr>
+                            <th className="hidden sm:flex sm:py-3 sm:px-2 text-center"></th>
                             <th className="py-3 sm:px-6 text-center"><span>Nom d'utilisateur</span></th>
                             <th className="py-3 sm:px-6 text-center"><span>Rôle</span></th>
                             <th className="py-3 sm:px-6 text-center"></th>
@@ -176,6 +184,9 @@ const users = () => {
                             // Skeleton loaders pour 5 lignes
                             Array(5).fill(null).map((_, index) => (
                                 <tr key={index} className="animate-pulse">
+                                    <td className="hidden sm:flex sm:py-3 sm:px-6 sm:text-center">
+                                        <div className="h-4 bg-gray-200 rounded w-1/4 mx-auto"></div>
+                                    </td>
                                     <td className="py-3 sm:px-6 text-center">
                                         <div className="h-4 bg-gray-200 rounded w-3/4 mx-auto"></div>
                                     </td>
@@ -183,7 +194,7 @@ const users = () => {
                                         <div className="h-4 bg-gray-200 rounded w-1/2 mx-auto"></div>
                                     </td>
                                     <td className="py-3 sm:px-6 text-center">
-                                        <div className="h-4 bg-gray-200 rounded w-1/4 mx-auto"></div>
+                                        <div className="h-4 bg-gray-200 rounded w-1/2 mx-auto"></div>
                                     </td>
                                 </tr>
                             ))
@@ -191,6 +202,7 @@ const users = () => {
                             // Affichage des utilisateurs si chargement terminé
                             users.map((user) => (
                                 <tr key={user._id}>
+                                    <td className="hidden sm:flex sm:py-3 sm:px-6 sm:justify-end"><i className="fa-solid fa-user mr-2"></i></td>
                                     <td className="py-3 sm:px-6 text-center">{user.utilisateur}</td>
                                     <td className="py-3 sm:px-6 text-center">{user.role}</td>
                                     <td className="py-3 sm:px-6 flex justify-center sm:space-x-3">
@@ -198,7 +210,8 @@ const users = () => {
                                             onClick={() => PopupUpdateUser(user._id)}
                                             className='mt-1'
                                         >
-                                            <span className='text-sm text-blue-500'>Modifier</span>
+                                            <span className='text-sm text-blue-500 edit-user-big mt-1'><i class="fa-regular fa-pen-to-square"></i></span>
+                                            <span className='text-sm text-blue-500 edit-user'>Modifier</span>
                                         </Link>
                                         <button
                                             type="button"
@@ -221,13 +234,14 @@ const users = () => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onSubmit={handleSubmit}
+                        className='fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50'
                     >
                         <motion.div
                             initial={{ y: -30 }}
                             animate={{ y: 0 }}
                             exit={{ y: -30 }}
                             transition={{ duration: 0.3 }}
-                            className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50"
+                            className=""
                         >
                             <div className="bg-white w-[360px] p-4 rounded-lg shadow-lg">
                                 <h3 className="text-lg font-semibold mb-4 mx-2 mt-2"><i className="fa-solid fa-circle-user mr-2"></i>Créer un utilisateur</h3>
@@ -336,13 +350,15 @@ const users = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        onSubmit={handleUpdate}>
+                        onSubmit={handleUpdate}
+                        className='fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50'
+                    >
                         <motion.div
                             initial={{ y: -30 }}
                             animate={{ y: 0 }}
                             exit={{ y: -30 }}
                             transition={{ duration: 0.3 }}
-                            className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+                        >
                             <div className="bg-white w-[375px] p-4 rounded-lg shadow-lg">
                                 <h3 className="text-lg font-semibold mb-4 mx-2 mt-2"><i className="fa-solid fa-circle-user mr-2"></i>Modifier un utilisateur</h3>
                                 <div className='col'>
@@ -367,7 +383,6 @@ const users = () => {
                                         <input type={isPasswordVisible ? "text" : "password"}
                                             id='inputPassword'
                                             name="password"
-                                            defaultValue={user?.password}
                                             required
                                             className='border p-1 mt-2 w-80 rounded-lg'
                                             onChange={handleChange}

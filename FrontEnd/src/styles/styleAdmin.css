@@ -40,10 +40,39 @@ span {
     font-family: "SUSE", "Arial";
 }
 
+small {
+    font-family: "SUSE", "Arial";
+}
+
+ol li {
+    font-family: "SUSE", "Arial";
+}
+
+::-webkit-scrollbar {
+    width: 1px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f0f0f0;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
 .login {
-    background: linear-gradient(to top, rgba(0,0,0,0.3)50%, rgba(0,0,0,0.3)50%), url('../assets/images/imageEnAgence2.jpg') no-repeat;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.3)50%, rgba(0, 0, 0, 0.3)50%), url('../assets/images/imagelogin.jpg') no-repeat;
     background-size: cover;
     background-position: top;
+}
+
+.edit-user-big {
+    display: none;
 }
 
 /* PopUP */
@@ -58,36 +87,73 @@ span {
 .react-datepicker {
     font-size: 14px;
     border-radius: 8px;
-  }
+}
 
-  /* Responsive pour les telepones */
-@media (max-width: 500px) {
+iframe {
+    font-family: inherit;
+    
+}
+
+.custom-iframe {
+    border: none;
+    
+}
+
+
+@media (max-width: 1300px) {
+
+    
+
+}
+
+@media (max-width: 950px) {
+
+   
+
+}
+
+/* Responsive pour les telepones */
+@media (max-width: 650px) {
+
     /* Page Login */
     .login-container {
         width: 350px;
     }
+
     /* Page dashboard */
     .logo-afrijet {
         width: 25px
     }
-    .logo-flygabon {
-        display: none;
-    }
-    .nav{
+
+    .nav {
         width: 75px;
-        padding-top: 25px;
+        padding-top: 5px;
     }
-    .nav-text {
-        display: none;
-    }
+
     /* Page profil */
     .input-user {
         width: 250px;
     }
-    .users {
-        width:auto
+
+    
+
+    .add-user {
+        margin-right: 5%;
     }
+
+    .users-table {
+        width: auto
+    }
+
     tr th {
         padding: 0 5px;
+    }
+
+    .edit-user-big {
+        display: flex;
+    }
+
+    .edit-user {
+        display: none;
     }
 }

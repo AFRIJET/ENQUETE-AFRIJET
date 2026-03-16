@@ -74,7 +74,7 @@ input[type="radio"] {
 /* Composant header */
 .header {
     height: 150px;
-    margin: 0 400px;
+    margin: 0 380px;
     width: 60%;
     position: fixed;
 }

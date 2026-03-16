@@ -24,7 +24,7 @@ const enqueteCorporate = () => {
     const [isPopVisible, setIsPopVisible] = useState(false)
     const [selectedCheckbox, setSelectedCheckbox] = useState(null)
     const popupRef = useRef(null)
-    const date = new Date().toISOString().split("T")[0];
+    const date = new Date();
     const [data, setData] = useState({
         date: date,
     })
@@ -93,11 +93,12 @@ const enqueteCorporate = () => {
     const generateId = (label) => {
         return label.toLowerCase()
     }
-
+    /*
     const closePopUp = () => {
         setIsPopVisible(false);
         window.location.reload()
     }
+    */
 
     const updatedErrors = (name, value) => {
         // Annuler l'erreur pour le champ sexe
@@ -142,6 +143,7 @@ const enqueteCorporate = () => {
         }
     };
 
+    /*
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (popupRef.current && !popupRef.current.contains(event.target)) {
@@ -159,6 +161,7 @@ const enqueteCorporate = () => {
             document.removeEventListener('mousedown', handleClickOutside)
         }
     }, [isPopVisible]);
+    */
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -178,9 +181,8 @@ const enqueteCorporate = () => {
             })
                 .then(response => {
                     setIsPopVisible(true);
-                    console.log(response);
                 })
-                .catch(err => console.log("Erreur lors de la sauvegarde des données: ", err))
+                .catch()
         }
     }
 
@@ -200,7 +202,7 @@ const enqueteCorporate = () => {
                 >
                     <div className='w-full h-full bg-white-500/15'>
                         <div className='content relative text-center z-10'>
-                            <div className='float-left w-1/2 p-[3vh_2px]'>
+                            <div className='float-left w-1/2 p-[4vh_2px]'>
                                 <img src={logoAfrijet} alt='logo Afrijet' />
                             </div>
                             <div className='float-right w-1/2 p-[2vh_2px]'>
@@ -291,7 +293,7 @@ const enqueteCorporate = () => {
                     {errors.anciennete && <small className="text-brown-500 text-sm mt-1 mx-5">{"("}{errors.anciennete}{")"}</small>}
                     <div className={`mx-5 mt-4 border-b border-gray-900/10 pb-5 ${errors.localisation ? 'p-2 rounded-lg border-2 border-red-500' : ''}`}>
                         <legend htmlFor="country" className="text-sm font-semibold leading-6 text-gray-900">
-                           2. {t('localisation')} <span className='text-red-500'>*</span>
+                            2. {t('localisation')} <span className='text-red-500'>*</span>
                         </legend>
                         <div className="w-full mt-2">
                             <select
@@ -419,34 +421,34 @@ const enqueteCorporate = () => {
                             <div>
                                 <div className="mt-4 grid grid-cols-5">
                                     <div className="flex items-center mb-4">
-                                        <input ref={fieldRefs.experience_globale} type="radio" id="note1" name="experience_globale" value="1" className="w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                        <input ref={fieldRefs.experience_globale} type="radio" id="note_experience_globale_1" name="experience_globale" value="1" className="w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                             onChange={handleChange}
                                         />
-                                        <label htmlFor="note1" className="text-gray-700">1</label>
+                                        <label htmlFor="note_experience_globale_1" className="text-gray-700">1</label>
                                     </div>
                                     <div className="flex items-center mb-4">
-                                        <input type="radio" ref={fieldRefs.experience_globale} id="note2" name="experience_globale" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                        <input type="radio" ref={fieldRefs.experience_globale} id="note_experience_globale_2" name="experience_globale" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                             onChange={handleChange}
                                         />
-                                        <label htmlFor="note2" className="text-gray-700">2</label>
+                                        <label htmlFor="note_experience_globale_2" className="text-gray-700">2</label>
                                     </div>
                                     <div className="flex items-center mb-4">
-                                        <input type="radio" ref={fieldRefs.experience_globale} id="note3" name="experience_globale" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                        <input type="radio" ref={fieldRefs.experience_globale} id="noteexperience_globale_3" name="experience_globale" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                             onChange={handleChange}
                                         />
-                                        <label htmlFor="note3" className="text-gray-700">3</label>
+                                        <label htmlFor="noteexperience_globale_3" className="text-gray-700">3</label>
                                     </div>
                                     <div className="flex items-center mb-4">
-                                        <input type="radio" ref={fieldRefs.experience_globale} id="note4" name="experience_globale" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                        <input type="radio" ref={fieldRefs.experience_globale} id="noteexperience_globale_4" name="experience_globale" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                             onChange={handleChange}
                                         />
-                                        <label htmlFor="note4" className="text-gray-700">4</label>
+                                        <label htmlFor="noteexperience_globale_4" className="text-gray-700">4</label>
                                     </div>
                                     <div className="flex items-center mb-4">
-                                        <input type="radio" ref={fieldRefs.experience_globale} id="note5" name="experience_globale" value="5" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                        <input type="radio" ref={fieldRefs.experience_globale} id="noteexperience_globale_5" name="experience_globale" value="5" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                             onChange={handleChange}
                                         />
-                                        <label htmlFor="note5" className="text-gray-700">5</label>
+                                        <label htmlFor="noteexperience_globale_5" className="text-gray-700">5</label>
                                     </div>
                                 </div>
                             </div>
@@ -470,34 +472,34 @@ const enqueteCorporate = () => {
                             <legend className="text-sm font-semibold leading-6 text-gray-900 pt-4">6. {t('qualite_service')} : <span className='text-red-500'>*</span></legend>
                             <div className="mt-4 grid grid-cols-5">
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" ref={fieldRefs.service_client} id="note1" name="service_client" value="1" className="w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                    <input type="radio" ref={fieldRefs.service_client} id="noteservice_client_1" name="service_client" value="1" className="w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={handleChange}
                                     />
-                                    <label htmlFor="note1" className="text-gray-700">1</label>
+                                    <label htmlFor="noteservice_client_1" className="text-gray-700">1</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" ref={fieldRefs.service_client} id="note2" name="service_client" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                    <input type="radio" ref={fieldRefs.service_client} id="noteservice_client_2" name="service_client" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={handleChange}
                                     />
-                                    <label htmlFor="note2" className="text-gray-700">2</label>
+                                    <label htmlFor="noteservice_client_2" className="text-gray-700">2</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" ref={fieldRefs.service_client} id="note3" name="service_client" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                    <input type="radio" ref={fieldRefs.service_client} id="noteservice_client_3" name="service_client" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={handleChange}
                                     />
-                                    <label htmlFor="note3" className="text-gray-700">3</label>
+                                    <label htmlFor="noteservice_client_3" className="text-gray-700">3</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" ref={fieldRefs.service_client} id="note4" name="service_client" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                    <input type="radio" ref={fieldRefs.service_client} id="note_service_client_4" name="service_client" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={handleChange}
                                     />
-                                    <label htmlFor="note4" className="text-gray-700">4</label>
+                                    <label htmlFor="note_service_client_4" className="text-gray-700">4</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" ref={fieldRefs.service_client} id="note5" name="service_client" value="5" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                    <input type="radio" ref={fieldRefs.service_client} id="noteservice_client5" name="service_client" value="5" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={handleChange}
                                     />
-                                    <label htmlFor="note5" className="text-gray-700">5</label>
+                                    <label htmlFor="noteservice_client5" className="text-gray-700">5</label>
                                 </div>
                             </div>
                         </fieldset>
@@ -508,34 +510,34 @@ const enqueteCorporate = () => {
                             <legend className="text-sm font-semibold leading-6 text-gray-900 pt-4">7. {t('ponctualite')} : <span className='text-red-500'>*</span></legend>
                             <div className="mt-4 grid grid-cols-5">
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" ref={fieldRefs.ponctualite} id="note1" name="ponctualite" value="1" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                    <input type="radio" ref={fieldRefs.ponctualite} id="noteponctualite1" name="ponctualite" value="1" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={handleChange}
                                     />
-                                    <label htmlFor="note1" className="text-gray-700">1</label>
+                                    <label htmlFor="noteponctualite1" className="text-gray-700">1</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" ref={fieldRefs.ponctualite} id="note2" name="ponctualite" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                    <input type="radio" ref={fieldRefs.ponctualite} id="noteponctualite2" name="ponctualite" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={handleChange}
                                     />
-                                    <label htmlFor="note2" className="text-gray-700">2</label>
+                                    <label htmlFor="noteponctualite2" className="text-gray-700">2</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" ref={fieldRefs.ponctualite} id="note3" name="ponctualite" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                    <input type="radio" ref={fieldRefs.ponctualite} id="noteponctualite3" name="ponctualite" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={handleChange}
                                     />
-                                    <label htmlFor="note3" className="text-gray-700">3</label>
+                                    <label htmlFor="noteponctualite3" className="text-gray-700">3</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" ref={fieldRefs.ponctualite} id="note4" name="ponctualite" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                    <input type="radio" ref={fieldRefs.ponctualite} id="noteponctualite4" name="ponctualite" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={handleChange}
                                     />
-                                    <label htmlFor="note4" className="text-gray-700">4</label>
+                                    <label htmlFor="noteponctualite4" className="text-gray-700">4</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" ref={fieldRefs.ponctualite} id="note5" name="ponctualite" value="5" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                    <input type="radio" ref={fieldRefs.ponctualite} id="noteponctualite5" name="ponctualite" value="5" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={handleChange}
                                     />
-                                    <label htmlFor="note5" className="text-gray-700">5</label>
+                                    <label htmlFor="noteponctualite5" className="text-gray-700">5</label>
                                 </div>
                             </div>
                         </fieldset>
@@ -546,34 +548,34 @@ const enqueteCorporate = () => {
                             <legend className="text-sm font-semibold leading-6 text-gray-900 pt-4">8. {t('confort')} : <span className='text-red-500'>*</span></legend>
                             <div className="mt-4 grid grid-cols-5">
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" ref={fieldRefs.confort} id="note1" name="confort" value="1" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                    <input type="radio" ref={fieldRefs.confort} id="noteconfort1" name="confort" value="1" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={handleChange}
                                     />
-                                    <label htmlFor="note1" className="text-gray-700">1</label>
+                                    <label htmlFor="noteconfort1" className="text-gray-700">1</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" ref={fieldRefs.confort} id="note2" name="confort" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                    <input type="radio" ref={fieldRefs.confort} id="noteconfort2" name="confort" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={handleChange}
                                     />
-                                    <label htmlFor="note2" className="text-gray-700">2</label>
+                                    <label htmlFor="noteconfort2" className="text-gray-700">2</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" ref={fieldRefs.confort} id="note3" name="confort" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                    <input type="radio" ref={fieldRefs.confort} id="noteconfort3" name="confort" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={handleChange}
                                     />
-                                    <label htmlFor="note3" className="text-gray-700">3</label>
+                                    <label htmlFor="noteconfort3" className="text-gray-700">3</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" ref={fieldRefs.confort} id="note4" name="confort" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                    <input type="radio" ref={fieldRefs.confort} id="noteconfort4" name="confort" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={handleChange}
                                     />
-                                    <label htmlFor="note4" className="text-gray-700">4</label>
+                                    <label htmlFor="noteconfort4" className="text-gray-700">4</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" ref={fieldRefs.confort} id="note5" name="confort" value="5" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                    <input type="radio" ref={fieldRefs.confort} id="noteconfort5" name="confort" value="5" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={handleChange}
                                     />
-                                    <label htmlFor="note5" className="text-gray-700">5</label>
+                                    <label htmlFor="noteconfort5" className="text-gray-700">5</label>
                                 </div>
                             </div>
                         </fieldset>
@@ -584,34 +586,34 @@ const enqueteCorporate = () => {
                             <legend className="text-sm font-semibold leading-6 text-gray-900 pt-4">9. {t('reservation')} : <span className='text-red-500'>*</span></legend>
                             <div className="mt-4 grid grid-cols-5">
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" ref={fieldRefs.reservation} id="note1" name="reservation" value="1" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                    <input type="radio" ref={fieldRefs.reservation} id="notereservation1" name="reservation" value="1" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={handleChange}
                                     />
-                                    <label htmlFor="note1" className="text-gray-700">1</label>
+                                    <label htmlFor="notereservation1" className="text-gray-700">1</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" ref={fieldRefs.reservation} id="note2" name="reservation" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                    <input type="radio" ref={fieldRefs.reservation} id="notereservation2" name="reservation" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={handleChange}
                                     />
-                                    <label htmlFor="note2" className="text-gray-700">2</label>
+                                    <label htmlFor="notereservation2" className="text-gray-700">2</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" ref={fieldRefs.reservation} id="note3" name="reservation" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                    <input type="radio" ref={fieldRefs.reservation} id="notereservation3" name="reservation" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={handleChange}
                                     />
-                                    <label htmlFor="note3" className="text-gray-700">3</label>
+                                    <label htmlFor="notereservation3" className="text-gray-700">3</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" ref={fieldRefs.reservation} id="note4" name="reservation" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                    <input type="radio" ref={fieldRefs.reservation} id="notereservation4" name="reservation" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={handleChange}
                                     />
-                                    <label htmlFor="note4" className="text-gray-700">4</label>
+                                    <label htmlFor="notereservation4" className="text-gray-700">4</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" ref={fieldRefs.reservation} id="note5" name="reservation" value="5" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                    <input type="radio" ref={fieldRefs.reservation} id="notereservation5" name="reservation" value="5" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={handleChange}
                                     />
-                                    <label htmlFor="note5" className="text-gray-700">5</label>
+                                    <label htmlFor="notereservation5" className="text-gray-700">5</label>
                                 </div>
                             </div>
                         </fieldset>
@@ -622,34 +624,34 @@ const enqueteCorporate = () => {
                             <legend className="text-sm font-semibold leading-6 text-gray-900 pt-4">10. {t('qualite_prix')} : <span className='text-red-500'>*</span></legend>
                             <div className="mt-4 grid grid-cols-5">
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" ref={fieldRefs.prix} id="note1" name="prix" value="1" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                    <input type="radio" ref={fieldRefs.prix} id="noteprix1" name="prix" value="1" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={handleChange}
                                     />
-                                    <label htmlFor="note1" className="text-gray-700">1</label>
+                                    <label htmlFor="noteprix1" className="text-gray-700">1</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" ref={fieldRefs.prix} id="note2" name="prix" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                    <input type="radio" ref={fieldRefs.prix} id="noteprix2" name="prix" value="2" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={handleChange}
                                     />
-                                    <label htmlFor="note2" className="text-gray-700">2</label>
+                                    <label htmlFor="noteprix2" className="text-gray-700">2</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" ref={fieldRefs.prix} id="note3" name="prix" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                    <input type="radio" ref={fieldRefs.prix} id="noteprix3" name="prix" value="3" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={handleChange}
                                     />
-                                    <label htmlFor="note3" className="text-gray-700">3</label>
+                                    <label htmlFor="noteprix3" className="text-gray-700">3</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" ref={fieldRefs.prix} id="note4" name="prix" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                    <input type="radio" ref={fieldRefs.prix} id="noteprix4" name="prix" value="4" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={handleChange}
                                     />
-                                    <label htmlFor="note4" className="text-gray-700">4</label>
+                                    <label htmlFor="noteprix4" className="text-gray-700">4</label>
                                 </div>
                                 <div className="flex items-center mb-4">
-                                    <input type="radio" ref={fieldRefs.prix} id="note5" name="prix" value="5" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
+                                    <input type="radio" ref={fieldRefs.prix} id="noteprix5" name="prix" value="5" className="mr-2 w-4 h-4 mr-2 bg-white border-2 border-gray-300 rounded-md inline-block cursor-pointer checked:bg-brown-500"
                                         onChange={handleChange}
                                     />
-                                    <label htmlFor="note5" className="text-gray-700">5</label>
+                                    <label htmlFor="noteprix5" className="text-gray-700">5</label>
                                 </div>
                             </div>
                         </fieldset>

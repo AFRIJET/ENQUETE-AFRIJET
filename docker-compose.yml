@@ -1,0 +1,23 @@
+services:
+  frontend:
+    image: ghcr.io/afrijet/enquete_afrijet/frontend:alpha
+    container_name: frontend
+    ports:
+      - "3000:80" # Serveur NGINX servant le frontend
+    environment:
+      - VITE_API_URL=https://secure.enquete-afrijet-flygabon.com
+
+  backend:
+    image: ghcr.io/afrijet/enquete_afrijet/backend:alpha
+    container_name: backend
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGO_URL=mongodb+srv://bryan:bryanafrijet@enquete-afrijet.j1yge.mongodb.net/EnqueteAfrijet-db?retryWrites=true&w=majority
+
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml

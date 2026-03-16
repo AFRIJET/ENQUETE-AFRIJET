@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import '../styles/style.css'
 import logoAfrijet from '../assets/images/logo.png';
 import logoFlygabon from '../assets/images/Logo-FG1.png'
-import imageEnvol from '../assets/images/imageEnVol.jpg'
+import imageEnvol from '../assets/images/Afrijet-envol2.jpg'
 import { motion } from 'framer-motion'
 import { AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
@@ -27,7 +27,7 @@ const enqueteSatisfaction = () => {
     const [text, setText] = useState("")
     const [selectedCheckbox, setSelectedCheckbox] = useState()
     const popupRef = useRef(null)
-    const date = new Date().toISOString().split("T")[0];
+    const date = new Date();
     const maxLength = 150
     const [data, setData] = useState({
         date: date,
@@ -225,12 +225,12 @@ const enqueteSatisfaction = () => {
             })
                 .then(response => {
                     setIsPopVisible(true);
-                    console.log(response);
                 })
-                .catch(err => console.log("Erreur lors de la sauvegarde des données:", err));
+                .catch();
         }
     }
 
+    /*
     // fonction pour fermer la popup
     const closePopUp = () => {
         setIsPopVisible(false);
@@ -255,6 +255,7 @@ const enqueteSatisfaction = () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [isPopVisible]);
+    */
 
     return (
         <motion.div
@@ -272,7 +273,7 @@ const enqueteSatisfaction = () => {
                 >
                     <div className='w-full h-full bg-white-500/10'>
                         <div className='content relative text-center z-10'>
-                            <div className='float-left w-1/2 p-[3vh_2px]'>
+                            <div className='float-left w-1/2 p-[4vh_2px]'>
                                 <img src={logoAfrijet} alt='logo Afrijet' />
                             </div>
                             <div className='float-right w-1/2 p-[2vh_2px]'>
