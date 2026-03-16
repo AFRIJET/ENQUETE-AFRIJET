@@ -38,7 +38,7 @@ app.use(session({
     secret: process.env.JWT_SECRET, 
     resave: false,
     saveUninitialized: true,
-    cookie: {httpOnly: true, secure: false, sameSite: 'none', maxAge: 3600000 } 
+    cookie: {httpOnly: true, secure: true, sameSite: 'none', maxAge: 3600000 } 
 }));
 
 app.use(express.json());
